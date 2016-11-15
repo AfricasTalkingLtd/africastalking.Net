@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>AfricasTalkingGateway</id>
+    <version>1.0.0</version>
+    <title>AfricasTalkingGateway</title>
+    <authors>patrick kings</authors>
+    <owners>AfricasTalking Ltd</owners>
+    <licenseUrl>https://opensource.org/licenses/GPL-3.0</licenseUrl>
+    <projectUrl>https://github.com/AfricasTalkingLtd/-AfricasTalking-API-Wrapper-.Net</projectUrl>
+    <iconUrl>https://github.com/AfricasTalkingLtd/-AfricasTalking-API-Wrapper-.Net</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>The AfricasTalking API Wrapper</description>
+    <releaseNotes>First version of the revised .Net API Wrapper</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>AfricasTalking bulk sms ussd voice airtime mobile payments kenya eastafrica africa nairobi</tags>
+  </metadata>
+</package>
