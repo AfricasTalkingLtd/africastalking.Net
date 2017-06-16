@@ -4,12 +4,12 @@ Imports System.Collections
 Friend Class initiatecheckout
     Public Shared Sub Initiatecheckout()
         'Create an instance of our awesome gateway class and pass your credentials
-        Dim username As String = "kanyi"
-        Dim apiKey As String = "9eb01a98435e1d0cff3e8f6e5c408fa330add662bfcc0a7e9ddcd09b2a0c62fa"
+        Dim username As String = "MyAfricasTalkingUsername"
+        Dim apiKey As String = "MyAfricasTalkingAPIKey"
         ' Specify the name of your Africa's Talking payment product
-        Dim productName As String = "kanyi"
+        Dim productName As String = "My Online Store"
         ' The phone number of the customer checking out
-        Dim phoneNumber As String = "+254700833493"
+        Dim phoneNumber As String = "+254700YYYXXX"
         ' The 3-Letter ISO currency code for the checkout amount
         Dim currencyCode As String = "KES"
         ' The checkout amount
