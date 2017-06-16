@@ -5,9 +5,7 @@ Imports System.Collections.Generic
 
 Public Class TestMobilePaymentB2C
     Public Shared Sub MobilePaymentB2C()
-        'Specify your credentials
-        'string username = "allanwenzslaus";
-        'string apiKey   = "538957ab288c6a224a676ad0a2fbd59dd5f3a4624655a388abaf1337ced8851d";
+        'Specify your credentials       
         Dim username As String = "MyAfricasTalkingUsername"
         Dim apiKey As String = "MyAfricasTalkingAPIKey"
 
