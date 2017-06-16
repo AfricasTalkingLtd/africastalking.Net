@@ -1,8 +1,11 @@
+<details> 
+<summary> 
+
 # Africa's Talking C# Gateway   
-Official Africa's Talking C# API wrapper
-___
+Official Africa's Talking C# API wrapper 
 
-
+</summary> 
+ 
 ### Install 
 In your Nuget package manager console window enter the following
 
@@ -339,4 +342,7 @@ public class TestMobilePaymentB2C
     }
 }
 ```
+
+</details>
+
 
