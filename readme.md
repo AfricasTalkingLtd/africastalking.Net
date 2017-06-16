@@ -1,7 +1,9 @@
-<details> 
-<summary> 
+# Africa's Talking .NET Gateway  
+___ 
+<details>  
 
-# Africa's Talking C# Gateway   
+
+<summary>    
 Official Africa's Talking C# API wrapper 
 
 </summary> 
@@ -346,3 +348,11 @@ public class TestMobilePaymentB2C
 </details>
 
 
+<details>
+<summary>
+Official Africa's Talking VB.NET API wrapper 
+</summary> 
+ 
+ 
+
+</details>
