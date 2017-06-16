@@ -4,8 +4,8 @@ Public Class Sendmessage
     Public Shared Sub Main()
 
         ' Specify your login credentials
-        Dim username As String = "Kennedyotieno"
-        Dim apiKey As String = "ca8f1905ab57182d5aad14d9b72a8f0c04d363e3fd35db6556d9c068f7db4cf4"
+        Dim username As String = "MyAfricasTalkingUsername"
+        Dim apiKey As String = "MyAfricasTalkingAPIKey"
         ' Specify the numbers that you want to send to in a comma-separated list
         ' Please ensure you include the country code (+254 for Kenya in this case)
         Dim recipients As String = "+254700833493"
