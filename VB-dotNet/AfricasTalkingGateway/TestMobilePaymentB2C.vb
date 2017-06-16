@@ -8,8 +8,8 @@ Public Class TestMobilePaymentB2C
         'Specify your credentials
         'string username = "allanwenzslaus";
         'string apiKey   = "538957ab288c6a224a676ad0a2fbd59dd5f3a4624655a388abaf1337ced8851d";
-        Dim username As String = "kanyi"
-        Dim apiKey As String = "9eb01a98435e1d0cff3e8f6e5c408fa330add662bfcc0a7e9ddcd09b2a0c62fa"
+        Dim username As String = "MyAfricasTalkingUsername"
+        Dim apiKey As String = "MyAfricasTalkingAPIKey"
 
         'NOTE: If connecting to the sandbox, please use your sandbox login credentials
 
@@ -25,18 +25,18 @@ Public Class TestMobilePaymentB2C
         '                       </summary>
 
         ' Specify the name of your Africa's Talking payment product
-        Dim productName As String = "kanyi"
+        Dim productName As String = "My Online Store"
 
         ' The 3-Letter ISO currency code for the checkout amount
         Dim currencyCode As String = "KES"
 
         ' Provide the details of a mobile money recipient
-        Dim recipient1 As New MobilePaymentB2CRecipient("+254700833493", "KES", 10D)
+        Dim recipient1 As New MobilePaymentB2CRecipient("+254700YYYXXX", "KES", 10D)
         recipient1.AddMetadata("name", "Clerk")
         recipient1.AddMetadata("reason", "May Salary")
 
         ' You can provide up to 10 recipients at a time
-        ' Dim recipient2 As New MobilePaymentB2CRecipient("+254741740563", "KES", 10D)
+        ' Dim recipient2 As New MobilePaymentB2CRecipient("+254700YYYXXX", "KES", 10D)
         'recipient2.AddMetadata("name", "Accountant")
         'recipient2.AddMetadata("reason", "May Salary")
 
