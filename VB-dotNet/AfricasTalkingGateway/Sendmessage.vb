@@ -8,7 +8,7 @@ Public Class Sendmessage
         Dim apiKey As String = "MyAfricasTalkingAPIKey"
         ' Specify the numbers that you want to send to in a comma-separated list
         ' Please ensure you include the country code (+254 for Kenya in this case)
-        Dim recipients As String = "+254700833493"
+        Dim recipients As String = "+254700YYYXXX"
         ' And of course we want our recipients to know what we really do
         Dim message As String = "I'm a lumberjack and its ok, I sleep all night and I work all day"
 
