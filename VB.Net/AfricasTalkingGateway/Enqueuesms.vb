@@ -21,7 +21,12 @@ Public Class Enqueuesms
         options("enqueue") = 1
 
         Dim gateway As New AfricasTalkingGateway(username, apiKey)
-
+        ' NOTE: If connecting to the sandbox, please add the sandbox flag to the constructor:
+        '          ***********************************************************************************
+        '                                   ****SANDBOX****            
+        '         ************************************************************************************
+        ' Dim gateway As New AfricasTalkingGateway(username, apiKey, "environment")
+        ' Any gateway errors will be captured by our custom Exception class below,
         Try
 
 
