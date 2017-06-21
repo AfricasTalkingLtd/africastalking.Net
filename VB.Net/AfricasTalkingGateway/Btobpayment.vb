@@ -20,7 +20,13 @@ Public Class BtoBpayment
         ' The destination Account
         Dim destinationAccount As String = "partnerBusinessAccount"
         ' Create a new instance of our awesome gateway class
-        Dim gateway As New AfricasTalkingGateway(username, apiKey)
+        Dim gateway As New AfricasTalkingGateway(username, apiKey)        
+        ' NOTE: If connecting to the sandbox, please add the sandbox flag to the constructor:
+        '          ***********************************************************************************
+        '                                   ****SANDBOX****            
+        '           *************************************************************************************
+        ' Dim gateway As New AfricasTalkingGateway(username, apiKey, "environment")
+         ' Any gateway errors will be captured by our custom Exception class below,
         Try
             ' Initiate the b2b request. If successful, you will get back a json response
             Dim b2bResponse As Object = gateway.MobileB2B(productName, provider, transferType, currencyCode, amount, destinationChannel, destinationAccount)
