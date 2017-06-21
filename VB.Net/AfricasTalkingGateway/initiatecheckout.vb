@@ -1,6 +1,5 @@
 ﻿Imports System
 Imports System.Collections
-
 Friend Class initiatecheckout
     Public Shared Sub Initiatecheckout()
         'Create an instance of our awesome gateway class and pass your credentials
@@ -16,18 +15,14 @@ Friend Class initiatecheckout
         Dim amount As Integer = 500
         ' The provider Channel - Optional
         Dim providerChannel As String = "YYYXXX"
-
         ' Create a new instance of our awesome gateway class
-        Dim gateway As New AfricasTalkingGateway(username, apiKey)
-
+        Dim gateway As New AfricasTalkingGateway(username, apiKey) 
         ' NOTE: If connecting to the sandbox, please add the sandbox flag to the constructor:
-        '''            ***********************************************************************************
-        '''                                    ****SANDBOX****            
-        '''            *************************************************************************************
-        ' AfricasTalkingGateway gateway = new AfricasTalkingGateway(username, apiKey, "environment");
+        '          ***********************************************************************************
+        '                                   ****SANDBOX****            
+        '          *************************************************************************************
         ' Dim gateway As New AfricasTalkingGateway(username, apiKey, "environment")
         ' Any gateway errors will be captured by our custom Exception class below,
-
         Try
             ' Initiate the checkout. If successful, you will get back a json response
 
