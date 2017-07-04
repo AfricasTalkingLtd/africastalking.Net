@@ -1,16 +1,9 @@
-# Africa's Talking .NET Gateway  
+# Africa's Talking C# Gateway  
 ___ 
-<details>  
-
-
-<summary>    
-Official Africa's Talking C# API wrapper 
-
-</summary> 
- 
+  
+Official Africa's Talking C# API wrapper  
 ### Install 
 In your Nuget package manager console window enter the following
-
 ```BASH 
   Install-Package AfricasTalking 
 ``` 
@@ -19,16 +12,12 @@ In your Nuget package manager console window enter the following
 To help decode JSON responses, you will need to add a reference in your project reference, add the  ``System.Web`` and ``System.Web.Extensions`` reference    
 
 ![alt Nuget](screenshots/reference.PNG)
-
 ### Initialization
-
 ```csharp        
 // Specify your Account credentials
         string username = "MyAfricasTalkingUsername";
         string apiKey   = "MyAfricasTalkingAPIKey"; 
 };
-// ...
-
 ```
 ### [SMS ](http://docs.africastalking.com/sms/sending/csharp)
 ```csharp
@@ -38,24 +27,18 @@ To help decode JSON responses, you will need to add a reference in your project 
         // Specify your login credentials
         string username = "MyAfricasTalkingUsername";
         string apiKey   = "MyAfricasTalkingAPIKey";
-
         //.....Your business logic
-
         //all methods return a promise
-
         try
         {
         //status is either "Success" or "error message"
-
         // Your business logic ...
-
         }
        catch (AfricasTalkingGatewayException e)
         {
             Console.WriteLine("Encountered an error: " + e.Message);
         }
         //Do something else...
-
         Console.Read();
     }
 }
@@ -66,8 +49,7 @@ To help decode JSON responses, you will need to add a reference in your project 
     - `from`: Shortcode or alphanumeric ID that is registered with Africa's Talking account.
     - `message`: SMS content. `REQUIRED`
 - `sendBulk(options)`: Send bulk SMS. In addition to paramaters of `send()`, we would have: 
-    - `enqueue`: "[...] would like deliver as many messages to the API before waiting for an Ack from the Telcos."
-  
+    - `enqueue`: "[...] would like deliver as many messages to the API before waiting for an Ack from the Telcos."  
 - `sendPremium(options)`: Send premium SMS. In addition to paramaters of `send()`, we would have:
     - `keyword`: Value is a premium keyword `REQUIRED`
     - `linkId`: "[...] We forward the `linkId` to your application when the user send a message to your service" `REQUIRED`
@@ -76,7 +58,6 @@ To help decode JSON responses, you will need to add a reference in your project 
 > You can register a callback URL with us and we will forward any messages that are sent to your account the moment they arrive. 
 > [Read more](http://docs.africastalking.com/sms/callback)
 - `fetchMessages(options)`: Manually retrieve your messages.
-
     - `lastReceivedId`: "This is the id of the message that you last processed". Defaults to `0`. `REQUIRED`
 #### [Premium Subscriptions](http://docs.africastalking.com/sms/sending/csharp)
 > If you have subscription products on your premium SMS short codes, you will need to configure a callback URL that we will invoke to notify you when users subscribe or unsubscribe from your products.
@@ -139,7 +120,6 @@ class MainClass
 ```
 ___ 
 ### Airtime
-
 ```csharp
 class MainClass
 {
@@ -157,14 +137,11 @@ class MainClass
           // Add recipient to list
         AirtimeRecipientsList.Add(rec1);
         //.....You can add as many hashtable as possible
-
-    // Create a new instance of our awesome gateway class
+        // Create a new instance of our awesome gateway class
         AfricasTalkingGateway gateway = new AfricasTalkingGateway (username, apiKey);
         //all methods return a promise
-
      try {
-            // That's it. Hit send and we will handle the rest
-                          
+            // That's it. Hit send and we will handle the rest                          
             dynamic response = gateway.sendAirtime(AirtimeRecipientsList);
             //Any other business logic ... 
             }
@@ -247,17 +224,11 @@ ___
 ### Initiate checkout
 
 - `checkout(options)`: Initiate Customer to Business (C2B) payments on a mobile subscriber's device. [More info](http://docs.africastalking.com/payments/mobile-checkout)
-
     - `productName`: Your Payment Product. `REQUIRED`
-
     - `phoneNumber`: The customer phone number (in international format; e.g. `25471xxxxxxx`). `REQUIRED`
-
     - `currencyCode`: 3-digit ISO format currency code (e.g `KES`, `USD`, `UGX` etc.) `REQUIRED`
-
     - `amount`: This is the amount. `REQUIRED`
-
-    - `metadata`: Some optional data to associate with transaction.     
-
+    - `metadata`: Some optional data to associate with transaction.
 ```csharp
  class initiatecheckout
     {
@@ -267,13 +238,11 @@ ___
         string username = "MyAfricasTalkingUsername";
         string apiKey   = "MyAfricasTalkingAPIKey";
         //.....Your business logic
-
         //all methods return a promise              
             try
             {
                 //Initiate the checkout. If successful, you will get back a json response
                 //Your business logic ... 
-
               Console.WriteLine(checkoutResponse);
             }
             catch (AfricasTalkingGatewayException e)
@@ -287,19 +256,12 @@ ___
 ```
 ### B2C
 - `pay(options)`:  Initiate payments to mobile subscribers from your payment wallet. [More info](http://docs.africastalking.com/payments/mobile-b2c)
-
     - `productName`: Your Payment Product. `REQUIRED`
-
     - `recipients`: A list of **up to 10** recipients. Each recipient has:
-
         - `phoneNumber`: The payee phone number (in international format; e.g. `25471xxxxxxx`). `REQUIRED`
-
         - `currencyCode`: 3-digit ISO format currency code (e.g `KES`, `USD`, `UGX` etc.) `REQUIRED`
-
         - `amount`: Payment amount. `REQUIRED`
-
         - `reason`: This field contains a string showing the purpose for the payment.
-
         - `metadata`: Some optional data to associate with transaction.
 ### B2B
  -  ``In order`` to facilitate __Mobile B2C transactions__, we have implemented a RESTFul JSON API that allows your application to request B2C Payments to a mobile subscriber's phone number. The amount specified will then be directly credited to the mobile subscriber's account. Our API allows you to initiate multiple B2C transactions in one request, all of which will be queued in our gateways for processing.
@@ -345,14 +307,4 @@ public class TestMobilePaymentB2C
 }
 ```
 
-</details>
 
-
-<details>
-<summary>
-Official Africa's Talking VB.NET API wrapper 
-</summary> 
- 
- 
-
-</details>
