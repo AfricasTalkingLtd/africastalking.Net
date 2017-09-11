@@ -301,7 +301,7 @@ public class AfricasTalkingGateway
     public string PostAsJson(CheckOutData dataMap, string url)
     {
         var client = new HttpClient();
-
+       
         client.DefaultRequestHeaders.Add("apiKey", _apiKey);
         var result = client.PostAsJsonAsync<CheckOutData>(url, dataMap).Result;
         result.EnsureSuccessStatusCode();
