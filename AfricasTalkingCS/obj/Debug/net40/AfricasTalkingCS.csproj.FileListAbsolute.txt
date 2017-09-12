@@ -1,0 +1,4 @@
+C:\Users\Kennedy Otieno\Documents\Visual Studio 2017\Projects\AfricasTalkingCS\AfricasTalkingCS\obj\Debug\net40\AfricasTalkingCS.csprojResolveAssemblyReference.cache
+C:\Users\Kennedy Otieno\Documents\Visual Studio 2017\Projects\AfricasTalkingCS\AfricasTalkingCS\obj\Debug\net40\AfricasTalkingCS.csproj.CoreCompileInputs.cache
+C:\Users\Kennedy Otieno\Documents\Visual Studio 2017\Projects\AfricasTalkingCS\AfricasTalkingCS\obj\Debug\net40\AfricasTalkingCS.AssemblyInfoInputs.cache
+C:\Users\Kennedy Otieno\Documents\Visual Studio 2017\Projects\AfricasTalkingCS\AfricasTalkingCS\obj\Debug\net40\AfricasTalkingCS.AssemblyInfo.cs
