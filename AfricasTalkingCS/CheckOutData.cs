@@ -2,11 +2,11 @@
 {
     public class CheckOutData
     {
-        public string Username { get; set; }
-        public string ProductName { get; set; }
-        public string PhoneNumber { get; set; }
-        public string CurrencyCode { get; set; }
-        public decimal Amount { get; set; }
-        public string ProviderChannel { get; set; }
+        public string username { get; set; }
+        public string productName { get; set; }
+        public string phoneNumber { get; set; }
+        public string currencyCode { get; set; }
+        public decimal amount { get; set; }
+        public string providerChannel { get; set; }
     }
 }

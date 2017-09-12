@@ -7,14 +7,14 @@ namespace AfricasTalkingCS
     {
         public RequestBody()
         {
-            this.Recepients = new List<MobileB2CRecepient>();
+            this.recepients = new List<MobileB2CRecepient>();
         }
         [JsonProperty("username")]
-        public string UserName { get; set; }
+        public string username { get; set; }
         [JsonProperty("productName")]
-        public string ProductName { get; set; }
+        public string productName { get; set; }
         [JsonProperty("recipients")]
-        public List<MobileB2CRecepient> Recepients { get; set; }
+        public List<MobileB2CRecepient> recepients { get; set; }
 
         public override string ToString()
         {

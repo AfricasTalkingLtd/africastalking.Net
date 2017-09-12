@@ -352,12 +352,12 @@ namespace AfricasTalkingCS
         {
             var checkout = new CheckOutData
             {
-                Username = _username,
-                ProductName = productName,
-                PhoneNumber = phoneNumber,
-                CurrencyCode = currencyCode,
-                Amount = amount,
-                ProviderChannel = providerChannel
+                username = _username,
+                productName = productName,
+                phoneNumber = phoneNumber,
+                currencyCode = currencyCode,
+                amount = amount,
+                providerChannel = providerChannel
             };
             try
             {
@@ -366,14 +366,14 @@ namespace AfricasTalkingCS
             }
             catch (Exception e)
             {
-                throw new AfricasTalkingGatewayException(e);
+                throw new AfricasTalkingGatewayException(e.StackTrace+e.Message+e.Source);
             }
         }
 
         private string PostB2BJson(B2BData dataMap, string url)
         {
             var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("apiKey", _apikey);
+            client.DefaultRequestHeaders.Add("apikey", _apikey);
             var result = client.PostAsJsonAsync(url, dataMap).Result;
             result.EnsureSuccessStatusCode();
             var stringResult = result.Content.ReadAsStringAsync().Result;
@@ -385,14 +385,14 @@ namespace AfricasTalkingCS
         {
             var bTob = new B2BData
             {
-                Username = _username,
-                ProductName = productName,
-                ProviderChannel = provider,
-                TransferType = transferType,
-                CurrencyCode = currencyCode,
-                Amount = amount,
-                DestinationChannel = destinationChannel,
-                DestinationAccount = destinationAccount
+                username = _username,
+                productName = productName,
+                providerChannel = provider,
+                transferType = transferType,
+                currencyCode = currencyCode,
+                amount = amount,
+                destinationChannel = destinationChannel,
+                destinationAccount = destinationAccount
             };
 
             try
@@ -411,9 +411,9 @@ namespace AfricasTalkingCS
         {
             var requestBody = new RequestBody
             {
-                ProductName = productName,
-                UserName = _username,
-                Recepients = recepients.ToList()
+                productName = productName,
+                username = _username,
+                recepients = recepients.ToList()
             };
             Console.WriteLine("Request Body: "+requestBody);
             var response = Post(requestBody, B2BPaymentsUrl);
