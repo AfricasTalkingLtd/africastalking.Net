@@ -228,7 +228,9 @@ namespace AfricasTalkingCS
         
         private string PaymentsUrl => PaymentsHost + "/mobile/checkout/request";
 
-        private string B2BPaymentsUrl => PaymentsHost + "/mobile/b2b/request"; 
+        private string B2BPaymentsUrl => PaymentsHost + "/mobile/b2b/request";
+
+        private string B2CPaymentsUrl => PaymentsHost + "/mobile/b2c/request";
 
         private string SubscriptionUrl => ApiHost + "/version1/subscription";
 
@@ -416,15 +418,15 @@ namespace AfricasTalkingCS
                 recepients = recepients.ToList()
             };
             Console.WriteLine("Request Body: "+requestBody);
-            var response = Post(requestBody, B2BPaymentsUrl);
+            var response = Post(requestBody,B2CPaymentsUrl);
             return response;
         }
 
-        private DataResult Post(RequestBody requestBody, string b2BPaymentsUrl)
+        private DataResult Post(RequestBody requestBody, string url)
         {
             var httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Add("apiKey",_apikey);
-            var res = httpClient.PostAsJsonAsync(b2BPaymentsUrl, requestBody).Result;
+            httpClient.DefaultRequestHeaders.Add("apikey",_apikey);
+            var res = httpClient.PostAsJsonAsync(url, requestBody).Result;
             res.EnsureSuccessStatusCode();
             var result = res.Content.ReadAsAsync<DataResult>();
              return  result.Result;

@@ -5,6 +5,8 @@ namespace AfricasTalkingCS
 {
     public class MobileB2CRecepient
     {
+        [JsonProperty("name")]
+        public string Name { get; set; }
         [JsonProperty("phoneNumber")]
         public string PhoneNumber { get; set; }
         [JsonProperty("currencyCode")]
@@ -14,8 +16,9 @@ namespace AfricasTalkingCS
         [JsonProperty("metadata")]
         public Dictionary<string, string> Metadata { get; private set; }
 
-        public MobileB2CRecepient(string phoneNumber, string currencyCode,decimal amount)
+        public MobileB2CRecepient(string name ,string phoneNumber, string currencyCode, decimal amount)
         {
+            Name = name;
             PhoneNumber = phoneNumber;
             CurrencyCode = currencyCode;
             Amount = amount;
