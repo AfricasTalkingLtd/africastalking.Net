@@ -12,13 +12,14 @@ namespace ConsoleApp2
             string productName = "coolproduct";
             string phoneNumber = "+254724587654";
             string currency = "KES";
-            int amount = 5000;
+            int amount = 35700;
             string channel = "mychannel";
 
             var gw = new AfricasTalkingGateway(username,apiKey,environment);
 
             try
             {
+               
                 var checkout = gw.Checkout(productName, phoneNumber, currency, amount, channel);
                 Console.WriteLine(checkout);
             }

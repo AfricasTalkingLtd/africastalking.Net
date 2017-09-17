@@ -15,8 +15,8 @@ namespace AfricasTalkingCS
         public decimal Amount { get; set; }
         [JsonProperty("metadata")]
         public Dictionary<string, string> Metadata { get; private set; }
-
-        public MobileB2CRecepient(string name ,string phoneNumber, string currencyCode, decimal amount)
+        
+        public MobileB2CRecepient(string name, string phoneNumber, string currencyCode, decimal amount)
         {
             Name = name;
             PhoneNumber = phoneNumber;

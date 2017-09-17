@@ -3615,11 +3615,11 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Users\\Kennedy Otieno\\Documents\\Visual Studio 2017\\Projects\\AfricasTalkingCS\\Examples\\ConsoleApp2\\ConsoleApp2.csproj",
+      "projectUniqueName": "D:\\RepoMan\\africastalking.Net\\Examples\\ConsoleApp2\\ConsoleApp2.csproj",
       "projectName": "ConsoleApp2",
-      "projectPath": "C:\\Users\\Kennedy Otieno\\Documents\\Visual Studio 2017\\Projects\\AfricasTalkingCS\\Examples\\ConsoleApp2\\ConsoleApp2.csproj",
+      "projectPath": "D:\\RepoMan\\africastalking.Net\\Examples\\ConsoleApp2\\ConsoleApp2.csproj",
       "packagesPath": "C:\\Users\\Kennedy Otieno\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Kennedy Otieno\\Documents\\Visual Studio 2017\\Projects\\AfricasTalkingCS\\Examples\\ConsoleApp2\\obj\\",
+      "outputPath": "D:\\RepoMan\\africastalking.Net\\Examples\\ConsoleApp2\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -3633,13 +3633,14 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Users\\Kennedy Otieno\\Documents\\Visual Studio 2017\\LocalPacakages": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "netcoreapp2.0": {
           "projectReferences": {
-            "C:\\Users\\Kennedy Otieno\\Documents\\Visual Studio 2017\\Projects\\AfricasTalkingCS\\AfricasTalkingCS\\AfricasTalkingCS.csproj": {
-              "projectPath": "C:\\Users\\Kennedy Otieno\\Documents\\Visual Studio 2017\\Projects\\AfricasTalkingCS\\AfricasTalkingCS\\AfricasTalkingCS.csproj"
+            "D:\\RepoMan\\africastalking.Net\\AfricasTalkingCS\\AfricasTalkingCS.csproj": {
+              "projectPath": "D:\\RepoMan\\africastalking.Net\\AfricasTalkingCS\\AfricasTalkingCS.csproj"
             }
           }
         }

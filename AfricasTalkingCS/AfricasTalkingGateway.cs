@@ -375,26 +375,30 @@ namespace AfricasTalkingCS
         private string PostB2BJson(B2BData dataMap, string url)
         {
             var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("apikey", _apikey);
+            client.DefaultRequestHeaders.Add("apiKey", _apikey);
             var result = client.PostAsJsonAsync(url, dataMap).Result;
             result.EnsureSuccessStatusCode();
             var stringResult = result.Content.ReadAsStringAsync().Result;
             return stringResult;
         }
 
-        public dynamic MobileB2B(string productName, string provider, string transferType, string currencyCode,
-            int amount, string destinationChannel, string destinationAccount)
+        //Not Sending Username...
+        //todo fix username issue...
+
+        public dynamic MobileB2B(string product, string providerChannel, string transfer, string currency,
+            decimal transferAmount, string channelReceiving, string accountReceiving,dynamic b2bmetadata)
         {
             var bTob = new B2BData
             {
                 username = _username,
-                productName = productName,
-                providerChannel = provider,
-                transferType = transferType,
-                currencyCode = currencyCode,
-                amount = amount,
-                destinationChannel = destinationChannel,
-                destinationAccount = destinationAccount
+                productName = product,
+                provider = providerChannel,
+                transferType = transfer,
+                currencyCode = currency,
+                amount = transferAmount,
+                destinationAccount = channelReceiving,
+                destinationChannel = accountReceiving,
+                metadata = b2bmetadata
             };
 
             try
@@ -404,11 +408,11 @@ namespace AfricasTalkingCS
             }
             catch (Exception e)
             {
-                
+
                 throw new AfricasTalkingGatewayException(e);
             }
         }
-
+        
         public dynamic MobileB2C(string productName, IEnumerable<MobileB2CRecepient> recepients)
         {
             var requestBody = new RequestBody
@@ -422,14 +426,15 @@ namespace AfricasTalkingCS
             return response;
         }
 
+
         private DataResult Post(RequestBody requestBody, string url)
         {
             var httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Add("apikey",_apikey);
+            httpClient.DefaultRequestHeaders.Add("apikey", _apikey);
             var res = httpClient.PostAsJsonAsync(url, requestBody).Result;
             res.EnsureSuccessStatusCode();
             var result = res.Content.ReadAsAsync<DataResult>();
-             return  result.Result;
+            return result.Result;
         }
 
         private string PostAsJson(CheckOutData dataMap, string url)

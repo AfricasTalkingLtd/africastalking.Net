@@ -11,3 +11,16 @@ C:\Users\Kennedy Otieno\Documents\Visual Studio 2017\Projects\AfricasTalkingCS\E
 C:\Users\Kennedy Otieno\Documents\Visual Studio 2017\Projects\AfricasTalkingCS\Examples\ConsoleApp1\obj\Debug\netcoreapp2.0\ConsoleApp1.AssemblyInfo.cs
 C:\Users\Kennedy Otieno\Documents\Visual Studio 2017\Projects\AfricasTalkingCS\Examples\ConsoleApp1\obj\Debug\netcoreapp2.0\ConsoleApp1.dll
 C:\Users\Kennedy Otieno\Documents\Visual Studio 2017\Projects\AfricasTalkingCS\Examples\ConsoleApp1\obj\Debug\netcoreapp2.0\ConsoleApp1.pdb
+D:\RepoMan\africastalking.Net\Examples\ConsoleApp1\bin\Debug\netcoreapp2.0\ConsoleApp1.deps.json
+D:\RepoMan\africastalking.Net\Examples\ConsoleApp1\bin\Debug\netcoreapp2.0\ConsoleApp1.runtimeconfig.json
+D:\RepoMan\africastalking.Net\Examples\ConsoleApp1\bin\Debug\netcoreapp2.0\ConsoleApp1.runtimeconfig.dev.json
+D:\RepoMan\africastalking.Net\Examples\ConsoleApp1\bin\Debug\netcoreapp2.0\ConsoleApp1.dll
+D:\RepoMan\africastalking.Net\Examples\ConsoleApp1\bin\Debug\netcoreapp2.0\ConsoleApp1.pdb
+D:\RepoMan\africastalking.Net\Examples\ConsoleApp1\bin\Debug\netcoreapp2.0\AfricasTalkingCS.dll
+D:\RepoMan\africastalking.Net\Examples\ConsoleApp1\bin\Debug\netcoreapp2.0\AfricasTalkingCS.pdb
+D:\RepoMan\africastalking.Net\Examples\ConsoleApp1\obj\Debug\netcoreapp2.0\ConsoleApp1.csprojResolveAssemblyReference.cache
+D:\RepoMan\africastalking.Net\Examples\ConsoleApp1\obj\Debug\netcoreapp2.0\ConsoleApp1.csproj.CoreCompileInputs.cache
+D:\RepoMan\africastalking.Net\Examples\ConsoleApp1\obj\Debug\netcoreapp2.0\ConsoleApp1.AssemblyInfoInputs.cache
+D:\RepoMan\africastalking.Net\Examples\ConsoleApp1\obj\Debug\netcoreapp2.0\ConsoleApp1.AssemblyInfo.cs
+D:\RepoMan\africastalking.Net\Examples\ConsoleApp1\obj\Debug\netcoreapp2.0\ConsoleApp1.dll
+D:\RepoMan\africastalking.Net\Examples\ConsoleApp1\obj\Debug\netcoreapp2.0\ConsoleApp1.pdb

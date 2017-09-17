@@ -3175,11 +3175,11 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Users\\Kennedy Otieno\\Documents\\Visual Studio 2017\\Projects\\AfricasTalkingCS\\AfricasTalkingCS\\AfricasTalkingCS.csproj",
+      "projectUniqueName": "D:\\RepoMan\\africastalking.Net\\AfricasTalkingCS\\AfricasTalkingCS.csproj",
       "projectName": "AfricasTalkingCS",
-      "projectPath": "C:\\Users\\Kennedy Otieno\\Documents\\Visual Studio 2017\\Projects\\AfricasTalkingCS\\AfricasTalkingCS\\AfricasTalkingCS.csproj",
+      "projectPath": "D:\\RepoMan\\africastalking.Net\\AfricasTalkingCS\\AfricasTalkingCS.csproj",
       "packagesPath": "C:\\Users\\Kennedy Otieno\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Kennedy Otieno\\Documents\\Visual Studio 2017\\Projects\\AfricasTalkingCS\\AfricasTalkingCS\\obj\\",
+      "outputPath": "D:\\RepoMan\\africastalking.Net\\AfricasTalkingCS\\obj\\",
       "projectStyle": "PackageReference",
       "crossTargeting": true,
       "fallbackFolders": [
@@ -3196,6 +3196,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Users\\Kennedy Otieno\\Documents\\Visual Studio 2017\\LocalPacakages": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

@@ -1,9 +1,9 @@
-C:\Users\Kennedy Otieno\Documents\Visual Studio 2017\Projects\AfricasTalkingCS\AfricasTalkingCS\bin\Debug\netstandard2.0\AfricasTalkingCS.deps.json
-C:\Users\Kennedy Otieno\Documents\Visual Studio 2017\Projects\AfricasTalkingCS\AfricasTalkingCS\bin\Debug\netstandard2.0\AfricasTalkingCS.dll
-C:\Users\Kennedy Otieno\Documents\Visual Studio 2017\Projects\AfricasTalkingCS\AfricasTalkingCS\bin\Debug\netstandard2.0\AfricasTalkingCS.pdb
-C:\Users\Kennedy Otieno\Documents\Visual Studio 2017\Projects\AfricasTalkingCS\AfricasTalkingCS\obj\Debug\netstandard2.0\AfricasTalkingCS.csproj.CoreCompileInputs.cache
-C:\Users\Kennedy Otieno\Documents\Visual Studio 2017\Projects\AfricasTalkingCS\AfricasTalkingCS\obj\Debug\netstandard2.0\AfricasTalkingCS.AssemblyInfoInputs.cache
-C:\Users\Kennedy Otieno\Documents\Visual Studio 2017\Projects\AfricasTalkingCS\AfricasTalkingCS\obj\Debug\netstandard2.0\AfricasTalkingCS.AssemblyInfo.cs
-C:\Users\Kennedy Otieno\Documents\Visual Studio 2017\Projects\AfricasTalkingCS\AfricasTalkingCS\obj\Debug\netstandard2.0\AfricasTalkingCS.dll
-C:\Users\Kennedy Otieno\Documents\Visual Studio 2017\Projects\AfricasTalkingCS\AfricasTalkingCS\obj\Debug\netstandard2.0\AfricasTalkingCS.pdb
-C:\Users\Kennedy Otieno\Documents\Visual Studio 2017\Projects\AfricasTalkingCS\AfricasTalkingCS\obj\Debug\netstandard2.0\AfricasTalkingCS.csprojResolveAssemblyReference.cache
+D:\RepoMan\africastalking.Net\AfricasTalkingCS\bin\Debug\netstandard2.0\AfricasTalkingCS.deps.json
+D:\RepoMan\africastalking.Net\AfricasTalkingCS\bin\Debug\netstandard2.0\AfricasTalkingCS.dll
+D:\RepoMan\africastalking.Net\AfricasTalkingCS\bin\Debug\netstandard2.0\AfricasTalkingCS.pdb
+D:\RepoMan\africastalking.Net\AfricasTalkingCS\obj\Debug\netstandard2.0\AfricasTalkingCS.csproj.CoreCompileInputs.cache
+D:\RepoMan\africastalking.Net\AfricasTalkingCS\obj\Debug\netstandard2.0\AfricasTalkingCS.AssemblyInfoInputs.cache
+D:\RepoMan\africastalking.Net\AfricasTalkingCS\obj\Debug\netstandard2.0\AfricasTalkingCS.AssemblyInfo.cs
+D:\RepoMan\africastalking.Net\AfricasTalkingCS\obj\Debug\netstandard2.0\AfricasTalkingCS.dll
+D:\RepoMan\africastalking.Net\AfricasTalkingCS\obj\Debug\netstandard2.0\AfricasTalkingCS.pdb
+D:\RepoMan\africastalking.Net\AfricasTalkingCS\obj\Debug\netstandard2.0\AfricasTalkingCS.csprojResolveAssemblyReference.cache
