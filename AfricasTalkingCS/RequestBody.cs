@@ -7,7 +7,7 @@ namespace AfricasTalkingCS
     {
         public RequestBody()
         {
-            this.recepients = new List<MobileB2CRecepient>();
+            recepients = new List<MobileB2CRecepient>();
         }
         [JsonProperty("username")]
         public string username { get; set; }
