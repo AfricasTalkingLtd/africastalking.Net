@@ -43,7 +43,7 @@ namespace AfricasTalkingCS
         {
             try
             {
-                Hashtable data = new Hashtable
+                var data = new Hashtable
                 {
                     ["username"] = _username,
                     ["to"] = to,
@@ -59,20 +59,16 @@ namespace AfricasTalkingCS
                         {
                             data["keyword"] = options["keyword"];
                         }
-
                         if (options.Contains("linkId"))
                         {
                             data["linkId"] = options["linkId"];
                         }
-
                         if (options.Contains("enqueue"))
                         {
                             data["enqueue"] = options["enqueue"];
                         }
-
                         if (options.Contains("retryDurationInHours"))
                             data["retryDurationInHours"] = options["retryDurationInHours"];
-
                     }
                 }
                 var response = SendPostRequest(data, SmsUrl);
@@ -125,7 +121,6 @@ namespace AfricasTalkingCS
                 ["shortCode"] = shortCode,
                 ["keyword"] = keyWord
             };
-
             var url = SubscriptionUrl + "/create";
             var response = SendPostRequest(data, url);
             if (_responseCode != (int) HttpStatusCode.Created) throw new AfricasTalkingGatewayException(response);
@@ -138,7 +133,6 @@ namespace AfricasTalkingCS
             if (phoneNumber.Length == 0 || shortCode.Length == 0 || keyWord.Length == 0)
             {
                 throw new AfricasTalkingGatewayException("Some Parameters are missing!");
-
             }
             var data = new Hashtable
             {
@@ -194,7 +188,6 @@ namespace AfricasTalkingCS
                 return json["entries"];
             }
             throw new AfricasTalkingGatewayException(json["errorMessage"]);
-
         }
 
         public dynamic SendAirtime(string recepients)
@@ -259,16 +252,12 @@ namespace AfricasTalkingCS
                 webRequest.Method = "GET";
                 webRequest.Accept = "application/json";
                 webRequest.Headers.Add("apiKey", _apikey);
-
                 var httpResponse = (HttpWebResponse)webRequest.GetResponse();
                 _responseCode = (int)httpResponse.StatusCode;
                 var webpageReader = new StreamReader(httpResponse.GetResponseStream() ?? throw new InvalidOperationException());
-
                 var response = webpageReader.ReadToEnd();
-
                 if (_debug)
                     Console.WriteLine("Full response: " + response);
-
                 return response;
 
             }
@@ -277,7 +266,6 @@ namespace AfricasTalkingCS
             {
                 if (ex.Response == null)
                     throw new AfricasTalkingGatewayException(ex.Message);
-
                 using (var stream = ex.Response.GetResponseStream())
                 using (var reader = new StreamReader(stream ?? throw new InvalidOperationException()))
                 {
@@ -285,7 +273,6 @@ namespace AfricasTalkingCS
 
                     if (_debug)
                         Console.WriteLine("Full response: " + response);
-
                     return response;
                 }
             }
@@ -305,10 +292,8 @@ namespace AfricasTalkingCS
                     var value = (string) data[key];
                     dataStr += HttpUtility.UrlEncode(key, Encoding.UTF8);
                     dataStr += "=" + HttpUtility.UrlEncode(value, Encoding.UTF8);
-
                 }
                 var byteArray = Encoding.UTF8.GetBytes(dataStr);
-
                 ServicePointManager.ServerCertificateValidationCallback =
                     RemoteCertificateValidationCallback;
                 var webRequest = (HttpWebRequest) WebRequest.Create(urlString);
@@ -383,10 +368,6 @@ namespace AfricasTalkingCS
             var stringResult = result.Content.ReadAsStringAsync().Result;
             return stringResult;
         }
-
-        //Not Sending Username...
-        //todo fix username issue...
-
         public dynamic MobileB2B(string product, string providerChannel, string transfer, string currency,
             decimal transferAmount, string channelReceiving, string accountReceiving,dynamic b2Bmetadata)
         {
@@ -402,15 +383,14 @@ namespace AfricasTalkingCS
                 destinationChannel = channelReceiving,
                 metadata = b2Bmetadata
             };
-
             try
             {
+                Console.WriteLine(bTob);
                 var response = PostB2BJson(bTob, B2BPaymentsUrl);
                 return response;
             }
             catch (Exception e)
             {
-
                 throw new AfricasTalkingGatewayException(e);
             }
         }
@@ -423,7 +403,6 @@ namespace AfricasTalkingCS
                 username = _username,
                 recepients = recepients.ToList()
             };
-            Console.WriteLine("Request Body: "+requestBody);
             var response = Post(requestBody,B2CPaymentsUrl);
             return response;
         }
