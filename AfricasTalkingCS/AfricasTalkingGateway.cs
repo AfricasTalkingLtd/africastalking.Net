@@ -4,7 +4,6 @@ using System.Text;
 using System.Web;
 using System.IO;
 using System.Net;
-//using System.Web.Script.Serialization;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -43,46 +42,52 @@ namespace AfricasTalkingCS
         public dynamic SendMessage(string to, string message, string from = null, int bulkSmsMode = -1, Hashtable options =null)
         {
            
-            Hashtable data = new Hashtable
-            {
-                ["username"] = _username,
-                ["to"] = to,
-                ["message"] = message
-            };
-            if (from != null)
-            {
-                data["from"] = from;
-                data["bulkSmsMode"] = Convert.ToString(bulkSmsMode);
-                if (options != null)
-                {
-                    if (options.Contains("keyword"))
-                    {
-                        data["keyword"] = options["keyword"];
-                    }
+  
 
-                    if (options.Contains("linkId"))
+            try
+            {
+                Hashtable data = new Hashtable
+                {
+                    ["username"] = _username,
+                    ["to"] = to,
+                    ["message"] = message
+                };
+                if (from != null)
+                {
+                    data["from"] = from;
+                    data["bulkSmsMode"] = Convert.ToString(bulkSmsMode);
+                    if (options != null)
+                    {
+                        if (options.Contains("keyword"))
+                        {
+                            data["keyword"] = options["keyword"];
+                        }
+
+                        if (options.Contains("linkId"))
                         {
                             data["linkId"] = options["linkId"];
                         }
 
-                    if (options.Contains("enqueue"))
-                    {
+                        if (options.Contains("enqueue"))
+                        {
                             data["enqueue"] = options["enqueue"];
+                        }
+
+                        if (options.Contains("retryDurationInHours"))
+                            data["retryDurationInHours"] = options["retryDurationInHours"];
+
                     }
-
-                    if (options.Contains("retryDurationInHours"))
-                        data["retryDurationInHours"] = options["retryDurationInHours"];
-
                 }
-            }
                 var response = SendPostRequest(data, SmsUrl);
                 dynamic json = JObject.Parse(response);
-                    if ((string)json["errorMessage"] == "None")
-                    {
-                        return json;
-                    }
-                    
-            throw new AfricasTalkingGatewayException(response);
+                    return json;
+            }
+            catch (AfricasTalkingGatewayException e)
+            {
+                throw new AfricasTalkingGatewayException(e);
+            }
+
+           // throw new AfricasTalkingGatewayException(response);
                 
         }
 
@@ -386,7 +391,7 @@ namespace AfricasTalkingCS
         //todo fix username issue...
 
         public dynamic MobileB2B(string product, string providerChannel, string transfer, string currency,
-            decimal transferAmount, string channelReceiving, string accountReceiving,dynamic b2bmetadata)
+            decimal transferAmount, string channelReceiving, string accountReceiving,dynamic b2Bmetadata)
         {
             var bTob = new B2BData
             {
@@ -396,9 +401,9 @@ namespace AfricasTalkingCS
                 transferType = transfer,
                 currencyCode = currency,
                 amount = transferAmount,
-                destinationAccount = channelReceiving,
-                destinationChannel = accountReceiving,
-                metadata = b2bmetadata
+                destinationAccount = accountReceiving,
+                destinationChannel = channelReceiving,
+                metadata = b2Bmetadata
             };
 
             try
@@ -431,7 +436,7 @@ namespace AfricasTalkingCS
         {
             var httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Add("apikey", _apikey);
-            var res = httpClient.PostAsJsonAsync(url, requestBody).Result;
+             var res = httpClient.PostAsJsonAsync(url, requestBody).Result;
             res.EnsureSuccessStatusCode();
             var result = res.Content.ReadAsAsync<DataResult>();
             return result.Result;
@@ -444,12 +449,11 @@ namespace AfricasTalkingCS
             client.DefaultRequestHeaders.Add("apiKey", _apikey);
             var result = client.PostAsJsonAsync(url, dataMap).Result;
             result.EnsureSuccessStatusCode();
-
             var stringResult = result.Content.ReadAsStringAsync().Result;
             return stringResult;
 
         }
-        private bool RemoteCertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors)
+        private static bool RemoteCertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors)
         {
             return true;
         }
