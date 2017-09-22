@@ -156,22 +156,23 @@ namespace AfricasTalkingCS
 
         public dynamic Call(string from, string to)
         {
-            Hashtable data = new Hashtable
+            var data = new Hashtable
             {
                 ["username"] = _username,
                 ["from"] = from,
                 ["to"] = to
             };
-
-            var url = VoiceUrl + "/call";
-            var response = SendPostRequest(data, url);
-            dynamic json = JObject.Parse(response);
-            if ((string)json["errorMessage"] == "None")
+            try
             {
-                return json["entries"];
+                var url = VoiceUrl + "/call";
+                var response = SendPostRequest(data, url);
+                dynamic json = JObject.Parse(response);
+                return json;
             }
-            throw  new AfricasTalkingGatewayException(json["errorMessage"]);
-
+            catch (AfricasTalkingGatewayException e)
+            {
+                throw new AfricasTalkingGatewayException(e);
+            }
         }
 
         public int GetNumberOfQueuedCalls(string phoneNumber, string queueName = null)
