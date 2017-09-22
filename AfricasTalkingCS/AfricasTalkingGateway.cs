@@ -41,9 +41,6 @@ namespace AfricasTalkingCS
 
         public dynamic SendMessage(string to, string message, string from = null, int bulkSmsMode = -1, Hashtable options =null)
         {
-           
-  
-
             try
             {
                 Hashtable data = new Hashtable
@@ -86,9 +83,6 @@ namespace AfricasTalkingCS
             {
                 throw new AfricasTalkingGatewayException(e);
             }
-
-           // throw new AfricasTalkingGatewayException(response);
-                
         }
 
         public void UploadMediaFile(string url)
@@ -211,15 +205,17 @@ namespace AfricasTalkingCS
                 ["username"] = _username,
                 ["recipients"] = recipients
             };
-            var response = SendPostRequest(data, urlString);
-            if (_responseCode != (int) HttpStatusCode.Created) throw new AfricasTalkingGatewayException(response);
-            dynamic json = JObject.Parse(response);
-            if (json["responses"] != null)
+            try
             {
-                return json["responses"];
+                var response = SendPostRequest(data, urlString);
+                if (_responseCode != (int)HttpStatusCode.Created) throw new AfricasTalkingGatewayException(response);
+                dynamic json = JObject.Parse(response);
+                return json;
             }
-                
-            throw new AfricasTalkingGatewayException(json["errorMessage"]);
+            catch (AfricasTalkingGatewayException e)
+            {
+                throw new AfricasTalkingGatewayException(e);
+            }
         }
 
         public dynamic GetUserData()
@@ -228,7 +224,7 @@ namespace AfricasTalkingCS
             var response = SendGetRequest(urlString);
             if (_responseCode != (int) HttpStatusCode.OK) throw new AfricasTalkingGatewayException(response);
             dynamic json = JObject.Parse(response);
-            return json["UserData"];
+            return json;
         }
         
         private string PaymentsUrl => PaymentsHost + "/mobile/checkout/request";
