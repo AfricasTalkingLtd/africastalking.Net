@@ -14,5 +14,10 @@ namespace AfricasTalkingCS
         public string destinationAccount { get; set; }
         public dynamic metadata { get;  set; }
 
+        public override string ToString()
+        {
+            var json = JsonConvert.SerializeObject(this);
+            return json;
+        }
     }
 }
