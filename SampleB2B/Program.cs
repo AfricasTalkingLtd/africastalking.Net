@@ -15,14 +15,14 @@ namespace SampleB2B
             /*
              * Remember to register  B2B products and callback urls:else these trasactions will fail
              */
-            string username = "KennedyOtieno";
-            string apiKey = "9f072129e0b34163eb8460a42f537bbb1564f50f8ca069fa779e27c64171f4e1";
-            string productName = "iot";
+            string username = "sandbox";
+            string apiKey = "bc203009d2b240e461c22d7a959ca4d752591d4553295d991e74824d599fc9b3";
+            string productName = "awesomeproduct";
             string currencyCode = "KES";
             decimal amount = 15;
-            string provider = "MPESA";
-            string destinationChannel = "525900"; //This is the channel that will be receiving the payment
-            string destinationAccount = "kennedyotieno.api";
+            string provider = "Athena";
+            string destinationChannel = "mychannel"; //This is the channel that will be receiving the payment
+            string destinationAccount = "coolproduct";
             //Transfer Type
             /*
              *BusinessBuyGoods
@@ -35,8 +35,6 @@ namespace SampleB2B
             metadataDetails.Info = "Stuff";
             string transferType = "BusinessToBusinessTransfer";
             var gateWay = new AfricasTalkingGateway(username,apiKey);
-           
-            
             try
             {
                 string response = gateWay.MobileB2B(productName, provider, transferType, currencyCode, amount,
