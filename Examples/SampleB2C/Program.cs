@@ -52,6 +52,7 @@ namespace SampleB2C
             try
             {
                 var response = gateway.MobileB2C(productName, heroes);
+                Console.WriteLine(heroes);
                 Console.WriteLine(response);
             }
             catch (AfricasTalkingGatewayException e)

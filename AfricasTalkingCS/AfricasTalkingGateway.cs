@@ -41,6 +41,7 @@ namespace AfricasTalkingCS
 
         public dynamic SendMessage(string to, string message, string from = null, int bulkSmsMode = -1, Hashtable options =null)
         {
+            //TODO Convert options to type IDictionary
             try
             {
                 var data = new Hashtable
@@ -278,7 +279,7 @@ namespace AfricasTalkingCS
             }
         }
 
-        private string SendPostRequest(Hashtable data, string urlString)
+        private string SendPostRequest(IDictionary data, string urlString)
         {
             try
             {
