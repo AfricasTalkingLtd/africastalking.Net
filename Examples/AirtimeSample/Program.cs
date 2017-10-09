@@ -21,10 +21,10 @@ namespace AirtimeSample
             Console.WriteLine(airtimerecipients);
             Console.ReadLine();
             var env = "sandbox";
-            var airtimeGaway = new AfricasTalkingGateway(username, apikey, env);
+            var airtimeGateway = new AfricasTalkingGateway(username, apikey, env);
             try
             {
-                dynamic airtimeTransaction = airtimeGaway.SendAirtime(airtimerecipients);
+                dynamic airtimeTransaction = airtimeGateway.SendAirtime(airtimerecipients);
                 Console.WriteLine(airtimeTransaction);
             }
             catch (AfricasTalkingGatewayException e)
