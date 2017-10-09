@@ -191,15 +191,11 @@ namespace AfricasTalkingCS
             throw new AfricasTalkingGatewayException(json["errorMessage"]);
         }
 
-        public dynamic SendAirtime(string recepients)
+        public dynamic SendAirtime(dynamic recepients)
         {
             var urlString = AirtimeUrl + "/send";
             var recipients = JObject.Parse(recepients);
-            var data = new Hashtable
-            {
-                ["username"] = _username,
-                ["recipients"] = recipients
-            };
+            var data = new Hashtable { ["username"] = _username, ["recipients"] = "[" + recipients + "]" };
             try
             {
                 var response = SendPostRequest(data, urlString);
@@ -318,14 +314,16 @@ namespace AfricasTalkingCS
                     {
                         dataStr += "&";
                     }
-                    var value = (string) data[key];
+
+                    //var value = (string)data[key];
+                    var value = data[key].ToString();
                     dataStr += HttpUtility.UrlEncode(key, Encoding.UTF8);
                     dataStr += "=" + HttpUtility.UrlEncode(value, Encoding.UTF8);
                 }
+
                 var byteArray = Encoding.UTF8.GetBytes(dataStr);
-                ServicePointManager.ServerCertificateValidationCallback =
-                    RemoteCertificateValidationCallback;
-                var webRequest = (HttpWebRequest) WebRequest.Create(urlString);
+                ServicePointManager.ServerCertificateValidationCallback = RemoteCertificateValidationCallback;
+                var webRequest = (HttpWebRequest)WebRequest.Create(urlString);
                 webRequest.Method = "POST";
                 webRequest.ContentType = "application/x-www-form-urlencoded";
                 webRequest.ContentLength = byteArray.Length;
@@ -336,9 +334,10 @@ namespace AfricasTalkingCS
                 webpageStream.Write(byteArray, 0, byteArray.Length);
                 webpageStream.Close();
 
-                var httpResponse = (HttpWebResponse) webRequest.GetResponse();
-                _responseCode = (int) httpResponse.StatusCode;
-                var webpageReader = new StreamReader(httpResponse.GetResponseStream() ?? throw new InvalidOperationException());
+                var httpResponse = (HttpWebResponse)webRequest.GetResponse();
+                _responseCode = (int)httpResponse.StatusCode;
+                var webpageReader = new StreamReader(
+                    httpResponse.GetResponseStream() ?? throw new InvalidOperationException());
                 var response = webpageReader.ReadToEnd();
 
                 if (_debug) Console.WriteLine("Response: " + response);
@@ -360,6 +359,7 @@ namespace AfricasTalkingCS
                     {
                         Console.WriteLine("Exception: " + response);
                     }
+
                     return response;
                 }
             }
@@ -372,7 +372,7 @@ namespace AfricasTalkingCS
         /// The product name.
         /// </param>
         /// <param name="phoneNumber">
-        /// The phone number for example +2547xxxxxxx
+        /// The phone number for example +254....
         /// </param>
         /// <param name="currencyCode">
         /// The currency code for example KES, UGX
@@ -384,9 +384,10 @@ namespace AfricasTalkingCS
         /// The provider channel.
         /// </param>
         /// <returns>
-        /// Returns transcation status
+        /// Returns transaction status
         /// </returns>
         /// <exception cref="AfricasTalkingGatewayException">
+        ///  Throws an error of type 40X 
         /// </exception>
         public dynamic Checkout(string productName, string phoneNumber , string currencyCode, int amount, string providerChannel)
         {
