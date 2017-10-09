@@ -221,27 +221,57 @@ namespace AfricasTalkingCS
             dynamic json = JObject.Parse(response);
             return json;
         }
-        
+
+        /// <summary>
+        /// Main payments endpoint.
+        /// </summary>
         private string PaymentsUrl => PaymentsHost + "/mobile/checkout/request";
 
+        /// <summary>
+        /// Business to Business API endpoint.
+        /// </summary>
         private string B2BPaymentsUrl => PaymentsHost + "/mobile/b2b/request";
 
+        /// <summary>
+        /// Business to Client Endpoint.
+        /// </summary>
         private string B2CPaymentsUrl => PaymentsHost + "/mobile/b2c/request";
 
+        /// <summary>
+        /// Subscription endpoint.
+        /// </summary>
         private string SubscriptionUrl => ApiHost + "/version1/subscription";
 
+        /// <summary>
+        /// The Userdata endpoint.
+        /// </summary>
         private string Userdata => ApiHost + "/version1/user";
 
+        /// <summary>
+        /// Airtime Endpoint.
+        /// </summary>
         private string AirtimeUrl => ApiHost + "/version1/airtime";
 
+        /// <summary>
+        /// Voice endpoint.
+        /// </summary>
         private string VoiceUrl => (ReferenceEquals(_environment, "sandbox")
             ? "https://voice.sandbox.africastalking.com"
             : "https://voice.africastalking.com");
 
+        /// <summary>
+        /// SMS Endpoint.
+        /// </summary>
         private string SmsUrl => ApiHost + "/version1/messaging";
 
+        /// <summary>
+        /// Root API host.
+        /// </summary>
         private string ApiHost => (ReferenceEquals(_environment,"sandbox")? "https://api.sandbox.africastalking.com": "https://api.africastalking.com");
 
+        /// <summary>
+        /// Payment endpoint.
+        /// </summary>
         private string PaymentsHost => (ReferenceEquals(_environment, "sandbox") ? "https://payments.sandbox.africastalking.com" : "https://payments.africastalking.com");
 
         private string SendGetRequest(string urlString)
@@ -265,15 +295,13 @@ namespace AfricasTalkingCS
 
             catch (WebException ex)
             {
-                if (ex.Response == null)
-                    throw new AfricasTalkingGatewayException(ex.Message);
+                if (ex.Response == null) throw new AfricasTalkingGatewayException(ex.Message);
                 using (var stream = ex.Response.GetResponseStream())
                 using (var reader = new StreamReader(stream ?? throw new InvalidOperationException()))
                 {
                     var response = reader.ReadToEnd();
 
-                    if (_debug)
-                        Console.WriteLine("Full response: " + response);
+                    if (_debug) Console.WriteLine("Full response: " + response);
                     return response;
                 }
             }
@@ -313,8 +341,7 @@ namespace AfricasTalkingCS
                 var webpageReader = new StreamReader(httpResponse.GetResponseStream() ?? throw new InvalidOperationException());
                 var response = webpageReader.ReadToEnd();
 
-                if (_debug)
-                    Console.WriteLine("Response: " + response);
+                if (_debug) Console.WriteLine("Response: " + response);
 
                 return response;
             }
@@ -338,6 +365,29 @@ namespace AfricasTalkingCS
             }
         }
 
+        /// <summary>
+        /// The checkout.
+        /// </summary>
+        /// <param name="productName">
+        /// The product name.
+        /// </param>
+        /// <param name="phoneNumber">
+        /// The phone number for example +2547xxxxxxx
+        /// </param>
+        /// <param name="currencyCode">
+        /// The currency code for example KES, UGX
+        /// </param>
+        /// <param name="amount">
+        /// The amount.
+        /// </param>
+        /// <param name="providerChannel">
+        /// The provider channel.
+        /// </param>
+        /// <returns>
+        /// Returns transcation status
+        /// </returns>
+        /// <exception cref="AfricasTalkingGatewayException">
+        /// </exception>
         public dynamic Checkout(string productName, string phoneNumber , string currencyCode, int amount, string providerChannel)
         {
             var checkout = new CheckOutData
@@ -360,15 +410,28 @@ namespace AfricasTalkingCS
             }
         }
 
+        /// <summary>
+        /// This method handles POST requests to the POST request the B2B endpoint
+        /// </summary>
+        /// <param name="dataMap">
+        /// Strunctured JSON Object conataining all B2B arguments.
+        /// </param>
+        /// <param name="url">
+        /// The B2B End-point.
+        /// </param>
+        /// <returns>
+        /// Server response, stringified.
+        /// </returns>
         private string PostB2BJson(B2BData dataMap, string url)
         {
             var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("apiKey", _apikey);
+            client.DefaultRequestHeaders.Add("apiKey", this._apikey);
             var result = client.PostAsJsonAsync(url, dataMap).Result;
             result.EnsureSuccessStatusCode();
             var stringResult = result.Content.ReadAsStringAsync().Result;
             return stringResult;
         }
+
         public dynamic MobileB2B(string product, string providerChannel, string transfer, string currency,
             decimal transferAmount, string channelReceiving, string accountReceiving,dynamic b2Bmetadata)
         {
