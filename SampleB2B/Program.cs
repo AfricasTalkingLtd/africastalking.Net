@@ -11,7 +11,8 @@ namespace SampleB2B
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
-            //Suppose we want to move money from our *awesomeproduct* to *coolproduct*
+
+            // Suppose we want to move money from our *awesomeproduct* to *coolproduct*
             /*
              * Remember to register  B2B products and callback urls:else these trasactions will fail
              */
@@ -21,31 +22,39 @@ namespace SampleB2B
             string currencyCode = "KES";
             decimal amount = 15;
             string provider = "Athena";
-            string destinationChannel = "mychannel"; //This is the channel that will be receiving the payment
+            string destinationChannel = "mychannel"; // This is the channel that will be receiving the payment
             string destinationAccount = "coolproduct";
-            //Transfer Type
+
+            // Transfer Type
             /*
              *BusinessBuyGoods
              *BusinessPayBill
              *DisburseFundsToBusiness
              *BusinessToBusinessTransfer
              */
-            dynamic metadataDetails =  new JObject();
+            dynamic metadataDetails = new JObject();
             metadataDetails.shopName = "cartNumber";
             metadataDetails.Info = "Stuff";
             string transferType = "BusinessToBusinessTransfer";
-            var gateWay = new AfricasTalkingGateway(username,apiKey);
+            var gateWay = new AfricasTalkingGateway(username, apiKey);
             try
             {
-                string response = gateWay.MobileB2B(productName, provider, transferType, currencyCode, amount,
-                    destinationChannel, destinationAccount, metadataDetails);
+                string response = gateWay.MobileB2B(
+                    productName,
+                    provider,
+                    transferType,
+                    currencyCode,
+                    amount,
+                    destinationChannel,
+                    destinationAccount,
+                    metadataDetails);
                 Console.WriteLine(response);
             }
             catch (AfricasTalkingGatewayException e)
             {
-                Console.WriteLine("Woopsies! We ran into issues: "+e.StackTrace+" : "+e.Message);
-               
+                Console.WriteLine("Woopsies! We ran into issues: " + e.StackTrace + " : " + e.Message);
             }
+
             Console.ReadLine();
         }
     }
