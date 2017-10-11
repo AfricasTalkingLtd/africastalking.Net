@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="RIDER_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$/../..">
+      <sourceFolder url="file://$MODULE_DIR$/../../.gitignore" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../AfricasTalkingCS" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../Examples/ConsoleApp1" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../Examples/ConsoleApp2" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../Examples/SampleB2C" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../SampleB2B" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../VoiceSample" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../../AfricasTalkingCS/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../AfricasTalkingCS/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Examples/ConsoleApp1/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Examples/ConsoleApp1/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Examples/ConsoleApp2/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Examples/ConsoleApp2/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Examples/SampleB2C/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Examples/SampleB2C/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../SampleB2B/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../SampleB2B/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../VoiceSample/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../VoiceSample/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../packages" />
+    </content>
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
