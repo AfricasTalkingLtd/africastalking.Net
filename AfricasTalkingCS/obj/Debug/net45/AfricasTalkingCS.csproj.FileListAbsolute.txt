@@ -2,9 +2,9 @@ D:\RepoMan\africastalking.Net\AfricasTalkingCS\bin\Debug\net45\AfricasTalkingCS.
 D:\RepoMan\africastalking.Net\AfricasTalkingCS\bin\Debug\net45\AfricasTalkingCS.pdb
 D:\RepoMan\africastalking.Net\AfricasTalkingCS\bin\Debug\net45\System.Net.Http.Formatting.dll
 D:\RepoMan\africastalking.Net\AfricasTalkingCS\bin\Debug\net45\Newtonsoft.Json.dll
+D:\RepoMan\africastalking.Net\AfricasTalkingCS\obj\Debug\net45\AfricasTalkingCS.csprojResolveAssemblyReference.cache
 D:\RepoMan\africastalking.Net\AfricasTalkingCS\obj\Debug\net45\AfricasTalkingCS.csproj.CoreCompileInputs.cache
 D:\RepoMan\africastalking.Net\AfricasTalkingCS\obj\Debug\net45\AfricasTalkingCS.AssemblyInfoInputs.cache
 D:\RepoMan\africastalking.Net\AfricasTalkingCS\obj\Debug\net45\AfricasTalkingCS.AssemblyInfo.cs
 D:\RepoMan\africastalking.Net\AfricasTalkingCS\obj\Debug\net45\AfricasTalkingCS.dll
 D:\RepoMan\africastalking.Net\AfricasTalkingCS\obj\Debug\net45\AfricasTalkingCS.pdb
-D:\RepoMan\africastalking.Net\AfricasTalkingCS\obj\Debug\net45\AfricasTalkingCS.csprojResolveAssemblyReference.cache
