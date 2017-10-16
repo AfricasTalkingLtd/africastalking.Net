@@ -108,9 +108,9 @@ namespace AfricasTalkingCS
             return json["SMSMessageData"]["Messages"];
         }
 
-        public dynamic CreateSubscription(string phoneNumber, string shortCode, string keyWord)
+        public dynamic CreateSubscription(string phoneNumber, string shortCode, string keyWord, string checkoutToken)
         {
-            if (phoneNumber.Length == 0 || shortCode.Length == 0 || keyWord.Length == 0)
+            if (phoneNumber.Length == 0 || shortCode.Length == 0 || keyWord.Length == 0 || checkoutToken.Length == 0)
             {
                 throw new AfricasTalkingGatewayException("Some Parameters are missing!");
 
@@ -120,7 +120,8 @@ namespace AfricasTalkingCS
                 ["username"] = _username,
                 ["phoneNumber"] = phoneNumber,
                 ["shortCode"] = shortCode,
-                ["keyword"] = keyWord
+                ["keyword"] = keyWord,
+                ["checkoutToken"] = checkoutToken
             };
             var url = SubscriptionUrl + "/create";
             var response = SendPostRequest(data, url);
