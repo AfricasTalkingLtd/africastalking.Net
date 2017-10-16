@@ -108,13 +108,13 @@ public ActionResult SomeCoolMethod(awesome,params)
 
     - `to` : The recipient(s) expecting the message 
     - `message` : The SMS body. 
-    -  `from` : The Shortcode or Aplhanumeric ID that is associated with an Africa's Talking account. `Optional`. 
+    - `from` : The Shortcode or Aplhanumeric ID that is associated with an Africa's Talking account. `Optional`. 
     - `bulkSmsMode` : This parameter will be used by the Mobile Service Provider to determine who gets  billed for a message sent using a Mobile-Terminated ShortCode. Must be set to  *1*  for BulkSMS. `Optional`. 
-    -  `options` :   (`Optional`). Passed as _key-value_ pairs 
+    - `options` :   (`Optional`). Passed as _key-value_ pairs 
         -   `enque` : This parameter is used for Bulk SMS clients that would like deliver as many messages to the API before waiting for an Ack from the Telcos. If enabled, the API will store the messages in its databases and send them out asynchronously after responding to the request 
-        - `keyword` : This parameter is used for premium services. It is essential for subscription premium services.
-        - `linkId` : This parameter is used for premium services to send OnDemand messages. We forward the linkId to your application when the user send a message to your service. (Essential for premium subscription services) 
-        - `retryDurationInHours` : This parameter is used for premium messages. It specifies the number of hours your subscription message should be retried in case it's not delivered to the subscriber. (Essential for premium subscription services)
+        -   `keyword` : This parameter is used for premium services. It is essential for subscription premium services.
+        -   `linkId` : This parameter is used for premium services to send OnDemand messages. We forward the linkId to your application when the user send a message to your service. (Essential for premium subscription services) 
+        -   `retryDurationInHours` : This parameter is used for premium messages. It specifies the number of hours your subscription message should be retried in case it's not delivered to the subscriber. (Essential for premium subscription services)
 
     ​
 
@@ -130,11 +130,12 @@ public ActionResult SomeCoolMethod(awesome,params)
 
 #### [Premium Subscriptions](http://docs.africastalking.com/subscriptions/create)
 
-- `CreateSubscription(phoneNumber,shortCode,keyWord)`:
+- `CreateSubscription(phoneNumber,shortCode,keyWord,checkoutToken)`:
 
     - `shortCode` : This is a premium short code mapped to your account `REQUIRED`
     - `keyWord` : Value is a premium keyword under the above short code and mapped to your account. `REQUIRED`
-    - `phoneNumber`: The phoneNumber to be subscribed `REQUIRED` 
+    - `phoneNumber`: The phoneNumber to be subscribed `REQUIRED`
+    -  `checkoutToken` :  This is a token used to validate the subscription request  `REQUIRED` 
 
      > If you have subscription products on your premium SMS short codes, you will need to configure a callback URL that we will invoke to notify you when users subscribe or unsubscribe from your products (currently supported on Safaricom).Visit [this link](http://docs.africastalking.com/subscriptions/callback) to learn more on how to setup a subscription callback 
 
@@ -335,7 +336,7 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
     - `b2Bmetadata`: Some optional data to associate with transaction. `REQUIRED`   
 
 
- 
+
 > Example 
 ```c# 
 // Suppose we want to move money from our *awesomeproduct* to *coolproduct*
