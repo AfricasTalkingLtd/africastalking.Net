@@ -137,7 +137,32 @@ public ActionResult SomeCoolMethod(awesome,params)
     - `phoneNumber`: The phoneNumber to be subscribed `REQUIRED`
     -  `checkoutToken` :  This is a token used to validate the subscription request  `REQUIRED` 
 
-     > If you have subscription products on your premium SMS short codes, you will need to configure a callback URL that we will invoke to notify you when users subscribe or unsubscribe from your products (currently supported on Safaricom).Visit [this link](http://docs.africastalking.com/subscriptions/callback) to learn more on how to setup a subscription callback 
+     > If you have subscription products on your premium SMS short codes, you will need to configure a callback URL that we will invoke to notify you when users subscribe or unsubscribe from your products (currently supported on Safaricom).Visit [this link](http://docs.africastalking.com/subscriptions/callback) to learn more on how to setup a subscription callback  
+
+> Example    
+
+```c#
+            var username = "sandbox";
+            var apikey = "KEY";
+            var env = "sandbox";
+            var gateway = new AfricasTalkingGateway(username, apikey, env);
+            var shortCode = "NNNNN";
+            var keyword = "keyword";
+            var phoneNum = "+254XXXXXXXXX";
+            var token = "Token";
+            try
+            {
+                var response = gateway.CreateSubscription(phoneNum, shortCode, keyword, token);
+                Console.WriteLine(response);
+            }
+            catch (AfricasTalkingGatewayException e)
+            {
+                Console.WriteLine("We hit a snag: " + e.StackTrace + ". " + e.Message);
+                throw;
+            }
+```
+
+
 
 ### [Airtime](http://docs.africastalking.com/airtime/sending)
 
