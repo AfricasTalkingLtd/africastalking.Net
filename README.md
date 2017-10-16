@@ -139,7 +139,7 @@ public ActionResult SomeCoolMethod(awesome,params)
 
      > If you have subscription products on your premium SMS short codes, you will need to configure a callback URL that we will invoke to notify you when users subscribe or unsubscribe from your products (currently supported on Safaricom).Visit [this link](http://docs.africastalking.com/subscriptions/callback) to learn more on how to setup a subscription callback  
 
-> Example    
+> Example    - Creating Premium SMS subscription
 
 ```c#
             var username = "sandbox";
@@ -158,6 +158,29 @@ public ActionResult SomeCoolMethod(awesome,params)
             catch (AfricasTalkingGatewayException e)
             {
                 Console.WriteLine("We hit a snag: " + e.StackTrace + ". " + e.Message);
+                throw;
+            }
+```
+
+> Example -Sending Premium SMS
+
+```c#
+            var username = "sandbox";
+            var apikey = "KEY";
+            var env = "sandbox";
+            var gateway = new AfricasTalkingGateway(username, apikey, env);
+            var opts = new Hashtable { ["keyword"] = "mykeyword" }; // ....
+            var from = "NNNNN";
+            var to = "+2547XXXXX,+2547XXXXY";
+            var message = "Super Cool Message";
+            try
+            {
+                var res = gateway.SendMessage(to, message, from, 1, opts); // Set Bulk to true
+                Console.WriteLine(res);
+            }
+            catch (AfricasTalkingGatewayException e)
+            {
+                Console.WriteLine("Whoops: " + e.Message);
                 throw;
             }
 ```
