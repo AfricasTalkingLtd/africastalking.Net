@@ -228,14 +228,11 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
 - `Checkout(productName,phoneNumber,currencyCode,amount,providerChannel)` :  Initiate Customer to Business (C2B) payments on a mobile subscriber's device. [More info](http://docs.africastalking.com/payments/mobile-checkout)
 
     - `productName`: Your Payment Product. `REQUIRED`
-
     - `phoneNumber`: The customer phone number (in international format; e.g. `25471xxxxxxx`). `REQUIRED`
-
     - `currencyCode`: 3-digit ISO format currency code (e.g `KES`, `USD`, `UGX` etc.) `REQUIRED`
-
     - `amount`: This is the amount. `REQUIRED`
-
-    - `providerChannel`: Default provider channel details.For example `MPESA` or `Athena` for sandbox.
+    - `providerChannel`: Default provider channel details.For example `MPESA` or `Athena` for sandbox. 
+      - **(Sandbox) : **Note that for sandbox you'll have to manually create a channel that will be associated with `Athena`. This is the channel name that you will pass as an argument during a checkout.  Example after creating a channel you will have `Athena:channel_name` , pass `channel_name ` as the  _providerChannel_ .
 
  > Example 
  ```csharp 
