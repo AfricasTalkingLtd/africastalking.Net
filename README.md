@@ -66,7 +66,7 @@ var env = "sandbox"; //Use this only if you need to use the sandbox environment,
  
 ```
 ## Important: 
- If you register a callback URL with the API, always remember to acknowledge the receipt of any data it sends by responding with an HTTP `200`;  
+ If you register a callback URL with the API, always remember to acknowledge the receipt of any data it sends by responding with an HTTP `200`;  [Here's a sample application you can use to test a call-back url](https://github.com/TheBeachMaster/ATSamples/tree/master/paymentcallback.node) 
 > For example in an ASP.NET Core or ASP.NET MVC Project
 
 ```csharp 
@@ -225,14 +225,24 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
 
 #### [Checkout](http://docs.africastalking.com/payments/mobile-checkout)
 
-- `Checkout(productName,phoneNumber,currencyCode,amount,providerChannel)` :  Initiate Customer to Business (C2B) payments on a mobile subscriber's device. [More info](http://docs.africastalking.com/payments/mobile-checkout)
+- `Checkout(productName,phoneNumber,currencyCode,amount,providerChannel,metadata)` :  Initiate Customer to Business (C2B) payments on a mobile subscriber's device. [More info](http://docs.africastalking.com/payments/mobile-checkout)
 
     - `productName`: Your Payment Product. `REQUIRED`
+
     - `phoneNumber`: The customer phone number (in international format; e.g. `25471xxxxxxx`). `REQUIRED`
+
     - `currencyCode`: 3-digit ISO format currency code (e.g `KES`, `USD`, `UGX` etc.) `REQUIRED`
+
     - `amount`: This is the amount. `REQUIRED`
+
     - `providerChannel`: Default provider channel details.For example `MPESA` or `Athena` for sandbox. 
-      - **(Sandbox) : **Note that for sandbox you'll have to manually create a channel that will be associated with `Athena`. This is the channel name that you will pass as an argument during a checkout.  Example after creating a channel you will have `Athena:channel_name` , pass `channel_name ` as the  _providerChannel_ .
+      - **(Sandbox) :**  Note that for sandbox you'll have to manually create a channel that will be associated with `Athena`. This is the channel name that you will pass as an argument during a checkout.  Example after creating a channel you will have `Athena:channel_name` , pass `channel_name ` as the  _providerChannel_ . 
+
+        ​
+
+    - `metadata` : This value contains a map of any metadata that you would like us to associate with this request. You can use this field to send data that will map notifications to checkout requests, since we will include it when we send notifications once the checkout is complete. `(Optional)`
+
+      ​
 
  > Example 
  ```csharp 
@@ -244,12 +254,16 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
             var currency = "KES";
             int amount = 35700;
             var channel = "mychannel";
+    		var metadata = new Dictionary<string, string>
+            {
+                { "reason", "stuff" }
+            };
 
             var gateway = new AfricasTalkingGateway(username, apiKey, environment);
 
             try
             {
-                var checkout = gateway.Checkout(productName, phoneNumber, currency, amount, channel);
+                var checkout = gateway.Checkout(productName, phoneNumber, currency, amount, channel, 								   metadata);
                 Console.WriteLine(checkout);
             }
             catch (AfricasTalkingGatewayException e)
