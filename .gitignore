@@ -9,7 +9,7 @@
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
-
+*.nuspec
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
