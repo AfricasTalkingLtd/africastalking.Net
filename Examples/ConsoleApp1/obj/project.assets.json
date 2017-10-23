@@ -4912,9 +4912,9 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "D:\\RepoMan\\africastalking.Net\\Examples\\ConsoleApp1\\ConsoleApp1.csproj",
-      "projectName": "ConsoleApp1",
-      "projectPath": "D:\\RepoMan\\africastalking.Net\\Examples\\ConsoleApp1\\ConsoleApp1.csproj",
+      "projectUniqueName": "D:\\RepoMan\\africastalking.Net\\Examples\\ConsoleApp1\\SampleSMSApp.csproj",
+      "projectName": "SampleSMSApp",
+      "projectPath": "D:\\RepoMan\\africastalking.Net\\Examples\\ConsoleApp1\\SampleSMSApp.csproj",
       "packagesPath": "C:\\Users\\Kennedy Otieno\\.nuget\\packages\\",
       "outputPath": "D:\\RepoMan\\africastalking.Net\\Examples\\ConsoleApp1\\obj\\",
       "projectStyle": "PackageReference",

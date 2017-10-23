@@ -158,6 +158,14 @@ namespace AfricasTalkingCS
                 ["from"] = from,
                 ["to"] = to
             };
+
+            // var data = new Dictionary<string, string>
+            // {
+            //    { "username", _username },
+            //    { "from", from },
+            //    { "to", to }
+            // };
+            
             try
             {
                 var url = VoiceUrl + "/call";
@@ -390,7 +398,7 @@ namespace AfricasTalkingCS
         /// <exception cref="AfricasTalkingGatewayException">
         ///  Throws an error of type 40X 
         /// </exception>
-        public dynamic Checkout(string productName, string phoneNumber , string currencyCode, int amount, string providerChannel)
+        public dynamic Checkout(string productName, string phoneNumber , string currencyCode, int amount, string providerChannel ,Dictionary<string,string> metadata = null)
         {
             var checkout = new CheckOutData
             {
@@ -401,6 +409,11 @@ namespace AfricasTalkingCS
                 amount = amount,
                 providerChannel = providerChannel
             };
+            if (metadata != null)
+            {
+                checkout.metadata = metadata;
+            }
+
             try
             {
                 var checkoutResponse = PostAsJson(checkout, PaymentsUrl);

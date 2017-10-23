@@ -27,7 +27,7 @@ namespace AfricasTalkingCS
 
         public void AddMetadata(string key, string value)
         {
-            this.Metadata.Add(key,value);
+            this.Metadata.Add(key, value);
         }
 
         public string ToJson()
