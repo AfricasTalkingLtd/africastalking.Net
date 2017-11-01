@@ -263,7 +263,7 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
 
             try
             {
-                var checkout = gateway.Checkout(productName, phoneNumber, currency, amount, channel, 								   metadata);
+                var checkout = gateway.Checkout(productName, phoneNumber, currency, amount, channel, metadata);
                 Console.WriteLine(checkout);
             }
             catch (AfricasTalkingGatewayException e)
