@@ -369,17 +369,17 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
 
     ​
 
-    - `transfer`: This contains the payment provider that is facilitating this transaction. Supported providers at the moment are: `REQUIRED 
+    - `transfer`: This is the transfer type for the transaction: `REQUIRED`  
 
       ```c#
       string transferType = "BusinessToBusinessTransfer";
-             // Transfer Type
-                  /*
-                   *BusinessBuyGoods
-                   *BusinessPayBill
-                   *DisburseFundsToBusiness
-                   *BusinessToBusinessTransfer
-                   */
+                   // Transfer Types
+                   /**
+                    * BusinessBuyGoods
+                    * BusinessPayBill
+                    * DisburseFundsToBusiness
+                    * BusinessToBusinessTransfer
+                    */
       ```
 
       ​
@@ -410,14 +410,6 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
             string provider = "Athena";
             string destinationChannel = "mychannel"; // This is the channel that will be receiving the payment
             string destinationAccount = "coolproduct";
-
-            // Transfer Type
-            /*
-             *BusinessBuyGoods
-             *BusinessPayBill
-             *DisburseFundsToBusiness
-             *BusinessToBusinessTransfer
-             */
             dynamic metadataDetails = new JObject();
             metadataDetails.shopName = "cartNumber";
             metadataDetails.Info = "Stuff";
