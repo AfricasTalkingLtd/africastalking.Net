@@ -94,7 +94,7 @@ namespace AfricasTalkingCS
             dynamic json = JObject.Parse(response);
             if ((string)json["errorMesage"] != "None")
             {
-                throw  new  AfricasTalkingGatewayException(json["errorMessage"]);
+                throw new AfricasTalkingGatewayException(json["errorMessage"]);
             }
         }
 
@@ -292,10 +292,8 @@ namespace AfricasTalkingCS
                 _responseCode = (int)httpResponse.StatusCode;
                 var webpageReader = new StreamReader(httpResponse.GetResponseStream() ?? throw new InvalidOperationException());
                 var response = webpageReader.ReadToEnd();
-                if (_debug)
-                    Console.WriteLine("Full response: " + response);
+                if (_debug) Console.WriteLine("Full response: " + response);
                 return response;
-
             }
 
             catch (WebException ex)
@@ -392,11 +390,14 @@ namespace AfricasTalkingCS
         /// <param name="providerChannel">
         /// The provider channel.
         /// </param>
+        /// <param name="metadata">
+        /// The metadata.
+        /// </param>
         /// <returns>
         /// Returns transaction status
         /// </returns>
         /// <exception cref="AfricasTalkingGatewayException">
-        ///  Throws an error of type 40X 
+        /// Throws an error of type 40X 
         /// </exception>
         public dynamic Checkout(string productName, string phoneNumber , string currencyCode, int amount, string providerChannel ,Dictionary<string,string> metadata = null)
         {
@@ -429,13 +430,13 @@ namespace AfricasTalkingCS
         /// This method handles POST requests to the POST request the B2B endpoint
         /// </summary>
         /// <param name="dataMap">
-        /// Strunctured JSON Object conataining all B2B arguments.
+        /// Structured JSON Object containing all B2B arguments.
         /// </param>
         /// <param name="url">
         /// The B2B End-point.
         /// </param>
         /// <returns>
-        /// Server response, stringified.
+        /// Server response.
         /// </returns>
         private string PostB2BJson(B2BData dataMap, string url)
         {
@@ -447,10 +448,50 @@ namespace AfricasTalkingCS
             return stringResult;
         }
 
-        public dynamic MobileB2B(string product, string providerChannel, string transfer, string currency,
-            decimal transferAmount, string channelReceiving, string accountReceiving,dynamic b2Bmetadata)
+        /// <summary>
+        /// The mobile b 2 b.
+        /// </summary>
+        /// <param name="product">
+        /// The product.
+        /// </param>
+        /// <param name="providerChannel">
+        /// The provider channel.
+        /// </param>
+        /// <param name="transfer">
+        /// The transfer.
+        /// </param>
+        /// <param name="currency">
+        /// The currency.
+        /// </param>
+        /// <param name="transferAmount">
+        /// The transfer amount.
+        /// </param>
+        /// <param name="channelReceiving">
+        /// The channel receiving.
+        /// </param>
+        /// <param name="accountReceiving">
+        /// The account receiving.
+        /// </param>
+        /// <param name="btobmetadata">
+        /// Metadata Associated With the transaction.
+        /// </param>
+        /// <returns>
+        /// The <see cref="dynamic"/>.
+        /// </returns>
+        /// <exception cref="AfricasTalkingGatewayException">
+        /// Any errors thrown by our Gateway
+        /// </exception>
+        public dynamic MobileB2B(
+            string product,
+            string providerChannel,
+            string transfer,
+            string currency,
+            decimal transferAmount,
+            string channelReceiving,
+            string accountReceiving,
+            dynamic btobmetadata)
         {
-            var bTob = new B2BData
+            var btob = new B2BData
             {
                 username = _username,
                 productName = product,
@@ -460,12 +501,12 @@ namespace AfricasTalkingCS
                 amount = transferAmount,
                 destinationAccount = accountReceiving,
                 destinationChannel = channelReceiving,
-                metadata = b2Bmetadata
+                metadata = btobmetadata
             };
             try
             {
-                Console.WriteLine(bTob);
-                var response = PostB2BJson(bTob, B2BPaymentsUrl);
+                Console.WriteLine(btob);
+                var response = PostB2BJson(btob, B2BPaymentsUrl);
                 return response;
             }
             catch (Exception e)
@@ -506,9 +547,13 @@ namespace AfricasTalkingCS
             result.EnsureSuccessStatusCode();
             var stringResult = result.Content.ReadAsStringAsync().Result;
             return stringResult;
-
         }
-        private static bool RemoteCertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors)
+
+        private static bool RemoteCertificateValidationCallback(
+            object sender,
+            X509Certificate certificate,
+            X509Chain chain,
+            SslPolicyErrors sslpolicyerrors)
         {
             return true;
         }
