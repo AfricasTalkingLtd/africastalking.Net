@@ -1,19 +1,32 @@
-﻿using System;
-using System.Collections;
-using System.Text;
-using System.Web;
-using System.IO;
-using System.Net;
-using System.Net.Http;
-using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Security;
-using System.Security.Cryptography.X509Certificates;
-using Newtonsoft.Json.Linq;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="AfricasTalkingGateway.cs" company="Africa's Talking">
+//   2017
+// </copyright>
+// <summary>
+//   Defines the AfricasTalkingGateway type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace AfricasTalkingCS
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Net.Security;
+    using System.Security.Cryptography.X509Certificates;
+    using System.Text;
+    using System.Web;
+
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+
+    /// <summary>
+    /// The africas talking gateway.
+    /// </summary>
     public class AfricasTalkingGateway
     {
         private readonly string _username;
@@ -23,6 +36,15 @@ namespace AfricasTalkingCS
         private JsonSerializer _serializer;
         private readonly bool _debug = false;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AfricasTalkingGateway"/> class.
+        /// </summary>
+        /// <param name="username">
+        /// The username.
+        /// </param>
+        /// <param name="apikey">
+        /// The apikey.
+        /// </param>
         public AfricasTalkingGateway(string username,string apikey)
         {
             _username = username;
@@ -31,6 +53,18 @@ namespace AfricasTalkingCS
            _serializer =  new JsonSerializer();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AfricasTalkingGateway"/> class.
+        /// </summary>
+        /// <param name="username">
+        /// The username.
+        /// </param>
+        /// <param name="apikey">
+        /// The apikey.
+        /// </param>
+        /// <param name="environment">
+        /// The environment.
+        /// </param>
         public AfricasTalkingGateway(string username,string apikey,string environment)
         {
             _username = username;
@@ -39,6 +73,29 @@ namespace AfricasTalkingCS
             _serializer = new JsonSerializer();
         }
 
+        /// <summary>
+        /// The send message method.
+        /// </summary>
+        /// <param name="to">
+        /// The Receipient(s).
+        /// </param>
+        /// <param name="message">
+        /// The message content.
+        /// </param>
+        /// <param name="from">
+        /// The Sender.
+        /// </param>
+        /// <param name="bulkSmsMode">
+        /// The bulk sms mode: set 1 for Bulk SMS
+        /// </param>
+        /// <param name="options">
+        /// The Options for premium sms.
+        /// </param>
+        /// <returns>
+        /// The <see cref="dynamic"/>.
+        /// </returns>
+        /// <exception cref="AfricasTalkingGatewayException">
+        /// </exception>
         public dynamic SendMessage(string to, string message, string from = null, int bulkSmsMode = -1, Hashtable options =null)
         {
             //TODO Convert options to type IDictionary
@@ -60,18 +117,22 @@ namespace AfricasTalkingCS
                         {
                             data["keyword"] = options["keyword"];
                         }
+
                         if (options.Contains("linkId"))
                         {
                             data["linkId"] = options["linkId"];
                         }
+
                         if (options.Contains("enqueue"))
                         {
                             data["enqueue"] = options["enqueue"];
                         }
+
                         if (options.Contains("retryDurationInHours"))
                             data["retryDurationInHours"] = options["retryDurationInHours"];
                     }
                 }
+
                 var response = SendPostRequest(data, SmsUrl);
                 dynamic json = JObject.Parse(response);
                     return json;
@@ -82,6 +143,14 @@ namespace AfricasTalkingCS
             }
         }
 
+        /// <summary>
+        /// The upload media file method.
+        /// </summary>
+        /// <param name="url">
+        /// The url.
+        /// </param>
+        /// <exception cref="AfricasTalkingGatewayException">
+        /// </exception>
         public void UploadMediaFile(string url)
         {
             var data = new Hashtable
@@ -98,6 +167,17 @@ namespace AfricasTalkingCS
             }
         }
 
+        /// <summary>
+        /// The fetch messages method.
+        /// </summary>
+        /// <param name="lastReceivedId">
+        /// The last received id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="dynamic"/>.
+        /// </returns>
+        /// <exception cref="AfricasTalkingGatewayException">
+        /// </exception>
         public dynamic FetchMessages(int lastReceivedId)
         {
             var url = SmsUrl + "?username=" + _username + "&lastReceivedId" + Convert.ToString(lastReceivedId);
@@ -108,13 +188,33 @@ namespace AfricasTalkingCS
             return json["SMSMessageData"]["Messages"];
         }
 
+        /// <summary>
+        /// The create subscription method.
+        /// </summary>
+        /// <param name="phoneNumber">
+        /// The phone number.
+        /// </param>
+        /// <param name="shortCode">
+        /// The short code.
+        /// </param>
+        /// <param name="keyWord">
+        /// The key word.
+        /// </param>
+        /// <param name="checkoutToken">
+        /// The checkout token.
+        /// </param>
+        /// <returns>
+        /// The <see cref="dynamic"/>.
+        /// </returns>
+        /// <exception cref="AfricasTalkingGatewayException">
+        /// </exception>
         public dynamic CreateSubscription(string phoneNumber, string shortCode, string keyWord, string checkoutToken)
         {
             if (phoneNumber.Length == 0 || shortCode.Length == 0 || keyWord.Length == 0 || checkoutToken.Length == 0)
             {
                 throw new AfricasTalkingGatewayException("Some Parameters are missing!");
-
             }
+
             var data = new Hashtable
             {
                 ["username"] = _username,
@@ -130,12 +230,30 @@ namespace AfricasTalkingCS
             return json;
         }
 
+        /// <summary>
+        /// The delete subscription method.
+        /// </summary>
+        /// <param name="phoneNumber">
+        /// The phone number.
+        /// </param>
+        /// <param name="shortCode">
+        /// The short code.
+        /// </param>
+        /// <param name="keyWord">
+        /// The key word.
+        /// </param>
+        /// <returns>
+        /// The <see cref="dynamic"/>.
+        /// </returns>
+        /// <exception cref="AfricasTalkingGatewayException">
+        /// </exception>
         public dynamic DeleteSubscription(string phoneNumber, string shortCode, string keyWord)
         {
             if (phoneNumber.Length == 0 || shortCode.Length == 0 || keyWord.Length == 0)
             {
                 throw new AfricasTalkingGatewayException("Some Parameters are missing!");
             }
+
             var data = new Hashtable
             {
                 ["username"] = _username,
@@ -150,6 +268,20 @@ namespace AfricasTalkingCS
             return json;
         }
 
+        /// <summary>
+        /// The call method.
+        /// </summary>
+        /// <param name="from">
+        /// The from.
+        /// </param>
+        /// <param name="to">
+        /// The to.
+        /// </param>
+        /// <returns>
+        /// The <see cref="dynamic"/>.
+        /// </returns>
+        /// <exception cref="AfricasTalkingGatewayException">
+        /// </exception>
         public dynamic Call(string from, string to)
         {
             var data = new Hashtable
@@ -165,7 +297,6 @@ namespace AfricasTalkingCS
             //    { "from", from },
             //    { "to", to }
             // };
-            
             try
             {
                 var url = VoiceUrl + "/call";
@@ -179,6 +310,20 @@ namespace AfricasTalkingCS
             }
         }
 
+        /// <summary>
+        /// The get number of queued calls method.
+        /// </summary>
+        /// <param name="phoneNumber">
+        /// The phone number.
+        /// </param>
+        /// <param name="queueName">
+        /// The queue name.
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
+        /// <exception cref="AfricasTalkingGatewayException">
+        /// </exception>
         public int GetNumberOfQueuedCalls(string phoneNumber, string queueName = null)
         {
             var data = new Hashtable
@@ -200,6 +345,17 @@ namespace AfricasTalkingCS
             throw new AfricasTalkingGatewayException(json["errorMessage"]);
         }
 
+        /// <summary>
+        /// The send airtime method.
+        /// </summary>
+        /// <param name="recepients">
+        /// The recepients.
+        /// </param>
+        /// <returns>
+        /// The <see cref="dynamic"/>.
+        /// </returns>
+        /// <exception cref="AfricasTalkingGatewayException">
+        /// </exception>
         public dynamic SendAirtime(dynamic recepients)
         {
             var urlString = AirtimeUrl + "/send";
@@ -218,6 +374,14 @@ namespace AfricasTalkingCS
             }
         }
 
+        /// <summary>
+        /// The get user data method.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="dynamic"/>.
+        /// </returns>
+        /// <exception cref="AfricasTalkingGatewayException">
+        /// </exception>
         public dynamic GetUserData()
         {
             var urlString = Userdata + "?username=" + _username;
@@ -279,6 +443,17 @@ namespace AfricasTalkingCS
         /// </summary>
         private string PaymentsHost => (ReferenceEquals(_environment, "sandbox") ? "https://payments.sandbox.africastalking.com" : "https://payments.africastalking.com");
 
+        /// <summary>
+        /// The send get request helper method.
+        /// </summary>
+        /// <param name="urlString">
+        /// The url string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        /// <exception cref="AfricasTalkingGatewayException">
+        /// </exception>
         private string SendGetRequest(string urlString)
         {
             try
@@ -310,6 +485,20 @@ namespace AfricasTalkingCS
             }
         }
 
+        /// <summary>
+        /// The send post request helper method.
+        /// </summary>
+        /// <param name="data">
+        /// The data.
+        /// </param>
+        /// <param name="urlString">
+        /// The url string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        /// <exception cref="AfricasTalkingGatewayException">
+        /// </exception>
         private string SendPostRequest(IDictionary data, string urlString)
         {
             try
@@ -514,7 +703,19 @@ namespace AfricasTalkingCS
                 throw new AfricasTalkingGatewayException(e);
             }
         }
-        
+
+        /// <summary>
+        /// The mobile Business to Client method.
+        /// </summary>
+        /// <param name="productName">
+        /// The product name.
+        /// </param>
+        /// <param name="recepients">
+        /// The recepients.
+        /// </param>
+        /// <returns>
+        /// The <see cref="dynamic"/>.
+        /// </returns>
         public dynamic MobileB2C(string productName, IEnumerable<MobileB2CRecepient> recepients)
         {
             var requestBody = new RequestBody
@@ -527,7 +728,18 @@ namespace AfricasTalkingCS
             return response;
         }
 
-
+        /// <summary>
+        /// The post helper method.
+        /// </summary>
+        /// <param name="requestBody">
+        /// The request body.
+        /// </param>
+        /// <param name="url">
+        /// The url.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataResult"/>.
+        /// </returns>
         private DataResult Post(RequestBody requestBody, string url)
         {
             var httpClient = new HttpClient();
@@ -538,6 +750,18 @@ namespace AfricasTalkingCS
             return result.Result;
         }
 
+        /// <summary>
+        /// The post as json helper method.
+        /// </summary>
+        /// <param name="dataMap">
+        /// The data map.
+        /// </param>
+        /// <param name="url">
+        /// The url.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
         private string PostAsJson(CheckOutData dataMap, string url)
         {
             var client = new HttpClient();
@@ -549,6 +773,24 @@ namespace AfricasTalkingCS
             return stringResult;
         }
 
+        /// <summary>
+        /// The remote certificate validation callback for SSL validations.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="certificate">
+        /// The certificate.
+        /// </param>
+        /// <param name="chain">
+        /// The chain.
+        /// </param>
+        /// <param name="sslpolicyerrors">
+        /// The sslpolicyerrors.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
         private static bool RemoteCertificateValidationCallback(
             object sender,
             X509Certificate certificate,
