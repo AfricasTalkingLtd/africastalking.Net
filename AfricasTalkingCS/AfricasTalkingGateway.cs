@@ -25,7 +25,7 @@ namespace AfricasTalkingCS
     using Newtonsoft.Json.Linq;
 
     /// <summary>
-    /// The africas talking gateway.
+    /// The africas talking gateway class. Accepting sandbox as an environment
     /// </summary>
     public class AfricasTalkingGateway
     {
