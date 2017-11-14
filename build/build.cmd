@@ -1,7 +1,5 @@
 echo off
 
-
-
 pushd .
 
 cd %~dp0%
