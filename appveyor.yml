@@ -6,28 +6,12 @@ build_script:
 
 - ps: >-
 
-    git clone -q --branch=master https://github.com/AfricasTalkingLtd/africastalking.Net.git C:\projects\africastalking.Net.git
-
-
-
-
+    git clone -q --branch=master https://github.com/AfricasTalkingLtd/africastalking.Net.git C:\projects\africastalking
 
     git checkout -qf master
 
-
-
-
-
     dotnet restore -v quiet
 
-
-
-
-
     dotnet build /p:configuration=Release /p:Version=$($env:appveyor_build_version)
-
-
-
-
 
     .\build\build.cmd
