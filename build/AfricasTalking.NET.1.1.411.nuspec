@@ -43,8 +43,8 @@
     </frameworkAssemblies>
   </metadata>
   <files>
-    <file src="D:\RepoMan\africastalking.Net\AfricasTalkingCS\bin\Debug\net45\AfricasTalkingCS.dll" target="lib\net45\AfricasTalkingCS.dll" />
-    <file src="D:\RepoMan\africastalking.Net\AfricasTalkingCS\bin\Debug\net46\AfricasTalkingCS.dll" target="lib\net46\AfricasTalkingCS.dll" />
-    <file src="D:\RepoMan\africastalking.Net\AfricasTalkingCS\bin\Debug\netstandard2.0\AfricasTalkingCS.dll" target="lib\netstandard2.0\AfricasTalkingCS.dll" />
+    <file src="AfricasTalkingCS45.dll" target="lib\net45\AfricasTalkingCS.dll" />
+    <file src="AfricasTalkingCS46.dll" target="lib\net46\AfricasTalkingCS.dll" />
+    <file src="AfricasTalkingCS20.dll" target="lib\netstandard2.0\AfricasTalkingCS.dll" />
   </files>
 </package>
