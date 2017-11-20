@@ -391,6 +391,9 @@ namespace AfricasTalkingCS
             return json;
         }
 
+
+        private string BankTransferUrl => PaymentsHost + "bank/tarnsfer"
+;
         /// <summary>
         /// Main payments endpoint.
         /// </summary>
@@ -615,19 +618,53 @@ namespace AfricasTalkingCS
             }
         }
 
-        /// <summary>
-        /// This method handles POST requests to the POST request the B2B endpoint
-        /// </summary>
-        /// <param name="dataMap">
-        /// Structured JSON Object containing all B2B arguments.
-        /// </param>
-        /// <param name="url">
-        /// The B2B End-point.
-        /// </param>
-        /// <returns>
-        /// Server response.
-        /// </returns>
-        private string PostB2BJson(B2BData dataMap, string url)
+
+        public dynamic BankTransfer(string productName, IEnumerable <BankAccountDetails> bankAccountDetails, string currencyCode, decimal amount, string naration, Dictionary<string, string> metadata = null)
+        {
+            var transferDetails = new BankTransferDetails
+            {
+                BankAccount = bankAccountDetails.ToList(),
+                CurrencyCode = currencyCode,
+                Amount = amount,
+                Narration = naration,
+                Username = _username
+            };
+            if (metadata != null)
+            {
+                transferDetails.Metadata = metadata;
+            }
+
+            try
+            {
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Add("apikey", _apikey);
+                var result = client.PostAsJsonAsync(BankTransferUrl, transferDetails).Result;
+                result.EnsureSuccessStatusCode();
+                var stringResult = result.Content.ReadAsStringAsync().Result;
+                return stringResult;
+            }
+            catch (Exception exception)
+            {
+
+                throw new AfricasTalkingGatewayException(exception);
+            }
+
+        }
+
+
+    /// <summary>
+    /// This method handles POST requests to the POST request the B2B endpoint
+    /// </summary>
+    /// <param name="dataMap">
+    /// Structured JSON Object containing all B2B arguments.
+    /// </param>
+    /// <param name="url">
+    /// The B2B End-point.
+    /// </param>
+    /// <returns>
+    /// Server response.
+    /// </returns>
+    private string PostB2BJson(B2BData dataMap, string url)
         {
             var client = new HttpClient();
             client.DefaultRequestHeaders.Add("apiKey", this._apikey);
