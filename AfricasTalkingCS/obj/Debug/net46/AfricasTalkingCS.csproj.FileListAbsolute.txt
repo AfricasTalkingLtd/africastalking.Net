@@ -12,4 +12,3 @@ D:\RepoMan\africastalking.Net\AfricasTalkingCS\obj\Debug\net46\AfricasTalkingCS.
 D:\RepoMan\africastalking.Net\AfricasTalkingCS\obj\Debug\net46\AfricasTalkingCS.AssemblyInfo.cs
 D:\RepoMan\africastalking.Net\AfricasTalkingCS\obj\Debug\net46\AfricasTalkingCS.dll
 D:\RepoMan\africastalking.Net\AfricasTalkingCS\obj\Debug\net46\AfricasTalkingCS.pdb
-D:\RepoMan\africastalking.Net\AfricasTalkingCS\obj\Debug\net46\AfricasTalkingCS.csprojResolveAssemblyReference.cache
