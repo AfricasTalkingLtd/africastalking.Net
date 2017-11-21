@@ -391,6 +391,7 @@ namespace AfricasTalkingCS
             return json;
         }
 
+        private string BankCheckoutURL => PaymentsHost + "/bank/checkout/charge";
 
         private string OTPValidationURL => PaymentsHost + "/bank/checkout/validate";
 
@@ -649,11 +650,11 @@ namespace AfricasTalkingCS
         }
 
         // http://docs.africastalking.com/bank/transfer
-        public dynamic BankTransfer(string productName, IEnumerable <BankAccountDetails> bankAccountDetails, string currencyCode, decimal amount, string naration, Dictionary<string, string> metadata = null)
+        public dynamic BankTransfer(string productName, IEnumerable <BankAccountDetails> recipients, string currencyCode, decimal amount, string naration, Dictionary<string, string> metadata = null)
         {
             var transferDetails = new BankTransferDetails
             {
-                BankAccount = bankAccountDetails.ToList(),
+                Recipients = recipients.ToList(),
                 CurrencyCode = currencyCode,
                 Amount = amount,
                 Narration = naration,
