@@ -391,6 +391,10 @@ namespace AfricasTalkingCS
             return json;
         }
 
+        private string CardOTPValidationURL => PaymentsHost + "/card/checkout/validate";
+
+        private string CardCheckoutURL => PaymentsHost + "/card/checkout/charge";
+
         private string BankCheckoutURL => PaymentsHost + "/bank/checkout/charge";
 
         private string OTPValidationURL => PaymentsHost + "/bank/checkout/validate";
@@ -618,6 +622,42 @@ namespace AfricasTalkingCS
             {
                 throw new AfricasTalkingGatewayException(e.StackTrace+e.Message+e.Source);
             }
+        }
+
+        //  http://docs.africastalking.com/card/validate
+
+        // http://docs.africastalking.com/card/checkout
+
+        public dynamic CardCheckout(string productName, CardDetails paymentCard, string currencyCode, decimal amount, string narration, Dictionary<string,string> metadata = null)
+        {
+            var cardCheckout = new CardCheckoutDetails
+            {
+                Username = _username,
+                ProductName = productName,
+                CurrencyCode = currencyCode,
+                PaymentCard = paymentCard,
+                Amount = amount,
+                Narration = narration
+            };
+            if (metadata != null)
+            {
+                cardCheckout.Metadata = metadata;
+            }
+            try
+            {
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Add("apikey", _apikey);
+                var result = client.PostAsJsonAsync(CardCheckoutURL, value: cardCheckout).Result;
+                result.EnsureSuccessStatusCode();
+                var stringResult = result.Content.ReadAsStringAsync().Result;
+                return stringResult;
+            }
+            catch (Exception exception)
+            {
+
+                throw new AfricasTalkingGatewayException(exception);
+            }
+
         }
 
         // http://docs.africastalking.com/bank/checkout
