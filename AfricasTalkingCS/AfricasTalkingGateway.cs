@@ -620,13 +620,27 @@ namespace AfricasTalkingCS
             }
             catch (Exception e)
             {
-                throw new AfricasTalkingGatewayException(e.StackTrace+e.Message+e.Source);
+                throw new AfricasTalkingGatewayException(e.StackTrace + e.Message + e.Source);
             }
         }
 
         //  http://docs.africastalking.com/card/validate
 
-        public dynamic ValidateCardOTP(string transactionID, string otp)
+        /// <summary>
+        /// Initiate Card Validation through OTP.
+        /// </summary>
+        /// <param name="transactionID">
+        /// The transaction id.
+        /// </param>
+        /// <param name="otp">
+        /// One Time Password.
+        /// </param>
+        /// <returns>
+        /// The <see cref="dynamic"/>.
+        /// </returns>
+        /// <exception cref="AfricasTalkingGatewayException">
+        /// </exception>
+        public dynamic ValidateCardOtp(string transactionID, string otp)
         {
             var otpValidate = new CardOTPData
             {
@@ -646,13 +660,38 @@ namespace AfricasTalkingCS
             }
             catch (Exception exception)
             {
-
                 throw new AfricasTalkingGatewayException(exception);
             }
         }
 
         // http://docs.africastalking.com/card/checkout
 
+        /// <summary>
+        /// Initiate Card Checkout.
+        /// </summary>
+        /// <param name="productName">
+        /// The product name.
+        /// </param>
+        /// <param name="paymentCard">
+        /// The payment card.
+        /// </param>
+        /// <param name="currencyCode">
+        /// The currency code.
+        /// </param>
+        /// <param name="amount">
+        /// The amount.
+        /// </param>
+        /// <param name="narration">
+        /// The narration.
+        /// </param>
+        /// <param name="metadata">
+        /// Optional Metadata.
+        /// </param>
+        /// <returns>
+        /// The <see cref="dynamic"/>.
+        /// </returns>
+        /// <exception cref="AfricasTalkingGatewayException">
+        /// </exception>
         public dynamic CardCheckout(string productName, CardDetails paymentCard, string currencyCode, decimal amount, string narration, Dictionary<string,string> metadata = null)
         {
             var cardCheckout = new CardCheckoutDetails
@@ -668,6 +707,7 @@ namespace AfricasTalkingCS
             {
                 cardCheckout.Metadata = metadata;
             }
+
             try
             {
                 var client = new HttpClient();
@@ -679,10 +719,8 @@ namespace AfricasTalkingCS
             }
             catch (Exception exception)
             {
-
                 throw new AfricasTalkingGatewayException(exception);
             }
-
         }
 
         // http://docs.africastalking.com/bank/checkout
@@ -716,7 +754,21 @@ namespace AfricasTalkingCS
 
         // http://docs.africastalking.com/bank/validate
 
-        public dynamic OTPValidate(string transactionID, string otp)
+        /// <summary>
+        /// The One Time Password to Validate Against.
+        /// </summary>
+        /// <param name="transactionID">
+        /// The transaction id.
+        /// </param>
+        /// <param name="otp">
+        /// The otp.
+        /// </param>
+        /// <returns>
+        /// The <see cref="dynamic"/>.
+        /// </returns>
+        /// <exception cref="AfricasTalkingGatewayException">
+        /// </exception>
+        public dynamic OtpValidate(string transactionID, string otp)
         {
             var otpValidate = new OTPData
             {
@@ -726,7 +778,6 @@ namespace AfricasTalkingCS
             };
 
             // Pardon my repetitivenes: I was just too lazy ☻
-
             try
             {
                 var client = new HttpClient();
@@ -738,12 +789,38 @@ namespace AfricasTalkingCS
             }
             catch (Exception exception)
             {
-
                 throw new AfricasTalkingGatewayException(exception);
             }
         }
 
         // http://docs.africastalking.com/bank/transfer
+
+        /// <summary>
+        /// Initiate Bank Bank Transfer process.
+        /// </summary>
+        /// <param name="productName">
+        /// This value identifies the Africa's Talking Payment Product that should be used to initiate this transaction.
+        /// </param>
+        /// <param name="recipients">
+        /// This contains a list of Recipient elements
+        /// </param>
+        /// <param name="currencyCode">
+        /// The currency code.
+        /// </param>
+        /// <param name="amount">
+        /// The amount.
+        /// </param>
+        /// <param name="naration">
+        /// A short description of the transaction that can be displayed on the client's statement.
+        /// </param>
+        /// <param name="metadata">
+        /// This value contains a map of any metadata that you would like us to associate with this request. You can use this field to send data that will map notifications to checkout requests, since we will include it when we send notifications once the transaction is complete.
+        /// </param>
+        /// <returns>
+        /// The <see cref="dynamic"/>.
+        /// </returns>
+        /// <exception cref="AfricasTalkingGatewayException">
+        /// </exception>
         public dynamic BankTransfer(string productName, IEnumerable <BankAccountDetails> recipients, string currencyCode, decimal amount, string naration, Dictionary<string, string> metadata = null)
         {
             var transferDetails = new BankTransferDetails
