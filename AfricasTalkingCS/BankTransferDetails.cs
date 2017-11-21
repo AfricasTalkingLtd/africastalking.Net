@@ -9,8 +9,8 @@ namespace AfricasTalkingCS
 {
     class BankTransferDetails
     {
-        [JsonProperty("bankAccount")]
-        public List<BankAccountDetails> BankAccount { get; set; }
+        [JsonProperty("recipients")]
+        public List<BankAccountDetails> Recipients { get; set; }
         [JsonProperty("currencyCode")]
         public string CurrencyCode { get; set; }
         [JsonProperty("amount")]
@@ -23,7 +23,7 @@ namespace AfricasTalkingCS
         public string Username { get; set; }
         public BankTransferDetails()
         {
-            BankAccount = new List<BankAccountDetails>();
+            Recipients = new List<BankAccountDetails>();
         }
         public void AddMetadata (string key, string value)
         {
