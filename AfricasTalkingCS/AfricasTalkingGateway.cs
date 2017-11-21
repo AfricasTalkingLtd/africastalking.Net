@@ -392,8 +392,9 @@ namespace AfricasTalkingCS
         }
 
 
-        private string BankTransferUrl => PaymentsHost + "bank/tarnsfer"
-;
+        private string OTPValidationURL => PaymentsHost + "/bank/checkout/validate";
+
+        private string BankTransferUrl => PaymentsHost + "/bank/transfer";
         /// <summary>
         /// Main payments endpoint.
         /// </summary>
@@ -618,7 +619,36 @@ namespace AfricasTalkingCS
             }
         }
 
+        // http://docs.africastalking.com/bank/validate
 
+        public dynamic OTPValidate(string transactionID, string otp)
+        {
+            var otpValidate = new OTPData
+            {
+                Username = _username,
+                TransactionID = transactionID,
+                OTP = otp
+            };
+
+            // Pardon my repetitivenes: I was just too lazy ☻
+
+            try
+            {
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Add("apikey", _apikey);
+                var result = client.PostAsJsonAsync(OTPValidationURL, value: otpValidate).Result;
+                result.EnsureSuccessStatusCode();
+                var stringResult = result.Content.ReadAsStringAsync().Result;
+                return stringResult;
+            }
+            catch (Exception exception)
+            {
+
+                throw new AfricasTalkingGatewayException(exception);
+            }
+        }
+
+        // http://docs.africastalking.com/bank/transfer
         public dynamic BankTransfer(string productName, IEnumerable <BankAccountDetails> bankAccountDetails, string currencyCode, decimal amount, string naration, Dictionary<string, string> metadata = null)
         {
             var transferDetails = new BankTransferDetails
