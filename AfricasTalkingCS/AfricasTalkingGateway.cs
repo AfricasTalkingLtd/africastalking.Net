@@ -626,6 +626,31 @@ namespace AfricasTalkingCS
 
         //  http://docs.africastalking.com/card/validate
 
+        public dynamic ValidateCardOTP(string transactionID, string otp)
+        {
+            var otpValidate = new CardOTPData
+            {
+                Username = _username,
+                TransactionID = transactionID,
+                OTP = otp
+            };
+            
+            try
+            {
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Add("apikey", _apikey);
+                var result = client.PostAsJsonAsync(CardOTPValidationURL, value: otpValidate).Result;
+                result.EnsureSuccessStatusCode();
+                var stringResult = result.Content.ReadAsStringAsync().Result;
+                return stringResult;
+            }
+            catch (Exception exception)
+            {
+
+                throw new AfricasTalkingGatewayException(exception);
+            }
+        }
+
         // http://docs.africastalking.com/card/checkout
 
         public dynamic CardCheckout(string productName, CardDetails paymentCard, string currencyCode, decimal amount, string narration, Dictionary<string,string> metadata = null)
