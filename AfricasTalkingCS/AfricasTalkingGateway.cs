@@ -620,6 +620,35 @@ namespace AfricasTalkingCS
             }
         }
 
+        // http://docs.africastalking.com/bank/checkout
+        public dynamic BankCheckout(string productName, BankAccountDetails bankAccountDetails, string currencyCode, decimal amount, string narration, Dictionary<string,string> metadata = null)
+        {
+            var bankCheckout = new BankCheckoutDetails
+            {
+                Username = _username,
+                ProductName = productName,
+                CurrencyCode = currencyCode,
+                Amount = amount,
+                Narration = narration,
+                BankAccount = bankAccountDetails
+            };
+            if (metadata != null) bankCheckout.Metadata = metadata;
+            try
+            {
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Add("apikey", _apikey);
+                var result = client.PostAsJsonAsync(BankCheckoutURL, value: bankCheckout).Result;
+                result.EnsureSuccessStatusCode();
+                var stringResult = result.Content.ReadAsStringAsync().Result;
+                return stringResult;
+            }
+            catch (Exception exception)
+            {
+
+                throw new AfricasTalkingGatewayException(exception);
+            }
+        }
+
         // http://docs.africastalking.com/bank/validate
 
         public dynamic OTPValidate(string transactionID, string otp)
@@ -840,7 +869,7 @@ namespace AfricasTalkingCS
             var stringResult = result.Content.ReadAsStringAsync().Result;
             return stringResult;
         }
-
+        
         /// <summary>
         /// The remote certificate validation callback for SSL validations.
         /// </summary>
