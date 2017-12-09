@@ -19,22 +19,23 @@ namespace OTPCardValidation
             var transactionId = "id";
             const string Env = "sandbox";
             var gateway = new AfricasTalkingGateway(Username, ApiKey, Env);
-            const string ProductName = "coolproduct";
+            const string ProductName = "awesomeproduct";
             const string CurrencyCode = "NGN";
-            const decimal Amount = 50000M;
+            const decimal Amount = 7500.50M;
             const string Narration = "Buy Aluku Records";
             var metadata = new Dictionary<string, string>
                                {
                                    { "Parent Company",  "Offering Records" },
                                    { "C.E.O", "Boddhi Satva" }
                                };
-            const short CardCvv = 654;
-            const string CardNum = "123456789000";
+            const short CardCvv = 123;
+            const string CardNum = "123456789012345";
             const string CountryCode = "NG";
-            const string CardPin = "2345";
-            const string ValidTillMonth = "12";
-            const string ValidTillYear = "2019";
-            var cardDetails = new CardDetails(CardNum, CountryCode, CardCvv, ValidTillMonth, ValidTillYear, CardPin);
+            const string CardPin = "1234";
+            const int ValidTillMonth = 9;
+            const int ValidTillYear = 2019;
+            var cardDetails = new PaymentCard(CardPin, CountryCode, CardCvv, ValidTillMonth, ValidTillYear, CardNum);
+            
 
             try
             {
@@ -56,9 +57,11 @@ namespace OTPCardValidation
                  * 
                  */
                 var resObject = JsonConvert.DeserializeObject(checkout);
+                Console.WriteLine(resObject);
                 if (resObject["status"] == "PendingValidation")
                 {
                     transactionId = resObject["transactionId"];
+                    Console.WriteLine(transactionId);
                 }
             }
             catch (AfricasTalkingGatewayException e)
