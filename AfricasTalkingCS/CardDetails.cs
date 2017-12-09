@@ -9,32 +9,42 @@ namespace AfricasTalkingCS
 {
     public class CardDetails
     {
-        [JsonProperty("number")]
-        public string CardNumber { get; set; }
-        [JsonProperty("countryCode")]
-        public string CountryCode { get; set; }
-        [JsonProperty("cvvNumber")]
-        public string CVVNumber { get; set; }
-        [JsonProperty("expiryMonth")]
-        public string ExpiryMonth { get; set; }
-        [JsonProperty("expiryYear")]
-        public string ExpiryYear { get; set; }
-        [JsonProperty("authToken")]
-        public string AuthToken { get; set; }
+     // [JsonProperty("number")]
 
-        public CardDetails(string cardNumber, string countryCode, string cVVNumber, string expiryMonth, string expiryYear, string authToken)
+        public string number { get; set; }
+
+     // [JsonProperty("countryCode")]
+        public string countryCode { get; set; }
+
+     // [JsonProperty("cvvNumber")]
+
+        public short cvvNumber { get; set; }
+
+     //  [JsonProperty("expiryMonth")]
+
+        public string expiryMonth { get; set; }
+
+     // [JsonProperty("expiryYear")] 
+
+        public string expiryYear { get; set; }
+
+     // [JsonProperty("authToken")]
+
+        public string authToken { get; set; }
+
+        public CardDetails(string cardNumber, string countryCode, short cVVNumber, string expiryMonth, string expiryYear, string authToken)
         {
-            CardNumber = cardNumber ?? throw new ArgumentNullException(nameof(cardNumber));
-            CountryCode = countryCode ?? throw new ArgumentNullException(nameof(countryCode));
-            CVVNumber = cVVNumber ?? throw new ArgumentNullException(nameof(cVVNumber));
-            ExpiryMonth = expiryMonth ?? throw new ArgumentNullException(nameof(expiryMonth));
-            ExpiryYear = expiryYear ?? throw new ArgumentNullException(nameof(expiryYear));
-            AuthToken = authToken ?? throw new ArgumentNullException(nameof(authToken));
+            this.number = cardNumber ?? throw new ArgumentNullException(nameof(cardNumber));
+            this.countryCode = countryCode ?? throw new ArgumentNullException(nameof(countryCode));
+            this.cvvNumber = cVVNumber;
+            this.expiryMonth = expiryMonth ?? throw new ArgumentNullException(nameof(expiryMonth));
+            this.expiryYear = expiryYear ?? throw new ArgumentNullException(nameof(expiryYear));
+            this.authToken = authToken ?? throw new ArgumentNullException(nameof(authToken));
         }
-        public string ToJson()
-        {
-            var json = JsonConvert.SerializeObject(this);
-            return json;
-        }
+        //public string ToJson()
+        //{
+        //    var json = JsonConvert.SerializeObject(this);
+        //    return json;
+        //}
     }
 }
