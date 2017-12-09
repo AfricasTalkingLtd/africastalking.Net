@@ -4,11 +4,9 @@ namespace AfricasTalkingCS
 {
     public class OTPData
     {
-        [JsonProperty("username")]
-        public string Username { get; set; }
-        [JsonProperty("transactionId")]
-        public string TransactionID { get; set; }
-        [JsonProperty("otp")]
-        public string OTP { get; set; }
+        public string username { get; set; }
+        public string transactionId { get; set; }
+        public string otp { get; set; }
+      
     }
 }
