@@ -631,7 +631,7 @@ namespace AfricasTalkingCS
         /// <summary>
         /// Payment Card Checkout Validation APIs allow your application to validate card charge requests that deduct money from a customer's Debit or Credit Card.
         /// </summary>
-        /// <param name="transactionID">
+        /// <param name="transactionId">
         /// This value identifies the transaction that your application wants to validate. This value is contained in the response to the charge request.
         /// </param>
         /// <param name="otp">
@@ -643,23 +643,19 @@ namespace AfricasTalkingCS
         /// <exception cref="AfricasTalkingGatewayException">
         /// Returns Errors from gateway
         /// </exception>
-        public dynamic ValidateCardOtp(string transactionID, string otp)
+        public dynamic ValidateCardOtp(string transactionId, string otp)
         {
-           var otpValidate = new OTP
+           var otpValidateCard = new OTP
                                  {
                                      Otp = otp,
-                                     TransactionId = transactionID,
+                                     TransactionId = transactionId,
                                      Username = this._username
                                  };
             
             try
             {
-                var client = new HttpClient();
-                client.DefaultRequestHeaders.Add("apikey", this._apikey);
-                var result = client.PostAsJsonAsync(this.CardOTPValidationURL, value: otpValidate).Result;
-                result.EnsureSuccessStatusCode();
-                var stringResult = result.Content.ReadAsStringAsync().Result;
-                return stringResult;
+                var cardOtpResult = this.ValidateOtp(otpValidateCard, this.CardOTPValidationURL);
+                return cardOtpResult;
             }
             catch (Exception exception)
             {
@@ -731,14 +727,15 @@ namespace AfricasTalkingCS
         }
 
         // http://docs.africastalking.com/bank/checkout
+
         /// <summary>
-        /// The bank checkout.
+        /// Bank Account checkout APIs allow your application to collect money into your Payment Wallet by initiating an OTP-validated transaction that deducts money from a customer's bank account.
         /// </summary>
         /// <param name="productName">
         /// The product name.
         /// </param>
-        /// <param name="bankAccountDetails">
-        /// The bank account details.
+        /// <param name="bankAccount">
+        /// The bank Account.
         /// </param>
         /// <param name="currencyCode">
         /// The currency code.
@@ -758,16 +755,16 @@ namespace AfricasTalkingCS
         /// <exception cref="AfricasTalkingGatewayException">
         /// Any Errors thrown by our Gateway
         /// </exception>
-        public dynamic BankCheckout(string productName, BankAccountDetails bankAccountDetails, string currencyCode, decimal amount, string narration, Dictionary<string,string> metadata = null)
+        public dynamic BankCheckout(string productName, BankAccount bankAccount, string currencyCode, decimal amount, string narration, Dictionary<string,string> metadata = null)
         {
-            var bankCheckout = new BankCheckoutDetails
+            var bankCheckout = new BankCheckout()
             {
-                Username = _username,
+                Username = this._username,
                 ProductName = productName,
                 CurrencyCode = currencyCode,
                 Amount = amount,
                 Narration = narration,
-                BankAccount = bankAccountDetails
+                BankAccount = bankAccount
                                    };
             if (metadata != null)
             {
@@ -776,12 +773,8 @@ namespace AfricasTalkingCS
 
             try
             {
-                var client = new HttpClient();
-                client.DefaultRequestHeaders.Add("apikey", _apikey);
-                var result = client.PostAsJsonAsync(BankCheckoutURL, value: bankCheckout).Result;
-                result.EnsureSuccessStatusCode();
-                var stringResult = result.Content.ReadAsStringAsync().Result;
-                return stringResult;
+                var response = this.ProcessBankCheckout(bankCheckout, this.BankCheckoutURL);
+                return response;
             }
             catch (Exception exception)
             {
@@ -789,38 +782,57 @@ namespace AfricasTalkingCS
             }
         }
 
+        /// <summary>
+        /// The process bank checkout method.
+        /// </summary>
+        /// <param name="checkout">
+        /// The checkout object.
+        /// </param>
+        /// <param name="url">
+        /// The url.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        private string ProcessBankCheckout(BankCheckout checkout, string url)
+        {
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Add("apiKey", this._apikey);
+            var result = client.PostAsJsonAsync(url, value: checkout).Result;
+            result.EnsureSuccessStatusCode();
+            var stringResult = result.Content.ReadAsStringAsync().Result;
+            return stringResult;
+        }
+
         // http://docs.africastalking.com/bank/validate
 
         /// <summary>
-        /// The One Time Password to Validate Against.
+        /// Checkout Validation APIs allow your application to validate bank/card charge requests that deduct money from a customer's bank account..
         /// </summary>
-        /// <param name="transactionID">
-        /// The transaction id.
+        /// <param name="transactionId">
+        /// This value identifies the transaction that your application wants to validate. This value is contained in the response to the charge request.
         /// </param>
         /// <param name="otp">
-        /// The otp.
+        /// This contains the One Time Password that the bank sent to the client that owns the bank account that is being charged or that the card issuer sent to the client that owns the payment card.
         /// </param>
         /// <returns>
         /// The <see cref="dynamic"/>.
         /// </returns>
         /// <exception cref="AfricasTalkingGatewayException">
+        /// Errors from our gateway
         /// </exception>
-        public dynamic OtpValidate(string transactionID, string otp)
+        public dynamic OtpValidate(string transactionId, string otp)
         {
             var otpValidate = new OTP
             {
-                Username = _username,
-                TransactionId = transactionID,
+                Username = this._username,
+                TransactionId = transactionId,
                 Otp = otp
             };
             try
             {
-                var client = new HttpClient();
-                client.DefaultRequestHeaders.Add("apikey", _apikey);
-                var result = client.PostAsJsonAsync(OTPValidationURL, value: otpValidate).Result;
-                result.EnsureSuccessStatusCode();
-                var stringResult = result.Content.ReadAsStringAsync().Result;
-                return stringResult;
+                var bankOtpResult = this.ValidateOtp(otpValidate, this.OTPValidationURL);
+                return bankOtpResult;
             }
             catch (Exception exception)
             {
@@ -836,6 +848,28 @@ namespace AfricasTalkingCS
             result.EnsureSuccessStatusCode();
             var stringResult = result.Content.ReadAsStringAsync().Result;
             return stringResult;
+        }
+
+        /// <summary>
+        /// You can initiate an OTP Validation request by sending a HTTP POST request.
+        /// </summary>
+        /// <param name="otp">
+        /// The OTP object.
+        /// </param>
+        /// <param name="url">
+        /// The URL to which the POST request is sent.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        private string ValidateOtp(OTP otp, string url)
+        {
+            var otpClient = new HttpClient();
+            otpClient.DefaultRequestHeaders.Add("apiKey", this._apikey);
+            var result = otpClient.PostAsJsonAsync(url, otp).Result;
+            result.EnsureSuccessStatusCode();
+            var otpResult = result.Content.ReadAsStringAsync().Result;
+            return otpResult;
         }
 
         // http://docs.africastalking.com/bank/transfer
@@ -883,12 +917,8 @@ namespace AfricasTalkingCS
 
             try
             {
-                var client = new HttpClient();
-                client.DefaultRequestHeaders.Add("apikey", _apikey);
-                var result = client.PostAsJsonAsync(BankTransferUrl, transferDetails).Result;
-                result.EnsureSuccessStatusCode();
-                var stringResult = result.Content.ReadAsStringAsync().Result;
-                return stringResult;
+                var bankTransfer = this.ProcessBankTransfer(transferDetails, this.BankTransferUrl);
+                return bankTransfer;
             }
             catch (Exception exception)
             {
@@ -898,6 +928,16 @@ namespace AfricasTalkingCS
 
         }
 
+
+        private string ProcessBankTransfer(BankTransfer transfer, string url)
+        {
+            var transferClient = new HttpClient();
+            transferClient.DefaultRequestHeaders.Add("apiKey",this._apikey);
+            var transferResult = transferClient.PostAsJsonAsync(this.BankTransferUrl, value: transfer).Result;
+            transferResult.EnsureSuccessStatusCode();
+            var transferRes = transferResult.Content.ReadAsStringAsync().Result;
+            return transferRes;
+        }
 
     /// <summary>
     /// This method handles POST requests to the POST request the B2B endpoint
