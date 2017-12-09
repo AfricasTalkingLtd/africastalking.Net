@@ -15,7 +15,7 @@ namespace OTPCardValidation
             Console.WriteLine("Hello World!");
             const string Username = "sandbox";
             const string Otp = "1234";
-            const string ApiKey = "524831sasa4sdacsa6s6dsa6sasaaasad6sa4d6sawefdfdac+4ew+4+we";
+            const string ApiKey = "afd635a4f295dd936312836c0b944d55f2a836e8ff2b63987da5e717cd5ff745";
             var transactionId = "id";
             const string Env = "sandbox";
             var gateway = new AfricasTalkingGateway(Username, ApiKey, Env);
@@ -28,13 +28,13 @@ namespace OTPCardValidation
                                    { "Parent Company",  "Offering Records" },
                                    { "C.E.O", "Boddhi Satva" }
                                };
-            var cardCVV = "654";
-            var cardNum = "123456789000";
-            var countryCode = "NG";
-            var cardPin = "2345";
-            var validTillMonth = "12";
-            var validTillYear = "2019";
-            var cardDetails = new CardDetails(cardNum, countryCode, cardCVV, validTillMonth, validTillYear, cardPin);
+            const short CardCvv = 654;
+            const string CardNum = "123456789000";
+            const string CountryCode = "NG";
+            const string CardPin = "2345";
+            const string ValidTillMonth = "12";
+            const string ValidTillYear = "2019";
+            var cardDetails = new CardDetails(CardNum, CountryCode, CardCvv, ValidTillMonth, ValidTillYear, CardPin);
 
             try
             {
