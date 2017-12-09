@@ -900,20 +900,14 @@ namespace AfricasTalkingCS
         /// </returns>
         /// <exception cref="AfricasTalkingGatewayException">
         /// </exception>
-        public dynamic BankTransfer(string productName, IEnumerable <BankAccountDetails> recipients, string currencyCode, decimal amount, string naration, Dictionary<string, string> metadata = null)
+        public dynamic BankTransfer(string productName, IEnumerable <BankTransferRecipients> recipients)
         {
-            var transferDetails = new BankTransferDetails
+            var transferDetails = new BankTransfer()
             {
                 Recipients = recipients.ToList(),
-                CurrencyCode = currencyCode,
-                Amount = amount,
-                Narration = naration,
-                Username = _username
+                ProductName = productName,
+                Username = this._username
             };
-            if (metadata != null)
-            {
-                transferDetails.Metadata = metadata;
-            }
 
             try
             {
