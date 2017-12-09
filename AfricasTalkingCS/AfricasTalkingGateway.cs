@@ -160,7 +160,7 @@ namespace AfricasTalkingCS
                 ["username"] = _username,
                 ["url"] = url
             };
-            var urlString = VoiceUrl + "/mediaUpload";
+            var urlString = this.VoiceUrl + "/mediaUpload";
             var response = SendPostRequest(data, urlString);
             dynamic json = JObject.Parse(response);
             if ((string)json["errorMesage"] != "None")
@@ -301,7 +301,7 @@ namespace AfricasTalkingCS
             // };
             try
             {
-                var url = VoiceUrl + "/call";
+                var url = this.VoiceUrl + "/call";
                 var response = SendPostRequest(data, url);
                 dynamic json = JObject.Parse(response);
                 return json;
@@ -337,7 +337,7 @@ namespace AfricasTalkingCS
             {
                 data["queueName"] = queueName;
             }
-            var url = VoiceUrl + "/queueStatus";
+            var url = this.VoiceUrl + "/queueStatus";
             var response = SendPostRequest(data, url);
             dynamic json = JObject.Parse(response);
             if ((string)json["errorMessage"] == "None")
@@ -629,33 +629,34 @@ namespace AfricasTalkingCS
         //  http://docs.africastalking.com/card/validate
 
         /// <summary>
-        /// Initiate Card Validation through OTP.
+        /// Payment Card Checkout Validation APIs allow your application to validate card charge requests that deduct money from a customer's Debit or Credit Card.
         /// </summary>
         /// <param name="transactionID">
-        /// The transaction id.
+        /// This value identifies the transaction that your application wants to validate. This value is contained in the response to the charge request.
         /// </param>
         /// <param name="otp">
-        /// One Time Password.
+        /// This contains the One Time Password that the card issuer sent to the client that owns the payment card.
         /// </param>
         /// <returns>
         /// The <see cref="dynamic"/>.
         /// </returns>
         /// <exception cref="AfricasTalkingGatewayException">
+        /// Returns Errors from gateway
         /// </exception>
         public dynamic ValidateCardOtp(string transactionID, string otp)
         {
-            var otpValidate = new CardOTPData
-            {
-                username = _username,
-                transactionId = transactionID,
-                otp = otp
-            };
+           var otpValidate = new OTP
+                                 {
+                                     Otp = otp,
+                                     TransactionId = transactionID,
+                                     Username = this._username
+                                 };
             
             try
             {
                 var client = new HttpClient();
-                client.DefaultRequestHeaders.Add("apikey", _apikey);
-                var result = client.PostAsJsonAsync(CardOTPValidationURL, value: otpValidate).Result;
+                client.DefaultRequestHeaders.Add("apikey", this._apikey);
+                var result = client.PostAsJsonAsync(this.CardOTPValidationURL, value: otpValidate).Result;
                 result.EnsureSuccessStatusCode();
                 var stringResult = result.Content.ReadAsStringAsync().Result;
                 return stringResult;
@@ -669,25 +670,28 @@ namespace AfricasTalkingCS
         // http://docs.africastalking.com/card/checkout
 
         /// <summary>
-        /// Initiate Card Checkout.
+        /// Payment Card Checkout APIs allow your application to collect money into your Payment Wallet by initiating transactions that deduct money from a customer's Debit or Credit Card.These APIs are currently only available in Nigeria on MasterCard and Verve cards.
         /// </summary>
         /// <param name="productName">
-        /// The product name.
+        ///  This value identifies the Africa's Talking Payment Product that should be used to initiate this transaction.
         /// </param>
         /// <param name="paymentCard">
-        /// The payment card.
+        /// This contains the details of the Payment Card to be charged in this transaction. Please note that you can EITHER provider this or provider a checkoutToken if you have one.
         /// </param>
         /// <param name="currencyCode">
-        /// The currency code.
+        ///  This is the 3-digit ISO format currency code for the value of this transaction (e.g NGN, USD, KES etc)
         /// </param>
         /// <param name="amount">
-        /// The amount.
+        /// This is the amount (in the provided currency) that the mobile subscriber is expected to confirm.
         /// </param>
         /// <param name="narration">
-        /// The narration.
+        /// A short description of the transaction that can be displayed on the client's statement.
         /// </param>
         /// <param name="metadata">
-        /// Optional Metadata.
+        /// his value contains a map of any metadata that you would like us to associate with this request. You can use this field to send data that will map notifications to checkout requests, since we will include it when we send notifications once the checkout is complete.
+        /// </param>
+        /// <param name="checkoutToken">
+        /// This value contains a checkout token that has been generated by our APIs as as result of charging a user's Payment Card in a previous transaction. When using a token, the paymentCard data should NOT be populated
         /// </param>
         /// <returns>
         /// The <see cref="dynamic"/>.
@@ -695,38 +699,26 @@ namespace AfricasTalkingCS
         /// <exception cref="AfricasTalkingGatewayException">
         /// Any Errors from our gateway
         /// </exception>
-        public dynamic CardCheckout(string productName, CardDetails paymentCard, string currencyCode, decimal amount, string narration, Dictionary<string,string> metadata = null)
+        public dynamic CardCheckout(string productName, PaymentCard paymentCard, string currencyCode, decimal amount, string narration, Dictionary<string, string> metadata = null, string checkoutToken = null)
         {
-            var cardCheckout = new CardCheckoutDetails
+            var cardCheckout = new CardDetails
             {
-                username = this._username,
-                productName = productName,
-                currencyCode = currencyCode,
-                paymentCard = paymentCard,
-                amount = amount,
-                narration = narration
+                Username = this._username,
+                ProductName = productName,
+                CurrencyCode = currencyCode,
+                PaymentCard = paymentCard,
+                Amount = amount,
+                Narration = narration
             };
             if (metadata != null)
             {
-                cardCheckout.metadata = metadata;
+                cardCheckout.Metadata = metadata;
             }
-
-            // Manually Construct JSON
-
-            //var jobject = new JObject
-            //{
-            //    { "username", cardCheckout.username },
-            //    { "productName", cardCheckout.productName },
-            //    { "currencyCode", cardCheckout.username },
-            //    { "paymentCard", cardCheckout.productName },
-            //    { "amount", cardCheckout.username },
-            //    { "narration", cardCheckout.productName },
-            //    { "metadata", cardCheckout.productName }
-            // };
-
-            //var cardCheckoutPayload = JsonConvert.SerializeObject(cardCheckout);
-            //var httpContent = new StringContent(cardCheckoutPayload.ToString(), Encoding.UTF8, "application/josn");
-
+            if (checkoutToken != null)
+            {
+                cardCheckout.CheckoutToken = checkoutToken;
+            }
+            
             try
             {
                 var response = this.ProcessCardCheckout(cardCheckout, this.CardCheckoutURL);
@@ -815,14 +807,12 @@ namespace AfricasTalkingCS
         /// </exception>
         public dynamic OtpValidate(string transactionID, string otp)
         {
-            var otpValidate = new OTPData
+            var otpValidate = new OTP
             {
-                username = _username,
-                transactionId = transactionID,
-                otp = otp
+                Username = _username,
+                TransactionId = transactionID,
+                Otp = otp
             };
-
-            // Pardon my repetitivenes: I was just too lazy ☻
             try
             {
                 var client = new HttpClient();
@@ -838,7 +828,7 @@ namespace AfricasTalkingCS
             }
         }
 
-        private string ProcessCardCheckout(CardCheckoutDetails details, string checkoutURL)
+        private string ProcessCardCheckout(CardDetails details, string checkoutURL)
         {
             var client = new HttpClient();
             client.DefaultRequestHeaders.Add("apiKey", this._apikey);
