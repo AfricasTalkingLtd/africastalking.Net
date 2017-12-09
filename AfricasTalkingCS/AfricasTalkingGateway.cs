@@ -16,9 +16,11 @@ namespace AfricasTalkingCS
     using System.Linq;
     using System.Net;
     using System.Net.Http;
+    using System.Net.Http.Headers;
     using System.Net.Security;
     using System.Security.Cryptography.X509Certificates;
     using System.Text;
+    using System.Threading.Tasks;
     using System.Web;
 
     using Newtonsoft.Json;
@@ -50,7 +52,7 @@ namespace AfricasTalkingCS
             _username = username;
             _apikey = apikey;
             _environment = "production";
-           _serializer =  new JsonSerializer();
+            _serializer = new JsonSerializer();
         }
 
         /// <summary>
@@ -644,9 +646,9 @@ namespace AfricasTalkingCS
         {
             var otpValidate = new CardOTPData
             {
-                Username = _username,
-                TransactionID = transactionID,
-                OTP = otp
+                username = _username,
+                transactionId = transactionID,
+                otp = otp
             };
             
             try
@@ -691,31 +693,44 @@ namespace AfricasTalkingCS
         /// The <see cref="dynamic"/>.
         /// </returns>
         /// <exception cref="AfricasTalkingGatewayException">
+        /// Any Errors from our gateway
         /// </exception>
         public dynamic CardCheckout(string productName, CardDetails paymentCard, string currencyCode, decimal amount, string narration, Dictionary<string,string> metadata = null)
         {
             var cardCheckout = new CardCheckoutDetails
             {
-                Username = _username,
-                ProductName = productName,
-                CurrencyCode = currencyCode,
-                PaymentCard = paymentCard,
-                Amount = amount,
-                Narration = narration
+                username = this._username,
+                productName = productName,
+                currencyCode = currencyCode,
+                paymentCard = paymentCard,
+                amount = amount,
+                narration = narration
             };
             if (metadata != null)
             {
-                cardCheckout.Metadata = metadata;
+                cardCheckout.metadata = metadata;
             }
+
+            // Manually Construct JSON
+
+            //var jobject = new JObject
+            //{
+            //    { "username", cardCheckout.username },
+            //    { "productName", cardCheckout.productName },
+            //    { "currencyCode", cardCheckout.username },
+            //    { "paymentCard", cardCheckout.productName },
+            //    { "amount", cardCheckout.username },
+            //    { "narration", cardCheckout.productName },
+            //    { "metadata", cardCheckout.productName }
+            // };
+
+            //var cardCheckoutPayload = JsonConvert.SerializeObject(cardCheckout);
+            //var httpContent = new StringContent(cardCheckoutPayload.ToString(), Encoding.UTF8, "application/josn");
 
             try
             {
-                var client = new HttpClient();
-                client.DefaultRequestHeaders.Add("apikey", _apikey);
-                var result = client.PostAsJsonAsync(CardCheckoutURL, value: cardCheckout).Result;
-                result.EnsureSuccessStatusCode();
-                var stringResult = result.Content.ReadAsStringAsync().Result;
-                return stringResult;
+                var response = this.ProcessCardCheckout(cardCheckout, this.CardCheckoutURL);
+                return response;
             }
             catch (Exception exception)
             {
@@ -724,6 +739,33 @@ namespace AfricasTalkingCS
         }
 
         // http://docs.africastalking.com/bank/checkout
+        /// <summary>
+        /// The bank checkout.
+        /// </summary>
+        /// <param name="productName">
+        /// The product name.
+        /// </param>
+        /// <param name="bankAccountDetails">
+        /// The bank account details.
+        /// </param>
+        /// <param name="currencyCode">
+        /// The currency code.
+        /// </param>
+        /// <param name="amount">
+        /// The amount.
+        /// </param>
+        /// <param name="narration">
+        /// The narration.
+        /// </param>
+        /// <param name="metadata">
+        /// The metadata.
+        /// </param>
+        /// <returns>
+        /// The <see cref="dynamic"/>.
+        /// </returns>
+        /// <exception cref="AfricasTalkingGatewayException">
+        /// Any Errors thrown by our Gateway
+        /// </exception>
         public dynamic BankCheckout(string productName, BankAccountDetails bankAccountDetails, string currencyCode, decimal amount, string narration, Dictionary<string,string> metadata = null)
         {
             var bankCheckout = new BankCheckoutDetails
@@ -734,8 +776,12 @@ namespace AfricasTalkingCS
                 Amount = amount,
                 Narration = narration,
                 BankAccount = bankAccountDetails
-            };
-            if (metadata != null) bankCheckout.Metadata = metadata;
+                                   };
+            if (metadata != null)
+            {
+                bankCheckout.Metadata = metadata;
+            }
+
             try
             {
                 var client = new HttpClient();
@@ -747,7 +793,6 @@ namespace AfricasTalkingCS
             }
             catch (Exception exception)
             {
-
                 throw new AfricasTalkingGatewayException(exception);
             }
         }
@@ -772,9 +817,9 @@ namespace AfricasTalkingCS
         {
             var otpValidate = new OTPData
             {
-                Username = _username,
-                TransactionID = transactionID,
-                OTP = otp
+                username = _username,
+                transactionId = transactionID,
+                otp = otp
             };
 
             // Pardon my repetitivenes: I was just too lazy ☻
@@ -791,6 +836,16 @@ namespace AfricasTalkingCS
             {
                 throw new AfricasTalkingGatewayException(exception);
             }
+        }
+
+        private string ProcessCardCheckout(CardCheckoutDetails details, string checkoutURL)
+        {
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Add("apiKey", this._apikey);
+            var result = client.PostAsJsonAsync(checkoutURL, details).Result;
+            result.EnsureSuccessStatusCode();
+            var stringResult = result.Content.ReadAsStringAsync().Result;
+            return stringResult;
         }
 
         // http://docs.africastalking.com/bank/transfer
@@ -933,7 +988,6 @@ namespace AfricasTalkingCS
             };
             try
             {
-                Console.WriteLine(btob);
                 var response = PostB2BJson(btob, B2BPaymentsUrl);
                 return response;
             }

@@ -5,23 +5,16 @@ namespace AfricasTalkingCS
 {
     public class CardCheckoutDetails
     {
-        [JsonProperty("username")]
-        public string Username { get; set; }
-        [JsonProperty("productName")]
-        public string ProductName { get; set; }
-        [JsonProperty("paymentCard")]
-        public CardDetails PaymentCard { get; set; }
-        [JsonProperty("currencyCode")]
-        public string CurrencyCode { get; set; }
-        [JsonProperty("narration")]
-        public string Narration { get; set; }
-        [JsonProperty("amount")]
-        public decimal Amount { get; set; }
-        [JsonProperty("metadata")]
-        public Dictionary<string, string> Metadata { get; set; }
+        public string username { get; set; }
+        public string productName { get; set; }
+        public CardDetails paymentCard { get; set; }
+        public string currencyCode { get; set; }
+        public string narration { get; set; }
+        public decimal amount { get; set; }
+        public Dictionary<string, string> metadata { get; set; }
         public void AddMetadata(string key, string value)
         {
-            Metadata.Add(key, value);
+            metadata.Add(key, value);
         }
         public string ToJson()
         {
