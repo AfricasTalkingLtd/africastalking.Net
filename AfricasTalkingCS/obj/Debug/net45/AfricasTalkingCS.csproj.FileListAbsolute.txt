@@ -7,3 +7,4 @@ D:\RepoMan\africastalking.Net\AfricasTalkingCS\obj\Debug\net45\AfricasTalkingCS.
 D:\RepoMan\africastalking.Net\AfricasTalkingCS\obj\Debug\net45\AfricasTalkingCS.AssemblyInfo.cs
 D:\RepoMan\africastalking.Net\AfricasTalkingCS\obj\Debug\net45\AfricasTalkingCS.dll
 D:\RepoMan\africastalking.Net\AfricasTalkingCS\obj\Debug\net45\AfricasTalkingCS.pdb
+D:\RepoMan\africastalking.Net\AfricasTalkingCS\obj\Debug\net45\AfricasTalkingCS.csprojResolveAssemblyReference.cache
