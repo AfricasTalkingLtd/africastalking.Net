@@ -12,16 +12,15 @@ namespace AfricasTalkingCS
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
-    using System.Net.Http.Headers;
     using System.Net.Security;
     using System.Security.Cryptography.X509Certificates;
     using System.Text;
-    using System.Threading.Tasks;
-    using System.Uri;
+    using System.Text.RegularExpressions;
     using System.Web;
 
     using Newtonsoft.Json;
@@ -80,7 +79,7 @@ namespace AfricasTalkingCS
         /// The send message method.
         /// </summary>
         /// <param name="to">
-        /// The Receipient(s).
+        /// The Recipient(s).
         /// </param>
         /// <param name="message">
         /// The message content.
@@ -89,61 +88,91 @@ namespace AfricasTalkingCS
         /// The Sender.
         /// </param>
         /// <param name="bulkSmsMode">
-        /// The bulk sms mode: set 1 for Bulk SMS
+        /// The bulk SMS mode: set 1 for Bulk SMS
         /// </param>
         /// <param name="options">
-        /// The Options for premium sms.
+        /// The Options for premium SMS.
         /// </param>
         /// <returns>
         /// The <see cref="dynamic"/>.
         /// </returns>
         /// <exception cref="AfricasTalkingGatewayException">
+        /// Errors thrown by the gateway
         /// </exception>
-        public dynamic SendMessage(string to, string message, string from = null, int bulkSmsMode = -1, Hashtable options =null)
+        public dynamic SendMessage(
+            string to,
+            string message,
+            string from = null,
+            int bulkSmsMode = -1,
+            Hashtable options = null)
         {
-            //TODO Convert options to type IDictionary
-            try
+            // TODO Convert options to type IDictionary
+            var isValidphoneNumber = IsPhoneNumber(to);
+            if (to.Length == 0 || message.Length == 0 || !isValidphoneNumber)
             {
-                var data = new Hashtable
+                throw new AfricasTalkingGatewayException("The message is either empty or phone number is not valid");
+            }
+            else
+            {
+                try
                 {
-                    ["username"] = _username,
-                    ["to"] = to,
-                    ["message"] = message
-                };
-                if (from != null)
-                {
-                    data["from"] = from;
-                    data["bulkSmsMode"] = Convert.ToString(bulkSmsMode);
-                    if (options != null)
+                    var data = new Hashtable
+                                   {
+                                       ["username"] = this._username,
+                                       ["to"] = to,
+                                       ["message"] = message
+                                   };
+                    if (from != null)
                     {
-                        if (options.Contains("keyword"))
+                        data["from"] = from;
+                        data["bulkSmsMode"] = Convert.ToString(bulkSmsMode);
+                        if (options != null)
                         {
-                            data["keyword"] = options["keyword"];
-                        }
+                            if (options.Contains("keyword"))
+                            {
+                                data["keyword"] = options["keyword"];
+                            }
 
-                        if (options.Contains("linkId"))
-                        {
-                            data["linkId"] = options["linkId"];
-                        }
+                            if (options.Contains("linkId"))
+                            {
+                                data["linkId"] = options["linkId"];
+                            }
 
-                        if (options.Contains("enqueue"))
-                        {
-                            data["enqueue"] = options["enqueue"];
-                        }
+                            if (options.Contains("enqueue"))
+                            {
+                                data["enqueue"] = options["enqueue"];
+                            }
 
-                        if (options.Contains("retryDurationInHours"))
-                            data["retryDurationInHours"] = options["retryDurationInHours"];
+                            if (options.Contains("retryDurationInHours"))
+                            {
+                                data["retryDurationInHours"] = options["retryDurationInHours"];
+                            }
+                        }
                     }
-                }
 
-                var response = SendPostRequest(data, SmsUrl);
-                dynamic json = JObject.Parse(response);
+                    var response = this.SendPostRequest(data, this.SmsUrl);
+                    dynamic json = JObject.Parse(response);
                     return json;
+                }
+                catch (AfricasTalkingGatewayException e)
+                {
+                    throw new AfricasTalkingGatewayException(e);
+                }
             }
-            catch (AfricasTalkingGatewayException e)
-            {
-                throw new AfricasTalkingGatewayException(e);
-            }
+        }
+
+        /// <summary>
+        /// Checks if the number given is a valid phoneNumber.
+        /// </summary>
+        /// <param name="number">
+        /// The phone number.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        private static bool IsPhoneNumber(string number)
+        {
+            return Regex.Match(number, @"^\+?(\d[\d-. ]+)?(\([\d-. ]+\))?[\d-. ]+\d$").Success;
         }
 
         /// <summary>
@@ -153,6 +182,7 @@ namespace AfricasTalkingCS
         /// The url.
         /// </param>
         /// <exception cref="AfricasTalkingGatewayException">
+        /// Errors from our gateway class
         /// </exception>
         public void UploadMediaFile(string url)
         {
@@ -161,18 +191,20 @@ namespace AfricasTalkingCS
             {
               throw new AfricasTalkingGatewayException("Malformed Url");
             }
-
-            var data = new Hashtable
+            else
             {
-                ["username"] = this._username,
-                ["url"] = url
-            };
-            var urlString = this.VoiceUrl + "/mediaUpload";
-            var response = this.SendPostRequest(data, urlString);
-            dynamic json = JObject.Parse(response);
-            if ((string)json["errorMesage"] != "None")
-            {
-                throw new AfricasTalkingGatewayException(json["errorMessage"]);
+                var data = new Hashtable
+                               {
+                                   ["username"] = this._username,
+                                   ["url"] = url
+                               };
+                var urlString = this.VoiceUrl + "/mediaUpload";
+                var response = this.SendPostRequest(data, urlString);
+                dynamic json = JObject.Parse(response);
+                if ((string)json["errorMesage"] != "None")
+                {
+                    throw new AfricasTalkingGatewayException(json["errorMessage"]);
+                }
             }
         }
 
@@ -189,8 +221,8 @@ namespace AfricasTalkingCS
         /// </exception>
         public dynamic FetchMessages(int lastReceivedId)
         {
-            var url = SmsUrl + "?username=" + _username + "&lastReceivedId" + Convert.ToString(lastReceivedId);
-            var response = SendGetRequest(url);
+            var url = this.SmsUrl + "?username=" + this._username + "&lastReceivedId" + Convert.ToString(lastReceivedId);
+            var response = this.SendGetRequest(url);
 
             if (_responseCode != (int) HttpStatusCode.OK) throw new AfricasTalkingGatewayException(response);
             dynamic json = JObject.Parse(response);
@@ -216,25 +248,30 @@ namespace AfricasTalkingCS
         /// The <see cref="dynamic"/>.
         /// </returns>
         /// <exception cref="AfricasTalkingGatewayException">
+        /// Any error thrown by our gateway class
         /// </exception>
         public dynamic CreateSubscription(string phoneNumber, string shortCode, string keyWord, string checkoutToken)
         {
-            if (phoneNumber.Length == 0 || shortCode.Length == 0 || keyWord.Length == 0 || checkoutToken.Length == 0)
+            if (phoneNumber.Length == 0 || shortCode.Length == 0 || keyWord.Length == 0 || checkoutToken.Length == 0 || !IsPhoneNumber(phoneNumber))
             {
-                throw new AfricasTalkingGatewayException("Some Parameters are missing!");
+                throw new AfricasTalkingGatewayException("Some Parameters are missing or not properly formatted");
             }
 
             var data = new Hashtable
             {
-                ["username"] = _username,
+                ["username"] = this._username,
                 ["phoneNumber"] = phoneNumber,
                 ["shortCode"] = shortCode,
                 ["keyword"] = keyWord,
                 ["checkoutToken"] = checkoutToken
             };
-            var url = SubscriptionUrl + "/create";
-            var response = SendPostRequest(data, url);
-            if (_responseCode != (int) HttpStatusCode.Created) throw new AfricasTalkingGatewayException(response);
+            var url = this.SubscriptionUrl + "/create";
+            var response = this.SendPostRequest(data, url);
+            if (this._responseCode != (int)HttpStatusCode.Created)
+            {
+                throw new AfricasTalkingGatewayException(response);
+            }
+
             dynamic json = JObject.Parse(response);
             return json;
         }
@@ -255,26 +292,33 @@ namespace AfricasTalkingCS
         /// The <see cref="dynamic"/>.
         /// </returns>
         /// <exception cref="AfricasTalkingGatewayException">
+        /// Errors thrown by our gateway
         /// </exception>
         public dynamic DeleteSubscription(string phoneNumber, string shortCode, string keyWord)
         {
-            if (phoneNumber.Length == 0 || shortCode.Length == 0 || keyWord.Length == 0)
+            if (phoneNumber.Length == 0 || shortCode.Length == 0 || keyWord.Length == 0 || !IsPhoneNumber(phoneNumber))
             {
-                throw new AfricasTalkingGatewayException("Some Parameters are missing!");
+                throw new AfricasTalkingGatewayException("Some Parameters are missing or phonenumber is malformed");
             }
-
-            var data = new Hashtable
+            else
             {
-                ["username"] = _username,
-                ["phoneNumber"] = phoneNumber,
-                ["shortCode"] = shortCode,
-                ["keyword"] = keyWord
-            };
-            var url = SubscriptionUrl + "/delete";
-            var response = SendPostRequest(data, url);
-            if (_responseCode != (int) HttpStatusCode.Created) throw new AfricasTalkingGatewayException(response);
-            dynamic json = JObject.Parse(response);
-            return json;
+                var data = new Hashtable
+                               {
+                                   ["username"] = this._username,
+                                   ["phoneNumber"] = phoneNumber,
+                                   ["shortCode"] = shortCode,
+                                   ["keyword"] = keyWord
+                               };
+                var url = this.SubscriptionUrl + "/delete";
+                var response = this.SendPostRequest(data, url);
+                if (this._responseCode != (int)HttpStatusCode.Created)
+                {
+                    throw new AfricasTalkingGatewayException(response);
+                }
+
+                dynamic json = JObject.Parse(response);
+                return json;
+            }
         }
 
         /// <summary>
@@ -290,32 +334,41 @@ namespace AfricasTalkingCS
         /// The <see cref="dynamic"/>.
         /// </returns>
         /// <exception cref="AfricasTalkingGatewayException">
+        /// Errors from our gateway
         /// </exception>
         public dynamic Call(string from, string to)
         {
-            var data = new Hashtable
+            var numbersAreValid = IsPhoneNumber(from) && IsPhoneNumber(to);
+            if (!numbersAreValid)
             {
-                ["username"] = _username,
-                ["from"] = from,
-                ["to"] = to
-            };
-
-            // var data = new Dictionary<string, string>
-            // {
-            //    { "username", _username },
-            //    { "from", from },
-            //    { "to", to }
-            // };
-            try
-            {
-                var url = this.VoiceUrl + "/call";
-                var response = SendPostRequest(data, url);
-                dynamic json = JObject.Parse(response);
-                return json;
+                throw new AfricasTalkingGatewayException("One or both of the phonenumber(s) provided is (are) not valid");
             }
-            catch (AfricasTalkingGatewayException e)
+            else
             {
-                throw new AfricasTalkingGatewayException(e);
+                var data = new Hashtable
+                               {
+                                   ["username"] = this._username,
+                                   ["from"] = from,
+                                   ["to"] = to
+                               };
+
+                // var data = new Dictionary<string, string>
+                // {
+                //    { "username", _username },
+                //    { "from", from },
+                //    { "to", to }
+                // };
+                try
+                {
+                    var url = this.VoiceUrl + "/call";
+                    var response = this.SendPostRequest(data, url);
+                    dynamic json = JObject.Parse(response);
+                    return json;
+                }
+                catch (AfricasTalkingGatewayException e)
+                {
+                    throw new AfricasTalkingGatewayException(e);
+                }
             }
         }
 
@@ -332,48 +385,68 @@ namespace AfricasTalkingCS
         /// The <see cref="int"/>.
         /// </returns>
         /// <exception cref="AfricasTalkingGatewayException">
+        /// Errors from our gateway class
         /// </exception>
         public int GetNumberOfQueuedCalls(string phoneNumber, string queueName = null)
         {
-            var data = new Hashtable
+            if (!IsPhoneNumber(phoneNumber))
             {
-                ["username"] = _username,
-                ["phoneNumbers"] = phoneNumber,
-            };
-            if (queueName != null)
-            {
-                data["queueName"] = queueName;
+                throw new AfricasTalkingGatewayException("Phone Number is invalid");
             }
-            var url = this.VoiceUrl + "/queueStatus";
-            var response = SendPostRequest(data, url);
-            dynamic json = JObject.Parse(response);
-            if ((string)json["errorMessage"] == "None")
+
             {
-                return json["entries"];
+                var data = new Hashtable
+                               {
+                                   ["username"] = this._username,
+                                   ["phoneNumbers"] = phoneNumber,
+                               };
+                if (queueName != null)
+                {
+                    data["queueName"] = queueName;
+                }
+
+                var url = this.VoiceUrl + "/queueStatus";
+                var response = this.SendPostRequest(data, url);
+                dynamic json = JObject.Parse(response);
+                if ((string)json["errorMessage"] == "None")
+                {
+                    return json["entries"];
+                }
+
+                throw new AfricasTalkingGatewayException(json["errorMessage"]);
             }
-            throw new AfricasTalkingGatewayException(json["errorMessage"]);
         }
 
         /// <summary>
         /// The send airtime method.
         /// </summary>
-        /// <param name="recepients">
-        /// The recepients.
+        /// <param name="recipients">
+        /// The recipients.
         /// </param>
         /// <returns>
         /// The <see cref="dynamic"/>.
         /// </returns>
         /// <exception cref="AfricasTalkingGatewayException">
+        /// Errors thrown by our gateway
         /// </exception>
-        public dynamic SendAirtime(dynamic recepients)
+        public dynamic SendAirtime(dynamic recipients)
         {
-            var urlString = AirtimeUrl + "/send";
-            var recipients = JObject.Parse(recepients);
-            var data = new Hashtable { ["username"] = _username, ["recipients"] = "[" + recipients + "]" };
+            if (recipients == null)
+            {
+                throw new AfricasTalkingGatewayException("Your recepients list is malformed");
+            }
+
+            var urlString = this.AirtimeUrl + "/send";
+            var recipientsList = JObject.Parse(recipients);
+            var data = new Hashtable { ["username"] = this._username, ["recipients"] = "[" + recipientsList + "]" };
             try
             {
-                var response = SendPostRequest(data, urlString);
-                if (_responseCode != (int)HttpStatusCode.Created) throw new AfricasTalkingGatewayException(response);
+                var response = this.SendPostRequest(data, urlString);
+                if (this._responseCode != (int)HttpStatusCode.Created)
+                {
+                    throw new AfricasTalkingGatewayException(response);
+                }
+
                 dynamic json = JObject.Parse(response);
                 return json;
             }
@@ -390,76 +463,97 @@ namespace AfricasTalkingCS
         /// The <see cref="dynamic"/>.
         /// </returns>
         /// <exception cref="AfricasTalkingGatewayException">
+        /// Errors thrown by our gateway
         /// </exception>
         public dynamic GetUserData()
         {
-            var urlString = Userdata + "?username=" + _username;
-            var response = SendGetRequest(urlString);
-            if (_responseCode != (int) HttpStatusCode.OK) throw new AfricasTalkingGatewayException(response);
+            var urlString = this.Userdata + "?username=" + this._username;
+            var response = this.SendGetRequest(urlString);
+            if (this._responseCode != (int)HttpStatusCode.OK)
+            {
+                throw new AfricasTalkingGatewayException(response);
+            }
+
             dynamic json = JObject.Parse(response);
             return json;
         }
 
-        private string CardOTPValidationURL => PaymentsHost + "/card/checkout/validate";
+        /// <summary>
+        /// The card OTP validation url.
+        /// </summary>
+        private string CardOtpValidationUrl => this.PaymentsHost + "/card/checkout/validate";
 
-        private string CardCheckoutURL => PaymentsHost + "/card/checkout/charge";
+        /// <summary>
+        /// The card checkout url.
+        /// </summary>
+        private string CardCheckoutUrl => this.PaymentsHost + "/card/checkout/charge";
 
-        private string BankCheckoutURL => PaymentsHost + "/bank/checkout/charge";
+        /// <summary>
+        /// The bank checkout url.
+        /// </summary>
+        private string BankCheckoutUrl => this.PaymentsHost + "/bank/checkout/charge";
 
-        private string OTPValidationURL => PaymentsHost + "/bank/checkout/validate";
+        /// <summary>
+        /// The OTP validation url.
+        /// </summary>
+        private string OtpValidationUrl => this.PaymentsHost + "/bank/checkout/validate";
 
-        private string BankTransferUrl => PaymentsHost + "/bank/transfer";
+        /// <summary>
+        /// The bank transfer url.
+        /// </summary>
+        private string BankTransferUrl => this.PaymentsHost + "/bank/transfer";
+
         /// <summary>
         /// Main payments endpoint.
         /// </summary>
-        private string PaymentsUrl => PaymentsHost + "/mobile/checkout/request";
+        private string PaymentsUrl => this.PaymentsHost + "/mobile/checkout/request";
 
         /// <summary>
         /// Business to Business API endpoint.
         /// </summary>
-        private string B2BPaymentsUrl => PaymentsHost + "/mobile/b2b/request";
+        private string B2BPaymentsUrl => this.PaymentsHost + "/mobile/b2b/request";
 
         /// <summary>
         /// Business to Client Endpoint.
         /// </summary>
-        private string B2CPaymentsUrl => PaymentsHost + "/mobile/b2c/request";
+        private string B2CPaymentsUrl => this.PaymentsHost + "/mobile/b2c/request";
 
         /// <summary>
         /// Subscription endpoint.
         /// </summary>
-        private string SubscriptionUrl => ApiHost + "/version1/subscription";
+        private string SubscriptionUrl => this.ApiHost + "/version1/subscription";
 
         /// <summary>
-        /// The Userdata endpoint.
+        /// The user data endpoint.
         /// </summary>
-        private string Userdata => ApiHost + "/version1/user";
+        private string Userdata => this.ApiHost + "/version1/user";
 
         /// <summary>
         /// Airtime Endpoint.
         /// </summary>
-        private string AirtimeUrl => ApiHost + "/version1/airtime";
+        private string AirtimeUrl => this.ApiHost + "/version1/airtime";
 
         /// <summary>
         /// Voice endpoint.
         /// </summary>
-        private string VoiceUrl => (ReferenceEquals(_environment, "sandbox")
+        private string VoiceUrl => (ReferenceEquals(this._environment, "sandbox")
             ? "https://voice.sandbox.africastalking.com"
             : "https://voice.africastalking.com");
 
         /// <summary>
         /// SMS Endpoint.
         /// </summary>
-        private string SmsUrl => ApiHost + "/version1/messaging";
+        private string SmsUrl => this.ApiHost + "/version1/messaging";
 
         /// <summary>
         /// Root API host.
         /// </summary>
-        private string ApiHost => (ReferenceEquals(_environment,"sandbox")? "https://api.sandbox.africastalking.com": "https://api.africastalking.com");
+        private string ApiHost => (ReferenceEquals(this._environment, "sandbox") ? "https://api.sandbox.africastalking.com": "https://api.africastalking.com");
 
         /// <summary>
         /// Payment endpoint.
         /// </summary>
-        private string PaymentsHost => (ReferenceEquals(_environment, "sandbox") ? "https://payments.sandbox.africastalking.com" : "https://payments.africastalking.com");
+        private string PaymentsHost => (ReferenceEquals(this._environment, "sandbox") ? "https://payments.sandbox.africastalking.com" : "https://payments.africastalking.com");
 
         /// <summary>
         /// The send get request helper method.
@@ -471,6 +565,7 @@ namespace AfricasTalkingCS
         /// The <see cref="string"/>.
         /// </returns>
         /// <exception cref="AfricasTalkingGatewayException">
+        /// Errors from our gateway class.
         /// </exception>
         private string SendGetRequest(string urlString)
         {
@@ -480,24 +575,35 @@ namespace AfricasTalkingCS
                 var webRequest = (HttpWebRequest)WebRequest.Create(urlString);
                 webRequest.Method = "GET";
                 webRequest.Accept = "application/json";
-                webRequest.Headers.Add("apiKey", _apikey);
+                webRequest.Headers.Add("apiKey", this._apikey);
                 var httpResponse = (HttpWebResponse)webRequest.GetResponse();
-                _responseCode = (int)httpResponse.StatusCode;
+                this._responseCode = (int)httpResponse.StatusCode;
                 var webpageReader = new StreamReader(httpResponse.GetResponseStream() ?? throw new InvalidOperationException());
                 var response = webpageReader.ReadToEnd();
-                if (_debug) Console.WriteLine("Full response: " + response);
+                if (this._debug)
+                {
+                    Console.WriteLine("Full response: " + response);
+                }
+
                 return response;
             }
-
             catch (WebException ex)
             {
-                if (ex.Response == null) throw new AfricasTalkingGatewayException(ex.Message);
+                if (ex.Response == null)
+                {
+                    throw new AfricasTalkingGatewayException(ex.Message);
+                }
+
                 using (var stream = ex.Response.GetResponseStream())
                 using (var reader = new StreamReader(stream ?? throw new InvalidOperationException()))
                 {
                     var response = reader.ReadToEnd();
 
-                    if (_debug) Console.WriteLine("Full response: " + response);
+                    if (this._debug)
+                    {
+                        Console.WriteLine("Full response: " + response);
+                    }
+
                     return response;
                 }
             }
@@ -516,20 +622,20 @@ namespace AfricasTalkingCS
         /// The <see cref="string"/>.
         /// </returns>
         /// <exception cref="AfricasTalkingGatewayException">
+        /// Errors from our gateway class.
         /// </exception>
         private string SendPostRequest(IDictionary data, string urlString)
         {
             try
             {
-                var dataStr = "";
+                var dataStr = string.Empty;
                 foreach (string key in data.Keys)
                 {
                     if (dataStr.Length > 0)
                     {
                         dataStr += "&";
                     }
-
-                    //var value = (string)data[key];
+                    
                     var value = data[key].ToString();
                     dataStr += HttpUtility.UrlEncode(key, Encoding.UTF8);
                     dataStr += "=" + HttpUtility.UrlEncode(value, Encoding.UTF8);
@@ -542,19 +648,22 @@ namespace AfricasTalkingCS
                 webRequest.ContentType = "application/x-www-form-urlencoded";
                 webRequest.ContentLength = byteArray.Length;
                 webRequest.Accept = "application/json";
-                webRequest.Headers.Add("apiKey", _apikey);
+                webRequest.Headers.Add("apiKey", this._apikey);
 
                 var webpageStream = webRequest.GetRequestStream();
                 webpageStream.Write(byteArray, 0, byteArray.Length);
                 webpageStream.Close();
 
                 var httpResponse = (HttpWebResponse)webRequest.GetResponse();
-                _responseCode = (int)httpResponse.StatusCode;
+                this._responseCode = (int)httpResponse.StatusCode;
                 var webpageReader = new StreamReader(
                     httpResponse.GetResponseStream() ?? throw new InvalidOperationException());
                 var response = webpageReader.ReadToEnd();
 
-                if (_debug) Console.WriteLine("Response: " + response);
+                if (this._debug)
+                {
+                    Console.WriteLine("Response: " + response);
+                }
 
                 return response;
             }
@@ -569,7 +678,7 @@ namespace AfricasTalkingCS
                 using (var reader = new StreamReader(stream ?? throw new InvalidOperationException()))
                 {
                     var response = reader.ReadToEnd();
-                    if (_debug)
+                    if (this._debug)
                     {
                         Console.WriteLine("Exception: " + response);
                     }
@@ -577,6 +686,51 @@ namespace AfricasTalkingCS
                     return response;
                 }
             }
+        }
+
+        /// <summary>
+        /// Checks if the users supplied a valid currency symbol.
+        /// </summary>
+        /// <param name="isoCurrency">
+        /// The ISO currency.
+        /// </param>
+        /// <param name="symbol">
+        /// The symbol.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        private static bool IsValidCurrency(string isoCurrency, out string symbol)
+        {
+            symbol = CultureInfo.GetCultures(CultureTypes.AllCultures).Where(c => !c.IsNeutralCulture).Select(
+                    culture =>
+                        {
+                            try
+                            {
+                                return new RegionInfo(culture.LCID);
+                            }
+                            catch 
+                            {
+                                return null;
+                            }
+                        }).Where(ri => ri != null && ri.ISOCurrencySymbol == isoCurrency)
+                .Select(ri => ri.CurrencySymbol)
+                .FirstOrDefault();
+            return symbol != null;
+        }
+
+        /// <summary>
+        /// Checks if the correct transaction ID is supplied.
+        /// </summary>
+        /// <param name="transactionId">
+        /// The transaction ID.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        private static bool IsValidTransactionId(string transactionId)
+        {
+            return Regex.Match(transactionId, @"^ATPid_.*$").Success;
         }
 
         /// <summary>
@@ -606,11 +760,18 @@ namespace AfricasTalkingCS
         /// <exception cref="AfricasTalkingGatewayException">
         /// Throws an error of type 40X 
         /// </exception>
-        public dynamic Checkout(string productName, string phoneNumber , string currencyCode, int amount, string providerChannel ,Dictionary<string,string> metadata = null)
+        public dynamic Checkout(string productName, string phoneNumber, string currencyCode, decimal amount, string providerChannel, Dictionary<string, string> metadata = null)
         {
+            string symbol;
+            
+            if (productName.Length == 0 || !IsPhoneNumber(phoneNumber) || !IsValidCurrency(currencyCode, out symbol) || providerChannel.Length == 0)
+            {
+                throw  new AfricasTalkingGatewayException("Missing or malformed arguments, or invalid currency symbol or phonenumber");
+            }
+
             var checkout = new CheckOutData
             {
-                username = _username,
+                username = this._username,
                 productName = productName,
                 phoneNumber = phoneNumber,
                 currencyCode = currencyCode,
@@ -624,7 +785,7 @@ namespace AfricasTalkingCS
 
             try
             {
-                var checkoutResponse = PostAsJson(checkout, PaymentsUrl);
+                var checkoutResponse = this.PostAsJson(checkout, this.PaymentsUrl);
                 return checkoutResponse;
             }
             catch (Exception e)
@@ -633,7 +794,7 @@ namespace AfricasTalkingCS
             }
         }
 
-        //  http://docs.africastalking.com/card/validate
+        // http://docs.africastalking.com/card/validate
 
         /// <summary>
         /// Payment Card Checkout Validation APIs allow your application to validate card charge requests that deduct money from a customer's Debit or Credit Card.
@@ -652,6 +813,11 @@ namespace AfricasTalkingCS
         /// </exception>
         public dynamic ValidateCardOtp(string transactionId, string otp)
         {
+            if (transactionId.Length < 32 || otp.Length < 3 || !IsValidTransactionId(transactionId))
+            {
+                throw new AfricasTalkingGatewayException("Incorrect Transaction ID or invalid OTP length");
+            }
+
            var otpValidateCard = new OTP
                                  {
                                      Otp = otp,
@@ -661,7 +827,7 @@ namespace AfricasTalkingCS
             
             try
             {
-                var cardOtpResult = this.ValidateOtp(otpValidateCard, this.CardOTPValidationURL);
+                var cardOtpResult = this.ValidateOtp(otpValidateCard, this.CardOtpValidationUrl);
                 return cardOtpResult;
             }
             catch (Exception exception)
@@ -700,37 +866,46 @@ namespace AfricasTalkingCS
         /// The <see cref="dynamic"/>.
         /// </returns>
         /// <exception cref="AfricasTalkingGatewayException">
-        /// Any Errors from our gateway
+        /// Any errors from our gateway
         /// </exception>
         public dynamic CardCheckout(string productName, PaymentCard paymentCard, string currencyCode, decimal amount, string narration, Dictionary<string, string> metadata = null, string checkoutToken = null)
         {
-            var cardCheckout = new CardDetails
+            string curSym;
+            if (productName.Length != 0 && IsValidCurrency(currencyCode, out curSym) && narration.Length != 0)
             {
-                Username = this._username,
-                ProductName = productName,
-                CurrencyCode = currencyCode,
-                PaymentCard = paymentCard,
-                Amount = amount,
-                Narration = narration
-            };
-            if (metadata != null)
-            {
-                cardCheckout.Metadata = metadata;
+                var cardCheckout = new CardDetails
+                                       {
+                                           Username = this._username,
+                                           ProductName = productName,
+                                           CurrencyCode = currencyCode,
+                                           PaymentCard = paymentCard,
+                                           Amount = amount,
+                                           Narration = narration
+                                       };
+                if (metadata != null)
+                {
+                    cardCheckout.Metadata = metadata;
+                }
+                if (checkoutToken != null)
+                {
+                    cardCheckout.CheckoutToken = checkoutToken;
+                }
+
+                try
+                {
+                    var response = this.ProcessCardCheckout(cardCheckout, this.CardCheckoutUrl);
+                    return response;
+                }
+                catch (Exception exception)
+                {
+                    throw new AfricasTalkingGatewayException(exception);
+                }
             }
-            if (checkoutToken != null)
+            else
             {
-                cardCheckout.CheckoutToken = checkoutToken;
+                throw new AfricasTalkingGatewayException("Invalid arguments");
             }
-            
-            try
-            {
-                var response = this.ProcessCardCheckout(cardCheckout, this.CardCheckoutURL);
-                return response;
-            }
-            catch (Exception exception)
-            {
-                throw new AfricasTalkingGatewayException(exception);
-            }
+           
         }
 
         // http://docs.africastalking.com/bank/checkout
@@ -762,30 +937,44 @@ namespace AfricasTalkingCS
         /// <exception cref="AfricasTalkingGatewayException">
         /// Any Errors thrown by our Gateway
         /// </exception>
-        public dynamic BankCheckout(string productName, BankAccount bankAccount, string currencyCode, decimal amount, string narration, Dictionary<string,string> metadata = null)
+        public dynamic BankCheckout(
+            string productName,
+            BankAccount bankAccount,
+            string currencyCode,
+            decimal amount,
+            string narration,
+            Dictionary<string, string> metadata = null)
         {
-            var bankCheckout = new BankCheckout()
+            string curSym;
+            if (productName.Length != 0 && IsValidCurrency(currencyCode, out curSym) && narration.Length != 0)
             {
-                Username = this._username,
-                ProductName = productName,
-                CurrencyCode = currencyCode,
-                Amount = amount,
-                Narration = narration,
-                BankAccount = bankAccount
-                                   };
-            if (metadata != null)
-            {
-                bankCheckout.Metadata = metadata;
-            }
+                var bankCheckout = new BankCheckout()
+                                       {
+                                           Username = this._username,
+                                           ProductName = productName,
+                                           CurrencyCode = currencyCode,
+                                           Amount = amount,
+                                           Narration = narration,
+                                           BankAccount = bankAccount
+                                       };
+                if (metadata != null)
+                {
+                    bankCheckout.Metadata = metadata;
+                }
 
-            try
-            {
-                var response = this.ProcessBankCheckout(bankCheckout, this.BankCheckoutURL);
-                return response;
+                try
+                {
+                    var response = this.ProcessBankCheckout(bankCheckout, this.BankCheckoutUrl);
+                    return response;
+                }
+                catch (Exception exception)
+                {
+                    throw new AfricasTalkingGatewayException(exception);
+                }
             }
-            catch (Exception exception)
+            else
             {
-                throw new AfricasTalkingGatewayException(exception);
+                    throw new AfricasTalkingGatewayException("Invalid arguments");
             }
         }
 
@@ -838,7 +1027,7 @@ namespace AfricasTalkingCS
             };
             try
             {
-                var bankOtpResult = this.ValidateOtp(otpValidate, this.OTPValidationURL);
+                var bankOtpResult = this.ValidateOtp(otpValidate, this.OtpValidationUrl);
                 return bankOtpResult;
             }
             catch (Exception exception)
@@ -847,11 +1036,23 @@ namespace AfricasTalkingCS
             }
         }
 
-        private string ProcessCardCheckout(CardDetails details, string checkoutURL)
+        /// <summary>
+        /// The process card checkout.
+        /// </summary>
+        /// <param name="details">
+        /// The details.
+        /// </param>
+        /// <param name="checkoutUrl">
+        /// The checkout url.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        private string ProcessCardCheckout(CardDetails details, string checkoutUrl)
         {
             var client = new HttpClient();
             client.DefaultRequestHeaders.Add("apiKey", this._apikey);
-            var result = client.PostAsJsonAsync(checkoutURL, details).Result;
+            var result = client.PostAsJsonAsync(checkoutUrl, details).Result;
             result.EnsureSuccessStatusCode();
             var stringResult = result.Content.ReadAsStringAsync().Result;
             return stringResult;
@@ -890,25 +1091,18 @@ namespace AfricasTalkingCS
         /// <param name="recipients">
         /// This contains a list of Recipient elements
         /// </param>
-        /// <param name="currencyCode">
-        /// The currency code.
-        /// </param>
-        /// <param name="amount">
-        /// The amount.
-        /// </param>
-        /// <param name="naration">
-        /// A short description of the transaction that can be displayed on the client's statement.
-        /// </param>
-        /// <param name="metadata">
-        /// This value contains a map of any metadata that you would like us to associate with this request. You can use this field to send data that will map notifications to checkout requests, since we will include it when we send notifications once the transaction is complete.
-        /// </param>
         /// <returns>
         /// The <see cref="dynamic"/>.
         /// </returns>
         /// <exception cref="AfricasTalkingGatewayException">
+        /// Errors from our gateway class
         /// </exception>
-        public dynamic BankTransfer(string productName, IEnumerable <BankTransferRecipients> recipients)
+        public dynamic BankTransfer(string productName, IEnumerable<BankTransferRecipients> recipients)
         {
+            if (productName.Length == 0)
+            {
+                throw new AfricasTalkingGatewayException("Not a valid product name");
+            }
 
             var transferDetails = new BankTransfer()
             {
@@ -924,17 +1118,26 @@ namespace AfricasTalkingCS
             }
             catch (Exception exception)
             {
-
                 throw new AfricasTalkingGatewayException(exception);
             }
-
         }
 
-
+        /// <summary>
+        /// The process bank transfer.
+        /// </summary>
+        /// <param name="transfer">
+        /// The transfer.
+        /// </param>
+        /// <param name="url">
+        /// The url.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
         private string ProcessBankTransfer(BankTransfer transfer, string url)
         {
             var transferClient = new HttpClient();
-            transferClient.DefaultRequestHeaders.Add("apiKey",this._apikey);
+            transferClient.DefaultRequestHeaders.Add("apiKey", this._apikey);
             var transferResult = transferClient.PostAsJsonAsync(this.BankTransferUrl, value: transfer).Result;
             transferResult.EnsureSuccessStatusCode();
             var transferRes = transferResult.Content.ReadAsStringAsync().Result;
@@ -964,7 +1167,7 @@ namespace AfricasTalkingCS
         }
 
         /// <summary>
-        /// The mobile b 2 b.
+        /// The mobile B2B.
         /// </summary>
         /// <param name="product">
         /// The product.
@@ -1006,9 +1209,16 @@ namespace AfricasTalkingCS
             string accountReceiving,
             dynamic btobmetadata)
         {
+            string cSym;
+            if (product.Length == 0 || providerChannel.Length == 0 || transfer.Length == 0
+                || !IsValidCurrency(currency, out cSym) || channelReceiving.Length == 0 || accountReceiving.Length == 0)
+            {
+                throw new AfricasTalkingGatewayException("Invalid arguments");
+            }
+
             var btob = new B2BData
             {
-                username = _username,
+                username = this._username,
                 productName = product,
                 provider = providerChannel,
                 transferType = transfer,
@@ -1020,7 +1230,7 @@ namespace AfricasTalkingCS
             };
             try
             {
-                var response = PostB2BJson(btob, B2BPaymentsUrl);
+                var response = this.PostB2BJson(btob, this.B2BPaymentsUrl);
                 return response;
             }
             catch (Exception e)
@@ -1035,21 +1245,26 @@ namespace AfricasTalkingCS
         /// <param name="productName">
         /// The product name.
         /// </param>
-        /// <param name="recepients">
-        /// The recepients.
+        /// <param name="recipients">
+        /// The recipients.
         /// </param>
         /// <returns>
         /// The <see cref="dynamic"/>.
         /// </returns>
-        public dynamic MobileB2C(string productName, IEnumerable<MobileB2CRecepient> recepients)
+        public dynamic MobileB2C(string productName, IEnumerable<MobileB2CRecepient> recipients)
         {
+            if (productName.Length == 0)
+            {
+                throw new AfricasTalkingGatewayException("Malformed product name");
+            }
+
             var requestBody = new RequestBody
             {
                 productName = productName,
-                username = _username,
-                recepients = recepients.ToList()
+                username = this._username,
+                recepients = recipients.ToList()
             };
-            var response = Post(requestBody,B2CPaymentsUrl);
+            var response = this.Post(requestBody, this.B2CPaymentsUrl);
             return response;
         }
 
@@ -1068,7 +1283,7 @@ namespace AfricasTalkingCS
         private DataResult Post(RequestBody requestBody, string url)
         {
             var httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Add("apikey", _apikey);
+            httpClient.DefaultRequestHeaders.Add("apikey", this._apikey);
              var res = httpClient.PostAsJsonAsync(url, requestBody).Result;
             res.EnsureSuccessStatusCode();
             var result = res.Content.ReadAsAsync<DataResult>();
@@ -1076,7 +1291,7 @@ namespace AfricasTalkingCS
         }
 
         /// <summary>
-        /// The post as json helper method.
+        /// The post as JSON helper method.
         /// </summary>
         /// <param name="dataMap">
         /// The data map.
@@ -1091,7 +1306,7 @@ namespace AfricasTalkingCS
         {
             var client = new HttpClient();
 
-            client.DefaultRequestHeaders.Add("apiKey", _apikey);
+            client.DefaultRequestHeaders.Add("apiKey", this._apikey);
             var result = client.PostAsJsonAsync(url, dataMap).Result;
             result.EnsureSuccessStatusCode();
             var stringResult = result.Content.ReadAsStringAsync().Result;
@@ -1111,7 +1326,7 @@ namespace AfricasTalkingCS
         /// The chain.
         /// </param>
         /// <param name="sslpolicyerrors">
-        /// The sslpolicyerrors.
+        /// The SSL policy errors.
         /// </param>
         /// <returns>
         /// The <see cref="bool"/>.
