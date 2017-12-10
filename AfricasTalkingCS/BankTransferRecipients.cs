@@ -34,15 +34,12 @@ namespace AfricasTalkingCS
         /// <param name="narration">
         /// A short description of the transaction that can be displayed on the client's statement.
         /// </param>
-        /// <param name="metadata">
-        /// This value contains a map of any metadata that you would like us to associate with this request. You can use this field to send data that will map notifications to checkout requests, since we will include it when we send notifications once the transaction is complete.
-        /// </param>
-        public BankTransferRecipients(decimal amount, BankAccount bankAccount, string currencyCode, string narration, Dictionary<string, string> metadata = null)
+        public BankTransferRecipients(decimal amount, BankAccount bankAccount, string currencyCode, string narration)
         {
             this.Amount = amount;
             this.BankAccount = bankAccount ?? throw new ArgumentNullException(nameof(bankAccount));
             this.CurrencyCode = currencyCode ?? throw new ArgumentNullException(nameof(currencyCode));
-            this.Metadata = metadata;
+            this.Metadata = new Dictionary<string, string>();
             this.Narration = narration ?? throw new ArgumentNullException(nameof(narration));
         }
 
