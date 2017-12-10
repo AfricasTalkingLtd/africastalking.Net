@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>AfricasTalking.NET</id>
+    <version>1.1.600</version>
+    <authors>TheBeachmaster</authors>
+    <owners>TheBeachmaster</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <licenseUrl>https://www.africastalking.com/terms</licenseUrl>
+    <projectUrl>https://github.com/AfricasTalkingLtd/africastalking.Net</projectUrl>
+    <iconUrl>https://avatars2.githubusercontent.com/u/12639968</iconUrl>
+    <description>Africa's Talking SMS,Voice,USSD,Airtime and Payments APIs provide a scalable,robust and reliable interfacing between developers and telco providers across the continent</description>
+    <copyright>Copyright ©2017 Africa's Talking Ltd</copyright>
+    <tags>sms voice mobile-payments airtime card-payments bank-tranfers otp-validations</tags>
+    <repository type="Git" url="https://github.com/AfricasTalkingLtd/africastalking.Net" />
+    <dependencies>
+      <group targetFramework=".NETFramework4.5">
+        <dependency id="Microsoft.AspNet.WebApi.Client" version="5.2.3" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="10.0.3" exclude="Build,Analyzers" />
+        <dependency id="System.Net.Http" version="4.3.3" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETFramework4.6">
+        <dependency id="Microsoft.AspNet.WebApi.Client" version="5.2.3" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="10.0.3" exclude="Build,Analyzers" />
+        <dependency id="System.Net.Http" version="4.3.3" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Microsoft.AspNet.WebApi.Client" version="5.2.3" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="10.0.3" exclude="Build,Analyzers" />
+        <dependency id="System.Net.Http" version="4.3.3" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="Microsoft.CSharp" targetFramework=".NETFramework4.5, .NETFramework4.6" />
+      <frameworkAssembly assemblyName="System.Net" targetFramework=".NETFramework4.5, .NETFramework4.6" />
+      <frameworkAssembly assemblyName="System.Web" targetFramework=".NETFramework4.5, .NETFramework4.6" />
+      <frameworkAssembly assemblyName="System.Web.Extensions" targetFramework=".NETFramework4.5, .NETFramework4.6" />
+    </frameworkAssemblies>
+  </metadata>
+  <files>
+    <file src="..\AfricasTalkingCS\bin\Debug\net45\AfricasTalkingCS.dll" target="lib\net45\AfricasTalkingCS.dll" />
+    <file src="..\AfricasTalkingCS\bin\Debug\net46\AfricasTalkingCS.dll" target="lib\net46\AfricasTalkingCS.dll" />
+    <file src="..\AfricasTalkingCS\bin\Debug\netstandard2.0\AfricasTalkingCS.dll" target="lib\netstandard2.0\AfricasTalkingCS.dll" />
+  </files>
+</package>
