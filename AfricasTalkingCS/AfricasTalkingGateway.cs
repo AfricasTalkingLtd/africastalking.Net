@@ -21,6 +21,7 @@ namespace AfricasTalkingCS
     using System.Security.Cryptography.X509Certificates;
     using System.Text;
     using System.Threading.Tasks;
+    using System.Uri;
     using System.Web;
 
     using Newtonsoft.Json;
@@ -155,13 +156,19 @@ namespace AfricasTalkingCS
         /// </exception>
         public void UploadMediaFile(string url)
         {
+            var isUrl = Uri.IsWellFormedUriString(url, UriKind.RelativeOrAbsolute);
+            if (!isUrl)
+            {
+              throw new AfricasTalkingGatewayException("Malformed Url");
+            }
+
             var data = new Hashtable
             {
-                ["username"] = _username,
+                ["username"] = this._username,
                 ["url"] = url
             };
             var urlString = this.VoiceUrl + "/mediaUpload";
-            var response = SendPostRequest(data, urlString);
+            var response = this.SendPostRequest(data, urlString);
             dynamic json = JObject.Parse(response);
             if ((string)json["errorMesage"] != "None")
             {
@@ -902,6 +909,7 @@ namespace AfricasTalkingCS
         /// </exception>
         public dynamic BankTransfer(string productName, IEnumerable <BankTransferRecipients> recipients)
         {
+
             var transferDetails = new BankTransfer()
             {
                 Recipients = recipients.ToList(),
