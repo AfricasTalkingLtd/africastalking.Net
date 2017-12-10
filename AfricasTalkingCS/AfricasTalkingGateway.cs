@@ -766,7 +766,7 @@ namespace AfricasTalkingCS
             
             if (productName.Length == 0 || !IsPhoneNumber(phoneNumber) || !IsValidCurrency(currencyCode, out symbol) || providerChannel.Length == 0)
             {
-                throw  new AfricasTalkingGatewayException("Missing or malformed arguments, or invalid currency symbol or phonenumber");
+                throw new AfricasTalkingGatewayException("Missing or malformed arguments, or invalid currency symbol or phonenumber");
             }
 
             var checkout = new CheckOutData
@@ -886,6 +886,7 @@ namespace AfricasTalkingCS
                 {
                     cardCheckout.Metadata = metadata;
                 }
+
                 if (checkoutToken != null)
                 {
                     cardCheckout.CheckoutToken = checkoutToken;
@@ -905,7 +906,6 @@ namespace AfricasTalkingCS
             {
                 throw new AfricasTalkingGatewayException("Invalid arguments");
             }
-           
         }
 
         // http://docs.africastalking.com/bank/checkout
