@@ -1,4 +1,12 @@
-﻿
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="BankTransferRecipients.cs" company="Africa's Talking">
+//   2017
+// </copyright>
+// <summary>
+//   This contains a list of Recipient elements.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace AfricasTalkingCS
 {
     using System;
@@ -29,7 +37,7 @@ namespace AfricasTalkingCS
         /// <param name="metadata">
         /// This value contains a map of any metadata that you would like us to associate with this request. You can use this field to send data that will map notifications to checkout requests, since we will include it when we send notifications once the transaction is complete.
         /// </param>
-        public BankTransferRecipients(double amount, BankAccount bankAccount, string currencyCode, string narration, Dictionary<string, string> metadata = null)
+        public BankTransferRecipients(decimal amount, BankAccount bankAccount, string currencyCode, string narration, Dictionary<string, string> metadata = null)
         {
             this.Amount = amount;
             this.BankAccount = bankAccount ?? throw new ArgumentNullException(nameof(bankAccount));
@@ -43,7 +51,7 @@ namespace AfricasTalkingCS
         /// This is the amount (in the provided currency) that the mobile subscriber is expected to receive.
         /// </summary>
         [JsonProperty("amount")]
-        public double Amount { get; set; }
+        public decimal Amount { get; set; }
 
         /// <summary>
         /// Gets or sets the bank account.
@@ -71,5 +79,19 @@ namespace AfricasTalkingCS
         /// </summary>
         [JsonProperty("narration")]
         public string Narration { get; set; }
+
+        /// <summary>
+        /// The add metadata.
+        /// </summary>
+        /// <param name="key">
+        /// The key.
+        /// </param>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        public void AddMetadata(string key, string value)
+        {
+            this.Metadata.Add(key, value);
+        }
     }
 }
