@@ -455,4 +455,51 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
  
 ```
 
+ 
+### [USSD Push](http://docs.africastalking.com/ussd)
+> A few things to note about USSD: 
 
++ USSD is session driven. Every request we send you will contain a sessionId, and this will be maintained until that session is completed
++ You will need to let the Mobile Service Provider know whether the session is complete or not. If the session is ongoing, please begin your response with CON. If this is the last response for that session, begin your response with END.
++ If we get a HTTP error response (Code 40X) from your script, or a malformed response (does not begin with CON or END, we will terminate the USSD session gracefully. 
+
++ **USSD push currently works in Nigeria only** 
+ 
+
+```csharp 
+
+            const string Username = "sandbox";
+            const string Apikey = "Key";
+            const string Env = "sandbox";
+            var gateway = new AfricasTalkingGateway(Username, Apikey, Env);
+            var tokenId = "tkn";
+            const string PhoneNumber = "+236XXXXXXXXX";
+            const string Menu = "CON You're about to love C#\n1.Accept my fate\n2.No Never\n";
+
+            // Let's create a checkout token  first
+            try
+            {
+                var tkn = gateway.CreateCheckoutToken(PhoneNumber);
+                if (tkn["description"] == "Success")
+                {
+                    tokenId = tkn["token"];
+                }
+
+                // Then send user menu...
+                var prompt = gateway.InitiateUssdPushRequest(PhoneNumber, Menu, tokenId);
+                if (prompt["errorMessage"] == "None")
+                {
+                    Console.WriteLine("Awesome");
+                }
+            }
+            catch (AfricasTalkingGatewayException e)
+            {
+                Console.WriteLine("Woopsies : " + e.Message);
+            }
+
+            Console.ReadLine(); 
+
+```  
+> Expected Results 
+
+![ussdPush](/ScreenShots/ussdPush.PNG)
