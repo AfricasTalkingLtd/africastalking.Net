@@ -4,7 +4,7 @@
     <TargetFrameworks>net45;net46;netstandard2.0</TargetFrameworks>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.1.412</Version>
+    <Version>1.1.600</Version>
     <Authors>TheBeachmaster</Authors>
     <PackageId>AfricasTalking.NET</PackageId>
     <Company>Africa's Talking Ltd</Company>
@@ -16,11 +16,22 @@
     <PackageProjectUrl>https://github.com/AfricasTalkingLtd/africastalking.Net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/AfricasTalkingLtd/africastalking.Net</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
-    <PackageTags>sms voice mobile-payments airtime</PackageTags>
-    <AssemblyVersion>1.1.412</AssemblyVersion>
-    <FileVersion>1.1.412</FileVersion>
+    <PackageTags>sms voice mobile-payments airtime card-payments bank-tranfers otp-validations</PackageTags>
+    <AssemblyVersion>1.1.600</AssemblyVersion>
+    <FileVersion>1.1.600</FileVersion>
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>AfricasTalking.NET.pfx</AssemblyOriginatorKeyFile>
+    <PackageReleaseNotes>1. Added Support for bank payments 
+    + Bank Tranfer
+    + Bank checkout
+    + Bank OTP validation
+2. Added Support for Card payments
+     + Card checkouts
+     + Card OTP checkout validation
+3. You can now initiate USSD push request from your app. See docs
+4. You can now create and ingest tokens from within your app. See docs
+5. Minor quality improvements</PackageReleaseNotes>
+    <NeutralLanguage></NeutralLanguage>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">

@@ -7,7 +7,7 @@
   "targets": {
     ".NETStandard,Version=v2.0": {},
     ".NETStandard,Version=v2.0/": {
-      "AfricasTalkingCS/1.1.412": {
+      "AfricasTalkingCS/1.1.600": {
         "dependencies": {
           "Microsoft.AspNet.WebApi.Client": "5.2.3",
           "NETStandard.Library": "2.0.0",
@@ -748,7 +748,7 @@
     }
   },
   "libraries": {
-    "AfricasTalkingCS/1.1.412": {
+    "AfricasTalkingCS/1.1.600": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
