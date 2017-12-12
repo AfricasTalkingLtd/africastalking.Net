@@ -21,6 +21,17 @@
     <FileVersion>1.1.600</FileVersion>
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>AfricasTalking.NET.pfx</AssemblyOriginatorKeyFile>
+    <PackageReleaseNotes>1. Added Support for bank payments 
+    + Bank Tranfer
+    + Bank checkout
+    + Bank OTP validation
+2. Added Support for Card payments
+     + Card checkouts
+     + Card OTP checkout validation
+3. You can now initiate USSD push request from your app. See docs
+4. You can now create and ingest tokens from within your app. See docs
+5. Minor quality improvements</PackageReleaseNotes>
+    <NeutralLanguage></NeutralLanguage>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
