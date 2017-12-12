@@ -381,7 +381,7 @@ namespace AfricasTalkingCS
         /// Allows one the developer to create a checkout token to be used in a subscription or USSD push.
         /// </summary>
         /// <param name="phoneNumber">
-        /// The phone number.
+        /// A valid phone number.
         /// </param>
         /// <returns>
         /// The <see cref="dynamic"/>.
@@ -401,12 +401,58 @@ namespace AfricasTalkingCS
                                           ["phoneNumber"] = phoneNumber
                                       };
                     var response = this.SendPostRequest(payload, this.TokenUrl);
-                    return response;
+                    dynamic tokenRes = JObject.Parse(response);
+                    return tokenRes;
                 }
                 catch (AfricasTalkingGatewayException e)
                 {
                     throw new AfricasTalkingGatewayException("An error ocurred while creating this token: " + e.Message);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Initiates USSD push request.
+        /// </summary>
+        /// <param name="phoneNumber">
+        /// The phone number.
+        /// </param>
+        /// <param name="prompt">
+        /// The prompt.This is the USSD menu to be displayed. Must start with CON or END
+        /// </param>
+        /// <param name="checkoutToken">
+        /// The checkout token.
+        /// </param>
+        /// <returns>
+        /// The <see cref="dynamic"/>.
+        /// </returns>
+        /// <exception cref="AfricasTalkingGatewayException">
+        /// Errors from the gateway
+        /// </exception>
+        public dynamic InitiateUssdPushRequest(string phoneNumber, string prompt, string checkoutToken)
+        {
+            if (!IsValidToken(checkoutToken) || prompt.Length == 0 || !IsPhoneNumber(phoneNumber))
+            {
+                throw new AfricasTalkingGatewayException("One or some of the arguments supplied are invalid.");
+            }
+
+            try
+            {
+                var data = new Hashtable
+                               {
+                                   ["username"] = this._username,
+                                   ["phoneNumber"] = phoneNumber,
+                                   ["menu"] = prompt,
+                                   ["checkoutToken"] = checkoutToken
+                               };
+                var apiPath = this.UssdPushUrl;
+                var response = this.SendPostRequest(data, apiPath);
+                dynamic res = JObject.Parse(response);
+                return res;
+            }
+            catch (Exception e)
+            {
+               throw new AfricasTalkingGatewayException(e.Message + e.StackTrace);
             }
         }
 
@@ -601,6 +647,11 @@ namespace AfricasTalkingCS
         private string TokenUrl => this.ApiHost + "/checkout/token/create";
 
         /// <summary>
+        /// The USSD push url.
+        /// </summary>
+        private string UssdPushUrl => this.ApiHost + "/ussd/push/request";
+
+        /// <summary>
         /// The send get request helper method.
         /// </summary>
         /// <param name="urlString">
@@ -776,6 +827,20 @@ namespace AfricasTalkingCS
         private static bool IsValidTransactionId(string transactionId)
         {
             return Regex.Match(transactionId, @"^ATPid_.*$").Success;
+        }
+
+        /// <summary>
+        /// Checks if the token supplied is valid.
+        /// </summary>
+        /// <param name="token">
+        /// The token issued by the API from the CreateCheckoutToken method.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        private static bool IsValidToken(string token)
+        {
+            return Regex.Match(token, @"^CkTkn_.*$").Success;
         }
 
         /// <summary>
