@@ -9,11 +9,11 @@ namespace CreateToken
         {
             Console.WriteLine("Hello World!");
             var phoneNumber = "+254724587654";
-            var gateway = new AfricasTalkingGateway("username", "afd635a4f295dd936312836c0b944d55f2a836e8ff2b63987da5e717cd5ff745", "sandbox");
+            var gateway = new AfricasTalkingGateway("username", "Key", "sandbox");
             try
             {
                 var token = gateway.CreateCheckoutToken(phoneNumber);
-                Console.WriteLine("Your Token is:  " + token);
+                Console.WriteLine("Your Token is:  " + token["token"]);
             }
             catch (AfricasTalkingGatewayException e)
             {
