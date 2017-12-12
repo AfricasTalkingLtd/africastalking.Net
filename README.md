@@ -455,6 +455,306 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
  
 ```
 
+#### [Banking - Checkout](http://docs.africastalking.com/bank/checkout)
+
+
+- `BankCheckout(productName,bankAccount,currencyCode,amount,narration,metadata)` : Bank Account checkout APIs allow your application to collect money into your Payment Wallet by initiating an OTP-validated transaction that deducts money from a customer's bank account. These APIs are currently only available in Nigeria.
+    - `productName` :  This value identifies the Africa's Talking Payment Product that should be used to initiate this transaction. `REQUIRED`   
+    - `bankAccount` :  This is a complex type whose structure is described below. It contains the details of the bank account to be charged in this transaction.  
+        - `accountName` :  The name of the bank account. `Optional`
+        - `accountNumber` : The account number. `REQUIRED` 
+        - `bankCode` :  An 6-Digit Integer Code for the bank that we allocate. `REQURED`. See this [link](http://docs.africastalking.com/bank/checkout) for more details
+        - `dateOfBirth` : Date of birth of the account owner. `Optional`/`Required` - for Zenith Bank NG.
+ 
+    - `currencyCode` : This is the 3-digit ISO format currency code for the value of this transaction (e.g NGN, USD, KES etc). 
+    - `amount` : This is the amount (in the provided currency) that the mobile subscriber is expected to confirm. 
+    - `narration` : A short description of the transaction that can be displayed on the client's statement. 
+    - `metadata` : This value contains a map of any metadata that you would like us to associate with this request. You can use this field to send data that will map notifications to checkout requests, since we will include it when we send notifications once the checkout is complete.
+    
+> Example  - For details on OTP see OTP
+```c# 
+
+        Console.WriteLine("Hello World!");
+            const string Username = "sandbox";
+            const string ApiKey = "Key";
+            const string Otp = "1234";
+            const string Env = "sandbox";
+            var gateway = new AfricasTalkingGateway(Username, ApiKey, Env);
+            string transId = "id";
+            var productName = "coolproduct";
+            var accountName = "Fela Kuti";
+            var accountNumber = "1234567890";
+            var bankCode = 234001;
+            var currencyCode = "NGN";
+            var amount = 1000.5M;
+            var dob = "2017-11-22";
+            var metadata = new Dictionary<string, string> { { "Reason", "Buy Vega Records" } };
+            var narration = "We're buying something cool";
+            var receBank = new BankAccount(accountNumber, bankCode, dob, accountName);
+            try
+            {
+                var res = gateway.BankCheckout(productName, receBank, currencyCode, amount, narration, metadata);
+                res = JsonConvert.DeserializeObject(res);
+                Console.WriteLine(res);
+                if (res["status"] == "PendingValidation")
+                {
+                    transId = res["transactionId"];
+                    Console.WriteLine("Validating...");
+                }
+
+                try
+                {
+                    var valid = gateway.OtpValidate(transId, Otp);
+                    valid = JsonConvert.DeserializeObject(valid);
+                    if (valid["status"] == "Success")
+                    {
+                        Console.WriteLine("Whoooohoo...");
+                    }
+                }
+                catch (AfricasTalkingGatewayException e)
+                {
+                    Console.WriteLine("Yikes: " + e.Message + e.StackTrace);
+                }
+
+            } 
+            catch (AfricasTalkingGatewayException e)
+            {
+                Console.WriteLine("Something odd happened: " + e.Message + e.StackTrace);
+            }
+
+        Console.ReadLine();
+ 
+```
+
+#### [Banking - Transfer](http://docs.africastalking.com/bank/transfer)
+
+
+- `BankTransfer(productName,recipients)` :  Our API allows you to initiate multiple transactions in one request, all of which will be queued in our gateways for processing.Once the payment provider confirms or rejects the payment request, our APIs will generate a payment notification and send it to the callback URL configured in your account.  [More info](http://docs.africastalking.com/bank/transfer) 
+
+    - `productName` :  This value identifies the Africa's Talking Payment Product that should be used to initiate this transaction. `REQUIRED`   
+    - `recipients` :  This contains a list of Recipient elements, each of which corresponds to a B2C Transaction request. The format for                           each of these recipients is described in the table below. `REQUIRED`.
+        - `bankAccount` : This is a complex type whose structure is described below. It contains the details of the bank account to be charged in this transaction.  
+            - `accountName` :  The name of the bank account. `Optional`
+            - `accountNumber` : The account number. `REQUIRED` 
+            - `bankCode` :  An 6-Digit Integer Code for the bank that we allocate. `REQURED`. See this [link](http://docs.africastalking.com/bank/transfer) for more details
+            - `dateOfBirth` : Date of birth of the account owner. `Optional`/`Required` - for Zenith Bank NG. 
+
+        - `currencyCode` : This is the 3-digit ISO format currency code for the value of this transaction (e.g NGN, USD, KES etc). 
+        - `amount` : This is the amount (in the provided currency) that the mobile subscriber is expected to confirm. 
+        - `narration` : A short description of the transaction that can be displayed on the client's statement. 
+        - `metadata` : This value contains a map of any metadata that you would like us to associate with this request. You can use this field to send data that will map notifications to checkout requests, since we will include it when we send notifications once the checkout is complete.
+
+
+
+> Example 
+```c# 
+ 
+            const string username = "sandbox";
+            const string apikey = "afd635a4f295dd936312836c0b944d55f2a836e8ff2b63987da5e717cd5ff745";
+            const string productname = "coolproduct";
+            const string env = "sandbox";
+            var gateway = new AfricasTalkingGateway(username, apikey, env);
+            var currency_code = "NGN";
+            var recipient1_account_name = "Alyssa Hacker";
+            var recipient1_account_number = "1234567890";
+            var recipient1_bank_code = 234001;
+            decimal recipient1_amount = 1500.50M;
+            var recipient1_narration = "December Bonus";
+            var recipient2_account_name = "Ben BitDiddle";
+            var recipient2_account_number = "234567891";
+            var recipient2_bank_code = 234004;
+            decimal recipient2_amount = 1500.50M;
+            var recipient2_narration = "November Bonus";
+            var recepient1_account = new BankAccount(recipient1_account_number, recipient1_bank_code, recipient1_account_name);
+            var recepient1 = new BankTransferRecipients(recipient1_amount, recepient1_account, currency_code, recipient1_narration);
+            recepient1.AddMetadata("Reason", "Early Bonus");
+            var recipient2_account = new BankAccount(recipient2_account_number, recipient2_bank_code, recipient2_account_name);
+            var recipient2 = new BankTransferRecipients(recipient2_amount, recipient2_account, currency_code, recipient2_narration);
+            recipient2.AddMetadata("Reason", "Big Wins");
+            IList<BankTransferRecipients> recipients = new List<BankTransferRecipients>
+                                                           {
+                                                               recepient1,
+                                                               recipient2
+                                                           };
+            try
+            {
+               var res = gateway.BankTransfer(productname, recipients);
+                Console.WriteLine(res);
+            }
+            catch (AfricasTalkingGatewayException e)
+            {
+                Console.WriteLine("We had issues: " + e.Message);
+            }
+
+            Console.ReadLine();
+
+``` 
+
+#### OTP Validation [Banking](http://docs.africastalking.com/bank/validate) and [Card](http://docs.africastalking.com/card/validate) 
+> Checkout Validation APIs allow your application to validate bank/card charge requests that deduct money from a customer's bank account.
+
+ > Card Validation
+
+- `ValidateCardOtp(transactionId, otp)` :  Payment Card Checkout Validation APIs allow your application to validate card charge requests that deduct money from a customer's Debit or Credit Card. [More info](http://docs.africastalking.com/card/validate) 
+
+    - `transactionId` :This value identifies the transaction that your application wants to validate. This value is contained in the response  to the charge request. `REQUIRED`   
+    - `otp` :  This contains the One Time Password that the card issuer sent to the client that owns the payment card. `REQUIRED`.  
+
+ > Bank Validation
+
+- `OtpValidate(transactionId, otp)`: Bank Account checkout Validation APIs allow your application to validate bank charge requests that deduct money from a customer's bank account. [More info](http://docs.africastalking.com/bank/validate).
+     - `transactionId` :This value identifies the transaction that your application wants to validate. This value is contained in the response  to the charge request. `REQUIRED`   
+     - `otp` :  This contains the One Time Password that the card issuer sent to the client that owns the payment card. `REQUIRED`.  
+
+
+> Example 
+```c#  
+// ....CARD
+   var gateway = new AfricasTalkingGateway(Username, ApiKey, Env);
+            try
+            {
+                var validate = gateway.ValidateCardOtp(TransactionId, Otp);
+                var res = JsonConvert.DeserializeObject(validate);
+                if (res["status"] == "Success")
+                {
+                    Console.WriteLine("Awesome");
+                }
+                else
+                {
+                    Console.WriteLine("We had an error " + res["status"]);
+                }
+            }
+            catch (AfricasTalkingGatewayException e)
+            {
+                Console.WriteLine("Validation Error occured : " + e.Message);
+            }
+            // ...
+``` 
+```c#  
+// ....BANKING
+   var gateway = new AfricasTalkingGateway(Username, ApiKey, Env);
+           
+                try
+                {
+                    var valid = gateway.OtpValidate(transId, Otp);
+                    valid = JsonConvert.DeserializeObject(valid);
+                    if (valid["status"] == "Success")
+                    {
+                        Console.WriteLine("Whoooohoo...");
+                    }
+                }
+                catch (AfricasTalkingGatewayException e)
+                {
+                    Console.WriteLine("Yikes: " + e.Message + e.StackTrace);
+                }
+            // ...
+```
+
+
+#### [Card Checkout](http://docs.africastalking.com/card/checkout)
+
+
+- `CardCheckout(product,providerChannel,transfer,currency,transferAmount,channelReceiving,accountReceiving,b2Bmetadata)` :  Mobile Business To Business (B2B) APIs allow you to initiate payments TO businesses eg banks FROM your payment wallet. [More info](http://docs.africastalking.com/payments/mobile-b2b) 
+- `productName` :  This value identifies the Africa's Talking Payment Product that should be used to initiate this transaction. `REQUIRED`   
+    - `paymentCard` :  TThis is a complex type whose structure is described below. It contains the details of the Payment Card to be charged in this transaction. Please note that you can EITHER provider this or provider a checkoutToken if you have one.  `REQUIRED`.
+        - `number` : The payment card number. `REQUIRED`
+        - `countryCode` :  The 2-Digit countryCode where the card was issued (only NG is supported).. `REQUIRED`
+        - `cvvNumber` :  The 3 or 4 digit Card Verification Value. `REQUIRED`
+        - `expiryMonth` : The expiration month on the card (e.g 1, 5, 12). `REQUIRED`  
+        - `expiryYear` :  The expiration year on the card (e.g 2019) `Optional`
+        - `authToken` : The card's ATM PIN. `REQUIRED` 
+
+    - `currencyCode` : This is the 3-digit ISO format currency code for the value of this transaction (e.g NGN, USD, KES etc). 
+    - `amount` : This is the amount (in the provided currency) that the mobile subscriber is expected to confirm. 
+    - `narration` : A short description of the transaction that can be displayed on the client's statement. 
+    - `metadata` : This value contains a map of any metadata that you would like us to associate with this request. You can use this field to send data that will map notifications to checkout requests, since we will include it when we send notifications once the checkout is complete.
+  
+
+
+
+> Example 
+```c# 
+            const string Username = "sandbox";
+            const string Otp = "1234";
+            const string ApiKey = "Key";
+            var transactionId = "id";
+            const string Env = "sandbox";
+            var gateway = new AfricasTalkingGateway(Username, ApiKey, Env);
+            const string ProductName = "awesomeproduct";
+            const string CurrencyCode = "NGN";
+            const decimal Amount = 7500.50M;
+            const string Narration = "Buy Aluku Records";
+            var metadata = new Dictionary<string, string>
+                               {
+                                   { "Parent Company",  "Offering Records" },
+                                   { "C.E.O", "Boddhi Satva" }
+                               };
+            const short CardCvv = 123;
+            const string CardNum = "123456789012345";
+            const string CountryCode = "NG";
+            const string CardPin = "1234";
+            const int ValidTillMonth = 9;
+            const int ValidTillYear = 2019;
+            var cardDetails = new PaymentCard(CardPin, CountryCode, CardCvv, ValidTillMonth, ValidTillYear, CardNum);
+            
+
+            try
+            {
+                // 1. Perform a card Checkout, recive the Tranasaction ID then,
+                // 2. validate against this OTP
+                var checkout = gateway.CardCheckout(
+                    ProductName,
+                    cardDetails,
+                    CurrencyCode,
+                    Amount,
+                    Narration,
+                    metadata);
+                /** Expect
+                 * {
+                    "status": "PendingValidation",
+                    "description": "Waiting for user input",
+                    "transactionId": "ATPid_SampleTxnId123"
+                    }
+                 * 
+                 */
+                var resObject = JsonConvert.DeserializeObject(checkout);
+                Console.WriteLine(resObject);
+                if (resObject["status"] == "PendingValidation")
+                {
+                    transactionId = resObject["transactionId"];
+                    Console.WriteLine(transactionId);
+                }
+            }
+            catch (AfricasTalkingGatewayException e)
+            {
+                Console.WriteLine("We encountred issues : " + e.Message + e.StackTrace);
+                throw;
+            }
+
+            Console.WriteLine("Attempting to Validate");
+            
+            try
+            {
+                var validate = gateway.ValidateCardOtp(transactionId, Otp);
+                var res = JsonConvert.DeserializeObject(validate);
+                if (res["status"] == "Success")
+                {
+                    Console.WriteLine("Awesome");
+                }
+                else
+                {
+                    Console.WriteLine("We had an error " + res["status"]);
+                }
+            }
+            catch (AfricasTalkingGatewayException e)
+            {
+                Console.WriteLine("Validation Error occured : " + e.Message);
+                throw;
+            }
+
+            Console.ReadLine();
+``` 
+
  
 ### [USSD Push](http://docs.africastalking.com/ussd)
 > A few things to note about USSD: 

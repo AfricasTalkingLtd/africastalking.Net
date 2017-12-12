@@ -11,7 +11,7 @@ namespace BankTransfer
         {
             Console.WriteLine("Hello World!");
             const string username = "sandbox";
-            const string apikey = "afd635a4f295dd936312836c0b944d55f2a836e8ff2b63987da5e717cd5ff745";
+            const string apikey = "Key";
             const string productname = "coolproduct";
             const string env = "sandbox";
             var gateway = new AfricasTalkingGateway(username, apikey, env);

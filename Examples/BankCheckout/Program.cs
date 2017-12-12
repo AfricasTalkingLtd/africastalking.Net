@@ -54,11 +54,12 @@
                     Console.WriteLine("Yikes: " + e.Message + e.StackTrace);
                 }
 
-            }
+            } 
             catch (AfricasTalkingGatewayException e)
             {
                 Console.WriteLine("Something odd happened: " + e.Message + e.StackTrace);
             }
+
             Console.ReadLine();
         }
     }
