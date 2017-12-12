@@ -218,13 +218,18 @@ namespace AfricasTalkingCS
         /// The <see cref="dynamic"/>.
         /// </returns>
         /// <exception cref="AfricasTalkingGatewayException">
+        /// Errors thrown by our gateway
         /// </exception>
         public dynamic FetchMessages(int lastReceivedId)
         {
             var url = this.SmsUrl + "?username=" + this._username + "&lastReceivedId" + Convert.ToString(lastReceivedId);
             var response = this.SendGetRequest(url);
 
-            if (_responseCode != (int) HttpStatusCode.OK) throw new AfricasTalkingGatewayException(response);
+            if (this._responseCode != (int)HttpStatusCode.OK)
+            {
+                throw new AfricasTalkingGatewayException(response);
+            }
+
             dynamic json = JObject.Parse(response);
             return json["SMSMessageData"]["Messages"];
         }
@@ -368,6 +373,39 @@ namespace AfricasTalkingCS
                 catch (AfricasTalkingGatewayException e)
                 {
                     throw new AfricasTalkingGatewayException(e);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Allows one the developer to create a checkout token to be used in a subscription or USSD push.
+        /// </summary>
+        /// <param name="phoneNumber">
+        /// The phone number.
+        /// </param>
+        /// <returns>
+        /// The <see cref="dynamic"/>.
+        /// </returns>
+        public dynamic CreateCheckoutToken(string phoneNumber)
+        {
+            if (!IsPhoneNumber(phoneNumber))
+            {
+                throw new AfricasTalkingGatewayException("The phone number supplied is not valid");
+            }
+            else
+            {
+                try
+                {
+                    var payload = new Hashtable
+                                      {
+                                          ["phoneNumber"] = phoneNumber
+                                      };
+                    var response = this.SendPostRequest(payload, this.TokenUrl);
+                    return response;
+                }
+                catch (AfricasTalkingGatewayException e)
+                {
+                    throw new AfricasTalkingGatewayException("An error ocurred while creating this token: " + e.Message);
                 }
             }
         }
@@ -548,12 +586,19 @@ namespace AfricasTalkingCS
         /// <summary>
         /// Root API host.
         /// </summary>
-        private string ApiHost => (ReferenceEquals(this._environment, "sandbox") ? "https://api.sandbox.africastalking.com": "https://api.africastalking.com");
+        private string ApiHost => (ReferenceEquals(this._environment, "sandbox")
+                                       ? "https://api.sandbox.africastalking.com"
+                                       : "https://api.africastalking.com");
 
         /// <summary>
         /// Payment endpoint.
         /// </summary>
         private string PaymentsHost => (ReferenceEquals(this._environment, "sandbox") ? "https://payments.sandbox.africastalking.com" : "https://payments.africastalking.com");
+
+        /// <summary>
+        /// The token creation  url.
+        /// </summary>
+        private string TokenUrl => this.ApiHost + "/checkout/token/create";
 
         /// <summary>
         /// The send get request helper method.
