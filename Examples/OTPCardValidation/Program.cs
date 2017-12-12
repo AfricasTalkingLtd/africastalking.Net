@@ -15,7 +15,7 @@ namespace OTPCardValidation
             Console.WriteLine("Hello World!");
             const string Username = "sandbox";
             const string Otp = "1234";
-            const string ApiKey = "afd635a4f295dd936312836c0b944d55f2a836e8ff2b63987da5e717cd5ff745";
+            const string ApiKey = "Key";
             var transactionId = "id";
             const string Env = "sandbox";
             var gateway = new AfricasTalkingGateway(Username, ApiKey, Env);
