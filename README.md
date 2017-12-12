@@ -249,7 +249,7 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
 
     - `productName`: Your Payment Product. `REQUIRED`
 
-    - `phoneNumber`: The customer phone number (in international format; e.g. `25471xxxxxxx`). `REQUIRED`
+    - `phoneNumber`: The customer phone number (in international format; e.g. `+25471xxxxxxx`). `REQUIRED`
 
     - `currencyCode`: 3-digit ISO format currency code (e.g `KES`, `USD`, `UGX` etc.) `REQUIRED`
 
@@ -463,7 +463,7 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
     - `bankAccount` :  This is a complex type whose structure is described below. It contains the details of the bank account to be charged in this transaction.  
         - `accountName` :  The name of the bank account. `Optional`
         - `accountNumber` : The account number. `REQUIRED` 
-        - `bankCode` :  An 6-Digit Integer Code for the bank that we allocate. `REQURED`. See this [link](http://docs.africastalking.com/bank/checkout) for more details
+        - `bankCode` :  A 6-Digit Integer Code for the bank that we allocate. `REQURED`. See this [link](http://docs.africastalking.com/bank/checkout) for more details
         - `dateOfBirth` : Date of birth of the account owner. `Optional`/`Required` - for Zenith Bank NG.
  
     - `currencyCode` : This is the 3-digit ISO format currency code for the value of this transaction (e.g NGN, USD, KES etc). 
@@ -536,7 +536,7 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
         - `bankAccount` : This is a complex type whose structure is described below. It contains the details of the bank account to be charged in this transaction.  
             - `accountName` :  The name of the bank account. `Optional`
             - `accountNumber` : The account number. `REQUIRED` 
-            - `bankCode` :  An 6-Digit Integer Code for the bank that we allocate. `REQURED`. See this [link](http://docs.africastalking.com/bank/transfer) for more details
+            - `bankCode` :  A 6-Digit Integer Code for the bank that we allocate. `REQURED`. See this [link](http://docs.africastalking.com/bank/transfer) for more details
             - `dateOfBirth` : Date of birth of the account owner. `Optional`/`Required` - for Zenith Bank NG. 
 
         - `currencyCode` : This is the 3-digit ISO format currency code for the value of this transaction (e.g NGN, USD, KES etc). 
@@ -550,7 +550,7 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
 ```c# 
  
             const string username = "sandbox";
-            const string apikey = "afd635a4f295dd936312836c0b944d55f2a836e8ff2b63987da5e717cd5ff745";
+            const string apikey = "KEY";
             const string productname = "coolproduct";
             const string env = "sandbox";
             var gateway = new AfricasTalkingGateway(username, apikey, env);
