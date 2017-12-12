@@ -350,25 +350,24 @@ namespace AfricasTalkingCS
             }
             else
             {
-                var data = new Hashtable
-                               {
-                                   ["username"] = this._username,
-                                   ["from"] = from,
-                                   ["to"] = to
-                               };
-
-                // var data = new Dictionary<string, string>
-                // {
-                //    { "username", _username },
-                //    { "from", from },
-                //    { "to", to }
-                // };
+                //var data = new Hashtable
+                //               {
+                //                   ["username"] = this._username,
+                //                   ["from"] = from,
+                //                   ["to"] = to
+                //               };
+                var data = new Dictionary<string, string>
+                 {
+                    { "username", this._username },
+                    { "from", @from },
+                    { "to", @to }
+                 };
                 try
                 {
                     var url = this.VoiceUrl + "/call";
                     var response = this.SendPostRequest(data, url);
-                    dynamic json = JObject.Parse(response);
-                    return json;
+                    // dynamic json = JObject.Parse(response);
+                    return response;
                 }
                 catch (AfricasTalkingGatewayException e)
                 {
@@ -376,6 +375,8 @@ namespace AfricasTalkingCS
                 }
             }
         }
+
+       // private  static string RawConvert()
 
         /// <summary>
         /// Allows one the developer to create a checkout token to be used in a subscription or USSD push.
