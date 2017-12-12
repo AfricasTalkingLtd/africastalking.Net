@@ -11,7 +11,7 @@
             const string Apikey = "Key";
             const string Env = "sandbox";
             var gateway = new AfricasTalkingGateway(Username, Apikey, Env);
-            var tokenId = "tkn";
+            var tokenId = "CkTkn_94248929024020408fh3hf02302qawjlasj32";
             const string PhoneNumber = "+254724587654";
             const string Menu = "CON You're about to love C#\n1.Accept my fate\n2.No Never\n";
 

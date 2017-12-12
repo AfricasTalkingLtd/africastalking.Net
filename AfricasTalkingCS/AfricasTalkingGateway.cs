@@ -172,7 +172,7 @@ namespace AfricasTalkingCS
         /// </returns>
         private static bool IsPhoneNumber(string number)
         {
-            return Regex.Match(number, @"^\+?(\d[\d-. ]+)?(\([\d-. ]+\))?[\d-. ]+\d$").Success;
+            return Regex.Match(number, @"^\+?(\d[\d-. ]+)?(\([\d-. ]+\))?[\d-. ]+\d$").Success && number.Length > 5;
         }
 
         /// <summary>
@@ -826,7 +826,7 @@ namespace AfricasTalkingCS
         /// </returns>
         private static bool IsValidTransactionId(string transactionId)
         {
-            return Regex.Match(transactionId, @"^ATPid_.*$").Success;
+            return Regex.Match(transactionId, @"^ATPid_.*$").Success && transactionId.Length > 7;
         }
 
         /// <summary>
@@ -840,7 +840,7 @@ namespace AfricasTalkingCS
         /// </returns>
         private static bool IsValidToken(string token)
         {
-            return Regex.Match(token, @"^CkTkn_.*$").Success;
+            return Regex.Match(token, @"^CkTkn_.*$").Success && token.Length > 7;
         }
 
         /// <summary>
