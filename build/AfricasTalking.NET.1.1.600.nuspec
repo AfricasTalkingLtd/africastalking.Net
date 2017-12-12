@@ -10,6 +10,16 @@
     <projectUrl>https://github.com/AfricasTalkingLtd/africastalking.Net</projectUrl>
     <iconUrl>https://avatars2.githubusercontent.com/u/12639968</iconUrl>
     <description>Africa's Talking SMS,Voice,USSD,Airtime and Payments APIs provide a scalable,robust and reliable interfacing between developers and telco providers across the continent</description>
+    <releaseNotes>1. Added Support for bank payments 
+    + Bank Tranfer
+    + Bank checkout
+    + Bank OTP validation
+2. Added Support for Card payments
+     + Card checkouts
+     + Card OTP checkout validation
+3. You can now initiate USSD push request from your app. See docs
+4. You can now create and ingest tokens from within your app. See docs
+5. Minor quality improvements</releaseNotes>
     <copyright>Copyright ©2017 Africa's Talking Ltd</copyright>
     <tags>sms voice mobile-payments airtime card-payments bank-tranfers otp-validations</tags>
     <repository type="Git" url="https://github.com/AfricasTalkingLtd/africastalking.Net" />
