@@ -10,15 +10,16 @@
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 # Build results
-[Dd]ebug/
-[Dd]ebugPublic/
-[Rr]elease/
-[Rr]eleases/
-[Xx]64/
-[Xx]86/
-bld/
+[Dd]ebug
+[Dd]ebugPublic
+[Rr]elease
+[Rr]eleases
+[Xx]64
+[Xx]86
+bld
 [Bb]in
-[Oo]bj
+[Oo]bj 
+.vscode
 
 
 # Visual Studio 2015 cache/options directory

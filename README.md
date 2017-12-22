@@ -15,6 +15,8 @@ Take a look at the [API docs here](http://docs.africastalking.com/) for more inf
 + Click on the ***Install*** button and accept the licences to proceed. 
 
 > For .NET Standard 2.0 projects yellow triangles may appear on your solution items,note that these are warnings due to deprecated support for some packages used by the wrapper.These will be reviewed in future releases,for now they will not affect the functionality of your project and can be safely ignored.Should there be a case where this package breaks your project kindly report the package via Nuget. 
+>
+> For more info on this follow [this thread](https://github.com/aspnet/Mvc/issues/5822) and [this link](https://dotnet.myget.org/feed/aspnetwebstack-dev/package/nuget/Microsoft.AspNet.WebApi.Client) .
 
 ![Install Package](ScreenShots/packageMgrInst.PNG) 
 
@@ -465,12 +467,12 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
         - `accountNumber` : The account number. `REQUIRED` 
         - `bankCode` :  A 6-Digit Integer Code for the bank that we allocate. `REQURED`. See this [link](http://docs.africastalking.com/bank/checkout) for more details
         - `dateOfBirth` : Date of birth of the account owner. `Optional`/`Required` - for Zenith Bank NG.
- 
+
     - `currencyCode` : This is the 3-digit ISO format currency code for the value of this transaction (e.g NGN, USD, KES etc). 
     - `amount` : This is the amount (in the provided currency) that the mobile subscriber is expected to confirm. 
     - `narration` : A short description of the transaction that can be displayed on the client's statement. 
     - `metadata` : This value contains a map of any metadata that you would like us to associate with this request. You can use this field to send data that will map notifications to checkout requests, since we will include it when we send notifications once the checkout is complete.
-    
+
 > Example  - For details on OTP see OTP
 ```c# 
 
@@ -588,7 +590,7 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
 
             Console.ReadLine();
 
-``` 
+```
 
 #### OTP Validation [Banking](http://docs.africastalking.com/bank/validate) and [Card](http://docs.africastalking.com/card/validate) 
 > Checkout Validation APIs allow your application to validate bank/card charge requests that deduct money from a customer's bank account.
@@ -629,7 +631,7 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
                 Console.WriteLine("Validation Error occured : " + e.Message);
             }
             // ...
-``` 
+```
 ```c#  
 // ....BANKING
    var gateway = new AfricasTalkingGateway(Username, ApiKey, Env);
@@ -668,7 +670,7 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
     - `amount` : This is the amount (in the provided currency) that the mobile subscriber is expected to confirm. 
     - `narration` : A short description of the transaction that can be displayed on the client's statement. 
     - `metadata` : This value contains a map of any metadata that you would like us to associate with this request. You can use this field to send data that will map notifications to checkout requests, since we will include it when we send notifications once the checkout is complete.
-  
+
 
 
 
@@ -753,18 +755,18 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
             }
 
             Console.ReadLine();
-``` 
+```
 
- 
+
 ### [USSD Push](http://docs.africastalking.com/ussd)
 > A few things to note about USSD: 
 
 + USSD is session driven. Every request we send you will contain a sessionId, and this will be maintained until that session is completed
-+ You will need to let the Mobile Service Provider know whether the session is complete or not. If the session is ongoing, please begin your response with CON. If this is the last response for that session, begin your response with END.
-+ If we get a HTTP error response (Code 40X) from your script, or a malformed response (does not begin with CON or END, we will terminate the USSD session gracefully. 
++ ~~You will need to let the Mobile Service Provider know whether the session is complete or not. If the session is ongoing, please begin your response with CON. If this is the last response for that session, begin your response with END.~~
++ ~~If we get a HTTP error response (Code 40X) from your script, or a malformed response (does not begin with CON or END, we will terminate the USSD session gracefully.~~
 
 + **USSD push currently works in Nigeria only** 
- 
+
 
 ```csharp 
 
@@ -799,7 +801,7 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
 
             Console.ReadLine(); 
 
-```  
+```
 > Expected Results 
 
 ![ussdPush](/ScreenShots/ussdPush.PNG)
