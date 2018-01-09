@@ -42,16 +42,25 @@ namespace AfricasTalkingCS
         /// Initializes a new instance of the <see cref="AfricasTalkingGateway"/> class.
         /// </summary>
         /// <param name="username">
-        /// The username.
+        /// The username. Expects "sandbox" or Actual AfricasTalking username
         /// </param>
         /// <param name="apikey">
         /// The apikey.
         /// </param>
         public AfricasTalkingGateway(string username,string apikey)
         {
-            _username = username;
-            _apikey = apikey;
-            _environment = "production";
+            if (username == "sandbox")
+            {
+                _username = "sandbox";
+                _environment = "sandbox";
+                _apikey = apikey;
+            }
+            else
+            {
+                _username = username;
+                _apikey = apikey;
+                _environment = "production";
+            }
             _serializer = new JsonSerializer();
         }
 
