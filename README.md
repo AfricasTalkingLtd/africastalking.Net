@@ -47,9 +47,30 @@ Install-Package AfricasTalking.NET -Version 1.1.600
 The package needs to be configured with your Africa's Talking username and API key (which you can get from the dashboard). 
 
 ```csharp  
+// For version >v1.1.6XX+
  const string username = "sandbox";
  const string apikey = "mydopeSandboxKey";
 
+``` 
+
+```csharp  
+// For version <= v1.1.600
+ const string username = "sandbox";
+ const string apikey = "mydopeSandboxKey";
+const string env = "sandbox"; // For sandbox users
+``` 
+
+```csharp  
+
+ var gateway = new AfricasTalkingGateway(username, apiKey);
+  
+```
+> For sandbox and package version <=1.1.600
+
+```csharp 
+ 
+ var gateway = new AfricasTalkingGateway(username, apiKey, env); 
+ 
 ```
 
 ## Important: 
