@@ -84,6 +84,7 @@ namespace AfricasTalkingCS
             _serializer = new JsonSerializer();
         }
 
+
         /// <summary>
         /// The send message method.
         /// </summary>
@@ -359,18 +360,18 @@ namespace AfricasTalkingCS
             }
             else
             {
-                //var data = new Hashtable
-                //               {
-                //                   ["username"] = this._username,
-                //                   ["from"] = from,
-                //                   ["to"] = to
-                //               };
-                var data = new Dictionary<string, string>
-                 {
-                    { "username", this._username },
-                    { "from", @from },
-                    { "to", @to }
-                 };
+                var data = new Hashtable
+                {
+                    ["username"] = this._username,
+                    ["from"] = from,
+                    ["to"] = to
+                };
+                //var data = new Dictionary<string, string>
+                // {
+                //    { "username", this._username },
+                //    { "from", from },
+                //    { "to", to }
+                // };
                 try
                 {
                     var url = this.VoiceUrl + "/call";
