@@ -42,16 +42,25 @@ namespace AfricasTalkingCS
         /// Initializes a new instance of the <see cref="AfricasTalkingGateway"/> class.
         /// </summary>
         /// <param name="username">
-        /// The username.
+        /// The username. Expects "sandbox" or Actual AfricasTalking username
         /// </param>
         /// <param name="apikey">
         /// The apikey.
         /// </param>
         public AfricasTalkingGateway(string username,string apikey)
         {
-            _username = username;
-            _apikey = apikey;
-            _environment = "production";
+            if (username == "sandbox")
+            {
+                _username = "sandbox";
+                _environment = "sandbox";
+                _apikey = apikey;
+            }
+            else
+            {
+                _username = username;
+                _apikey = apikey;
+                _environment = "production";
+            }
             _serializer = new JsonSerializer();
         }
 
@@ -74,6 +83,7 @@ namespace AfricasTalkingCS
             _environment = environment;
             _serializer = new JsonSerializer();
         }
+
 
         /// <summary>
         /// The send message method.
@@ -350,18 +360,18 @@ namespace AfricasTalkingCS
             }
             else
             {
-                //var data = new Hashtable
-                //               {
-                //                   ["username"] = this._username,
-                //                   ["from"] = from,
-                //                   ["to"] = to
-                //               };
-                var data = new Dictionary<string, string>
-                 {
-                    { "username", this._username },
-                    { "from", @from },
-                    { "to", @to }
-                 };
+                var data = new Hashtable
+                {
+                    ["username"] = this._username,
+                    ["from"] = from,
+                    ["to"] = to
+                };
+                //var data = new Dictionary<string, string>
+                // {
+                //    { "username", this._username },
+                //    { "from", from },
+                //    { "to", to }
+                // };
                 try
                 {
                     var url = this.VoiceUrl + "/call";
