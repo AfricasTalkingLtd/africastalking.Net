@@ -49,22 +49,22 @@ The package needs to be configured with your Africa's Talking username and API k
 ```csharp  
 
 var username = "YourUSERNAME";
-var apiKey = "yourAPIKEY";
-var env = "sandbox"; //Use this only if you need to use the sandbox environment,otherwise ignore. 
+var apiKey = "yourAPIKEY"; 
 
 ```
-> Your default environment is **production**,hence you can use our gateway class as shown below
+> ~~Your default environment is **production**,hence you can use our gateway class as shown below~~ FOR SANDBOX SET USERNAME TO **sandbox** AND USE **sandbox key from your sandbox account** .
 
 ```csharp  
 
  var gateway = new AfricasTalkingGateway(username, apiKey);
   
 ```
-> Otherwise, for sandbox;see below 
+> ~~Otherwise, for sandbox;see below~~  DEPRECATED 
 
 ```csharp 
  
  var gateway = new AfricasTalkingGateway(username, apiKey, env); 
+// This declaration has been DEPRECATED , if in use set var env = "sandbox"
  
 ```
 ## Important: 
