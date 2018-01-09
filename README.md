@@ -47,33 +47,18 @@ Install-Package AfricasTalking.NET -Version 1.1.600
 The package needs to be configured with your Africa's Talking username and API key (which you can get from the dashboard). 
 
 ```csharp  
-
-var username = "YourUSERNAME";
-var apiKey = "yourAPIKEY"; 
+ const string username = "sandbox";
+ const string apikey = "mydopeSandboxKey";
 
 ```
-> ~~Your default environment is **production**,hence you can use our gateway class as shown below~~ FOR SANDBOX SET USERNAME TO **sandbox** AND USE **sandbox key from your sandbox account** .
 
-```csharp  
-
- var gateway = new AfricasTalkingGateway(username, apiKey);
-  
-```
-> ~~Otherwise, for sandbox;see below~~  DEPRECATED 
-
-```csharp 
- 
- var gateway = new AfricasTalkingGateway(username, apiKey, env); 
-// This declaration has been DEPRECATED , if in use set var env = "sandbox"
- 
-```
 ## Important: 
  If you register a callback URL with the API, always remember to acknowledge the receipt of any data it sends by responding with an HTTP `200`;  [Here's a sample application you can use to test a call-back url](https://github.com/TheBeachMaster/ATSamples/tree/master/paymentcallback.node) 
 > For example in an ASP.NET Core or ASP.NET MVC Project
 
 ```csharp 
 [HttpPost]
-public ActionResult SomeCoolMethod(awesome,params)
+public ActionResult SomeCoolMethod(awesome, params)
 {
    // Your awesome logic
 
