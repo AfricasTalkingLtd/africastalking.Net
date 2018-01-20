@@ -182,7 +182,7 @@ namespace AfricasTalkingCS
         /// </returns>
         private static bool IsPhoneNumber(string number)
         {
-            return Regex.Match(number, @"^\+?(\d[\d-. ]+)?(\([\d-. ]+\))?[\d-. ]+\d$").Success && number.Length > 5;
+            return Regex.Match(number, @"^\+?(\d[\d-. +,]+)?(\([\d-. +,]+\))?[\d-. ]+\d$").Success && number.Length > 5;
         }
 
         /// <summary>
