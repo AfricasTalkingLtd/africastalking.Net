@@ -17,8 +17,8 @@
     <RepositoryUrl>https://github.com/AfricasTalkingLtd/africastalking.Net</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>sms voice mobile-payments airtime card-payments bank-tranfers otp-validations</PackageTags>
-    <AssemblyVersion>1.1.600</AssemblyVersion>
-    <FileVersion>1.1.600</FileVersion>
+    <AssemblyVersion>1.1.601</AssemblyVersion>
+    <FileVersion>1.1.601</FileVersion>
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>AfricasTalking.NET.pfx</AssemblyOriginatorKeyFile>
     <PackageReleaseNotes>1. Added Support for bank payments 

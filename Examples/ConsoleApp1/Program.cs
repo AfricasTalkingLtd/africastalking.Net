@@ -16,7 +16,6 @@ namespace ConsoleApp1
                
 
             var gateway = new AfricasTalkingGateway(username, apiKey, env);
-            //var sms = gateway.Fe("+254",)
             try
             {
                 dynamic res = gateway.SendMessage(recep, msg);
