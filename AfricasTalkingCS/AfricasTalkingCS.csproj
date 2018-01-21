@@ -4,33 +4,31 @@
     <TargetFrameworks>net45;net46;netstandard2.0</TargetFrameworks>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.1.601</Version>
+    <Version>1.1.700</Version>
     <Authors>TheBeachmaster</Authors>
     <PackageId>AfricasTalking.NET</PackageId>
     <Company>Africa's Talking Ltd</Company>
     <Product>Africa's Talking .NET gateway</Product>
     <Description>Africa's Talking SMS,Voice,USSD,Airtime and Payments APIs provide a scalable,robust and reliable interfacing between developers and telco providers across the continent</Description>
-    <Copyright>Copyright ©2017 Africa's Talking Ltd</Copyright>
+    <Copyright>Copyright ©2018 Africa's Talking Ltd</Copyright>
     <PackageLicenseUrl>https://www.africastalking.com/terms</PackageLicenseUrl>
     <PackageIconUrl>https://avatars2.githubusercontent.com/u/12639968</PackageIconUrl>
     <PackageProjectUrl>https://github.com/AfricasTalkingLtd/africastalking.Net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/AfricasTalkingLtd/africastalking.Net</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>sms voice mobile-payments airtime card-payments bank-tranfers otp-validations</PackageTags>
-    <AssemblyVersion>1.1.601</AssemblyVersion>
-    <FileVersion>1.1.601</FileVersion>
+    <AssemblyVersion>1.1.700</AssemblyVersion>
+    <FileVersion>1.1.700</FileVersion>
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>AfricasTalking.NET.pfx</AssemblyOriginatorKeyFile>
-    <PackageReleaseNotes>1. Added Support for bank payments 
-    + Bank Tranfer
-    + Bank checkout
-    + Bank OTP validation
-2. Added Support for Card payments
-     + Card checkouts
-     + Card OTP checkout validation
-3. You can now initiate USSD push request from your app. See docs
-4. You can now create and ingest tokens from within your app. See docs
-5. Minor quality improvements</PackageReleaseNotes>
+    <PackageReleaseNotes>+ Pest Control (Bug Fixes)
+ + Quality improvements 
+    1. Pest Control
+      1.1.  Fixed issue where phone number validation fails on
+            comma-separated numbers
+     2. Improvements 
+       2.1.  Minor improvements on Voice [WIP]
+      2.2.  No need to set sandbox environment flag</PackageReleaseNotes>
     <NeutralLanguage></NeutralLanguage>
   </PropertyGroup>
 
@@ -50,6 +48,5 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
   </ItemGroup>
-  
-
+ 
 </Project>
