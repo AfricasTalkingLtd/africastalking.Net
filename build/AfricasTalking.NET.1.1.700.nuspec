@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>AfricasTalking.NET</id>
-    <version>1.1.600</version>
+    <version>1.1.700</version>
     <authors>TheBeachmaster</authors>
     <owners>TheBeachmaster</owners>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
@@ -10,17 +10,15 @@
     <projectUrl>https://github.com/AfricasTalkingLtd/africastalking.Net</projectUrl>
     <iconUrl>https://avatars2.githubusercontent.com/u/12639968</iconUrl>
     <description>Africa's Talking SMS,Voice,USSD,Airtime and Payments APIs provide a scalable,robust and reliable interfacing between developers and telco providers across the continent</description>
-    <releaseNotes>1. Added Support for bank payments 
-    + Bank Tranfer
-    + Bank checkout
-    + Bank OTP validation
-2. Added Support for Card payments
-     + Card checkouts
-     + Card OTP checkout validation
-3. You can now initiate USSD push request from your app. See docs
-4. You can now create and ingest tokens from within your app. See docs
-5. Minor quality improvements</releaseNotes>
-    <copyright>Copyright ©2017 Africa's Talking Ltd</copyright>
+    <releaseNotes>+ Pest Control (Bug Fixes)
+ + Quality improvements 
+    1. Pest Control
+      1.1.  Fixed issue where phone number validation fails on
+            comma-separated numbers
+     2. Improvements 
+       2.1.  Minor improvements on Voice [WIP]
+      2.2.  No need to set sandbox environment flag</releaseNotes>
+    <copyright>Copyright ©2018 Africa's Talking Ltd</copyright>
     <tags>sms voice mobile-payments airtime card-payments bank-tranfers otp-validations</tags>
     <repository type="Git" url="https://github.com/AfricasTalkingLtd/africastalking.Net" />
     <dependencies>
@@ -48,8 +46,8 @@
     </frameworkAssemblies>
   </metadata>
   <files>
-    <file src="..\AfricasTalkingCS\bin\Release\net45\AfricasTalkingCS.dll" target="lib\net45\AfricasTalkingCS.dll" />
-    <file src="..\AfricasTalkingCS\bin\Release\net46\AfricasTalkingCS.dll" target="lib\net46\AfricasTalkingCS.dll" />
-    <file src="..\AfricasTalkingCS\bin\Release\netstandard2.0\AfricasTalkingCS.dll" target="lib\netstandard2.0\AfricasTalkingCS.dll" />
+    <file src="..\AfricasTalkingCS\bin\Debug\net45\AfricasTalkingCS.dll" target="lib\net45\AfricasTalkingCS.dll" />
+    <file src="..\AfricasTalkingCS\bin\Debug\net46\AfricasTalkingCS.dll" target="lib\net46\AfricasTalkingCS.dll" />
+    <file src="..\AfricasTalkingCS\bin\Debug\netstandard2.0\AfricasTalkingCS.dll" target="lib\netstandard2.0\AfricasTalkingCS.dll" />
   </files>
 </package>
