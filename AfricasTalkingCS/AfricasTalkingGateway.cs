@@ -22,7 +22,6 @@ namespace AfricasTalkingCS
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
-
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
@@ -365,32 +364,25 @@ namespace AfricasTalkingCS
         /// </exception>
         public dynamic Call(string from, string to)
         {
-            string[] numbers_from = from.Split(separator: new[] {','}, options: StringSplitOptions.RemoveEmptyEntries);
-            string[] numbers_to = to.Split(separator: new[] {','}, options: StringSplitOptions.RemoveEmptyEntries);
-            var numbersAreValid = IsPhoneNumber(numbers_to) && IsPhoneNumber(numbers_from);
+            var numbersFrom = from.Split(separator: new[] {','}, options: StringSplitOptions.RemoveEmptyEntries);
+            var numbersTo = to.Split(separator: new[] {','}, options: StringSplitOptions.RemoveEmptyEntries);
+            var numbersAreValid = IsPhoneNumber(numbersTo) && IsPhoneNumber(numbersFrom);
             if (!numbersAreValid)
             {
                 throw new AfricasTalkingGatewayException("One or both of the phonenumber(s) provided is (are) not valid");
             }
             else
             {
-                var data = new Hashtable
+                var dict = new Dictionary<string, string>
                 {
                     ["username"] = this._username,
                     ["from"] = from,
                     ["to"] = to
                 };
-                //var data = new Dictionary<string, string>
-                // {
-                //    { "username", this._username },
-                //    { "from", from },
-                //    { "to", to }
-                // };
                 try
                 {
-                    var url = this.VoiceUrl + "/call";
-                    var response = this.SendPostRequest(data, url);
-                    // dynamic json = JObject.Parse(response);
+                    var url = VoiceUrl + "/call";
+                    var response = SendPostRequest(dict, url);
                     return response;
                 }
                 catch (AfricasTalkingGatewayException e)
