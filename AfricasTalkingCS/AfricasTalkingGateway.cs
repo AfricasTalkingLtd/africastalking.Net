@@ -117,7 +117,11 @@ namespace AfricasTalkingCS
             Hashtable options = null)
         {
             // TODO Convert options to type IDictionary
-            var isValidphoneNumber = IsPhoneNumber(to);
+            string[] numbers = to.Split(separator: new[] {','}, options: StringSplitOptions.RemoveEmptyEntries);
+            var isValidphoneNumber = IsPhoneNumber(numbers);
+
+
+
             if (to.Length == 0 || message.Length == 0 || !isValidphoneNumber)
             {
                 throw new AfricasTalkingGatewayException("The message is either empty or phone number is not valid");
@@ -180,9 +184,15 @@ namespace AfricasTalkingCS
         /// <returns>
         /// The <see cref="bool"/>.
         /// </returns>
-        private static bool IsPhoneNumber(string number)
+        private static bool IsPhoneNumber(string[] number)
         {
-            return Regex.Match(number, @"^\+?(\d[\d-. ]+)?(\([\d-. ]+\))?[\d-. ]+\d$").Success && number.Length > 5;
+            bool valid = true;
+            foreach (string num in number)
+            {
+               var status = Regex.Match(num, @"^\+?(\d[\d-. ]+)?(\([\d-. ]+\))?[\d-. ]+\d{5,}$").Success;
+                valid = valid & status;
+            }
+            return valid;
         }
 
         /// <summary>
@@ -267,7 +277,8 @@ namespace AfricasTalkingCS
         /// </exception>
         public dynamic CreateSubscription(string phoneNumber, string shortCode, string keyWord, string checkoutToken)
         {
-            if (phoneNumber.Length == 0 || shortCode.Length == 0 || keyWord.Length == 0 || checkoutToken.Length == 0 || !IsPhoneNumber(phoneNumber))
+            string[] numbers = phoneNumber.Split(separator: new[] {','}, options: StringSplitOptions.RemoveEmptyEntries);
+            if (phoneNumber.Length == 0 || shortCode.Length == 0 || keyWord.Length == 0 || checkoutToken.Length == 0 || !IsPhoneNumber(numbers))
             {
                 throw new AfricasTalkingGatewayException("Some Parameters are missing or not properly formatted");
             }
@@ -311,7 +322,8 @@ namespace AfricasTalkingCS
         /// </exception>
         public dynamic DeleteSubscription(string phoneNumber, string shortCode, string keyWord)
         {
-            if (phoneNumber.Length == 0 || shortCode.Length == 0 || keyWord.Length == 0 || !IsPhoneNumber(phoneNumber))
+            string[] numbers = phoneNumber.Split(separator: new[] {','}, options: StringSplitOptions.RemoveEmptyEntries);
+            if (phoneNumber.Length == 0 || shortCode.Length == 0 || keyWord.Length == 0 || !IsPhoneNumber(numbers))
             {
                 throw new AfricasTalkingGatewayException("Some Parameters are missing or phonenumber is malformed");
             }
@@ -353,7 +365,9 @@ namespace AfricasTalkingCS
         /// </exception>
         public dynamic Call(string from, string to)
         {
-            var numbersAreValid = IsPhoneNumber(from) && IsPhoneNumber(to);
+            string[] numbers_from = from.Split(separator: new[] {','}, options: StringSplitOptions.RemoveEmptyEntries);
+            string[] numbers_to = to.Split(separator: new[] {','}, options: StringSplitOptions.RemoveEmptyEntries);
+            var numbersAreValid = IsPhoneNumber(numbers_to) && IsPhoneNumber(numbers_from);
             if (!numbersAreValid)
             {
                 throw new AfricasTalkingGatewayException("One or both of the phonenumber(s) provided is (are) not valid");
@@ -399,7 +413,8 @@ namespace AfricasTalkingCS
         /// </returns>
         public dynamic CreateCheckoutToken(string phoneNumber)
         {
-            if (!IsPhoneNumber(phoneNumber))
+            string[] numbers = phoneNumber.Split(separator: new[] {','}, options: StringSplitOptions.RemoveEmptyEntries);
+            if (!IsPhoneNumber(numbers))
             {
                 throw new AfricasTalkingGatewayException("The phone number supplied is not valid");
             }
@@ -442,7 +457,8 @@ namespace AfricasTalkingCS
         /// </exception>
         public dynamic InitiateUssdPushRequest(string phoneNumber, string prompt, string checkoutToken)
         {
-            if (!IsValidToken(checkoutToken) || prompt.Length == 0 || !IsPhoneNumber(phoneNumber))
+            string[] numbers = phoneNumber.Split(separator: new[] {','}, options: StringSplitOptions.RemoveEmptyEntries);
+            if (!IsValidToken(checkoutToken) || prompt.Length == 0 || !IsPhoneNumber(numbers))
             {
                 throw new AfricasTalkingGatewayException("One or some of the arguments supplied are invalid.");
             }
@@ -484,7 +500,8 @@ namespace AfricasTalkingCS
         /// </exception>
         public int GetNumberOfQueuedCalls(string phoneNumber, string queueName = null)
         {
-            if (!IsPhoneNumber(phoneNumber))
+            string[] numbers = phoneNumber.Split(separator: new[] {','}, options: StringSplitOptions.RemoveEmptyEntries);
+            if (!IsPhoneNumber(numbers))
             {
                 throw new AfricasTalkingGatewayException("Phone Number is invalid");
             }
@@ -884,8 +901,9 @@ namespace AfricasTalkingCS
         public dynamic Checkout(string productName, string phoneNumber, string currencyCode, decimal amount, string providerChannel, Dictionary<string, string> metadata = null)
         {
             string symbol;
+            string[] numbers = phoneNumber.Split(separator: new[] {','}, options: StringSplitOptions.RemoveEmptyEntries);
             
-            if (productName.Length == 0 || !IsPhoneNumber(phoneNumber) || !IsValidCurrency(currencyCode, out symbol) || providerChannel.Length == 0)
+            if (productName.Length == 0 || !IsPhoneNumber(numbers) || !IsValidCurrency(currencyCode, out symbol) || providerChannel.Length == 0)
             {
                 throw new AfricasTalkingGatewayException("Missing or malformed arguments, or invalid currency symbol or phonenumber");
             }
