@@ -1337,7 +1337,7 @@
           "lib/netstandard1.3/System.Xml.XmlDocument.dll": {}
         }
       },
-      "AfricasTalking.NET/1.1.600": {
+      "AfricasTalking.NET/1.1.700": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
@@ -4890,7 +4890,7 @@
         "system.xml.xmldocument.nuspec"
       ]
     },
-    "AfricasTalking.NET/1.1.600": {
+    "AfricasTalking.NET/1.1.700": {
       "type": "project",
       "path": "../../AfricasTalkingCS/AfricasTalkingCS.csproj",
       "msbuildProject": "../../AfricasTalkingCS/AfricasTalkingCS.csproj"
@@ -4898,7 +4898,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
-      "AfricasTalking.NET >= 1.1.600",
+      "AfricasTalking.NET >= 1.1.700",
       "Microsoft.NETCore.App >= 2.0.0"
     ]
   },
