@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SerializeBankCheckout.cs" company="Africa's Talking">
-//   2017
+//   2018
 // </copyright>
 // <summary>
 //   Defines the BankChecout type.
