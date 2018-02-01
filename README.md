@@ -47,33 +47,20 @@ Install-Package AfricasTalking.NET -Version 1.1.700
 The package needs to be configured with your Africa's Talking username and API key (which you can get from the dashboard). 
 
 ```csharp  
-// For version >v1.1.6XX+
- const string username = "sandbox";
- const string apikey = "mydopeSandboxKey";
 
-``` 
+ const string username = "sandbox"; // substitute with your username if mot using sandbox
+ const string apikey = "mySandboxKey"; // substitute with your production API key if not using sandbox
 
-```csharp  
-// For version <= v1.1.600
- const string username = "sandbox";
- const string apikey = "mydopeSandboxKey";
-const string env = "sandbox"; // For sandbox users
-``` 
+```
+
 
 ```csharp  
 
  var gateway = new AfricasTalkingGateway(username, apiKey);
   
 ```
-> For sandbox and package version <=1.1.600
+> Important:
 
-```csharp 
- 
- var gateway = new AfricasTalkingGateway(username, apiKey, env); 
- 
-```
-
-## Important: 
  If you register a callback URL with the API, always remember to acknowledge the receipt of any data it sends by responding with an HTTP `200`;  [Here's a sample application you can use to test a call-back url](https://github.com/TheBeachMaster/ATSamples/tree/master/paymentcallback.node) 
 > For example in an ASP.NET Core or ASP.NET MVC Project
 
@@ -153,8 +140,7 @@ public ActionResult SomeCoolMethod(awesome, params)
 ```c#
             var username = "sandbox";
             var apikey = "KEY";
-            var env = "sandbox";
-            var gateway = new AfricasTalkingGateway(username, apikey, env);
+            var gateway = new AfricasTalkingGateway(username, apikey);
             var phoneNum = "+254XXXXXXXXX"; // Ensure the phonenumber is properly formatted
             try
             {
@@ -172,8 +158,7 @@ public ActionResult SomeCoolMethod(awesome, params)
 ```c#
             var username = "sandbox";
             var apikey = "KEY";
-            var env = "sandbox";
-            var gateway = new AfricasTalkingGateway(username, apikey, env);
+            var gateway = new AfricasTalkingGateway(username, apikey);
             var shortCode = "NNNNN";
             var keyword = "keyword";
             var phoneNum = "+254XXXXXXXXX";
@@ -195,8 +180,7 @@ public ActionResult SomeCoolMethod(awesome, params)
 ```c#
             var username = "sandbox";
             var apikey = "KEY";
-            var env = "sandbox";
-            var gateway = new AfricasTalkingGateway(username, apikey, env);
+            var gateway = new AfricasTalkingGateway(username, apikey);
             var opts = new Hashtable { ["keyword"] = "mykeyword" }; // ....
             var from = "NNNNN";
             var to = "+2547XXXXX,+2547XXXXY";
@@ -231,8 +215,7 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
             var username = "sandbox";
             var apikey = "MyAPIKEY";
             var airtimerecipients = @"{'phoneNumber':'+254XXXXXXXX','amount':'KES 250'}"; // Send any JSON object of n-Length
-            var env = "sandbox";
-            var gateway = new AfricasTalkingGateway(username, apikey, env);
+            var gateway = new AfricasTalkingGateway(username, apikey);
             try
             {
                 var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
@@ -275,7 +258,6 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
  > Example 
  ```csharp 
             var username = "sandbox";
-            var environment = "sandbox";
             var apiKey = "";
             var productName = "coolproduct";
             var phoneNumber = "+254XXXXXXX";
@@ -287,7 +269,7 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
                 { "reason", "stuff" }
             };
 
-            var gateway = new AfricasTalkingGateway(username, apiKey, environment);
+            var gateway = new AfricasTalkingGateway(username, apiKey);
 
             try
             {
@@ -329,7 +311,6 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
 
             // Developer Details
             string username = "sandbox";
-            string environment = "sandbox";
             string apiKey = "apikey";
             string productName = "coolproduct";
             string currencyCode = "KES";
@@ -343,7 +324,7 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
             decimal hero2amount = 54000M;
 
             // We invoke our gateway
-            var gateway = new AfricasTalkingGateway(username, apiKey, environment);
+            var gateway = new AfricasTalkingGateway(username, apiKey);
 
             // Let's create a bunch of people who'll be receiving the refund or monthly salary etc...
             var hero1 = new MobileB2CRecepient(hero1Name, hero1PhoneNum, currencyCode, hero1amount);
@@ -486,8 +467,7 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
             const string Username = "sandbox";
             const string ApiKey = "Key";
             const string Otp = "1234";
-            const string Env = "sandbox";
-            var gateway = new AfricasTalkingGateway(Username, ApiKey, Env);
+            var gateway = new AfricasTalkingGateway(Username, ApiKey);
             string transId = "id";
             var productName = "coolproduct";
             var accountName = "Fela Kuti";
@@ -560,8 +540,7 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
             const string username = "sandbox";
             const string apikey = "KEY";
             const string productname = "coolproduct";
-            const string env = "sandbox";
-            var gateway = new AfricasTalkingGateway(username, apikey, env);
+            var gateway = new AfricasTalkingGateway(username, apikey);
             var currency_code = "NGN";
             var recipient1_account_name = "Alyssa Hacker";
             var recipient1_account_number = "1234567890";
@@ -618,7 +597,7 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
 > Example 
 ```c#  
 // ....CARD
-   var gateway = new AfricasTalkingGateway(Username, ApiKey, Env);
+   var gateway = new AfricasTalkingGateway(Username, ApiKey);
             try
             {
                 var validate = gateway.ValidateCardOtp(TransactionId, Otp);
@@ -640,7 +619,7 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
 ```
 ```c#  
 // ....BANKING
-   var gateway = new AfricasTalkingGateway(Username, ApiKey, Env);
+   var gateway = new AfricasTalkingGateway(Username, ApiKey);
            
                 try
                 {
@@ -686,8 +665,7 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
             const string Otp = "1234";
             const string ApiKey = "Key";
             var transactionId = "id";
-            const string Env = "sandbox";
-            var gateway = new AfricasTalkingGateway(Username, ApiKey, Env);
+            var gateway = new AfricasTalkingGateway(Username, ApiKey);
             const string ProductName = "awesomeproduct";
             const string CurrencyCode = "NGN";
             const decimal Amount = 7500.50M;
@@ -768,9 +746,6 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
 > A few things to note about USSD: 
 
 + USSD is session driven. Every request we send you will contain a sessionId, and this will be maintained until that session is completed
-+ ~~You will need to let the Mobile Service Provider know whether the session is complete or not. If the session is ongoing, please begin your response with CON. If this is the last response for that session, begin your response with END.~~
-+ ~~If we get a HTTP error response (Code 40X) from your script, or a malformed response (does not begin with CON or END, we will terminate the USSD session gracefully.~~
-
 + **USSD push currently works in Nigeria only** 
 
 
@@ -778,8 +753,7 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
 
             const string Username = "sandbox";
             const string Apikey = "Key";
-            const string Env = "sandbox";
-            var gateway = new AfricasTalkingGateway(Username, Apikey, Env);
+            var gateway = new AfricasTalkingGateway(Username, Apikey);
             var tokenId = "tkn";
             const string PhoneNumber = "+236XXXXXXXXX";
             const string Menu = "CON You're about to love C#\n1.Accept my fate\n2.No Never\n";
