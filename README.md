@@ -785,3 +785,107 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
 > Expected Results 
 
 ![ussdPush](/ScreenShots/ussdPush.PNG)
+
+### Building a USSD Application 
+
+1. Start by creating a new Web ASP.NET project from any Visual Studio IDE instance  ![Create Application](ScreenShots/ussdapp/CreateApplication.PNG)
+
+2. Select an **Empty**  ASP.NET template and **Ensure you have selected WebAPI** as part of project options ![Select Template](ScreenShots/ussdapp/SelectTemplate.PNG)
+
+3. On your newly created application, navigate to **Solution Explorer** and *right-click* on the *Controllers* folder to add/create a new Controller ![Create Controller](ScreenShots/ussdapp/CreateController.PNG)
+
+4. From the resulting context menu, select **Add>Controller** ![Click to Add Controller](ScreenShots/ussdapp/ClicktoAddController.png)
+
+5. Go ahead and select the **Web API 2 Controller -Empty** Controller template from the Controller scaffold menu ![Select Web API 2 Empty Controller](ScreenShots/ussdapp/SelectWebAPI2EmptyController.PNG) 
+
+6. Rename your Controller ![Name Your Controller](ScreenShots/ussdapp/NameYourController.PNG)
+
+7. Now, in our `USSDServiceController` , go ahead and paste the following code 
+
+   ```c#
+   using System;
+   using System.Net;
+   using System.Net.Http;
+   using System.Text;
+   using System.Web.Http;
+
+   namespace USSDDemo.Controllers
+   {
+       [RoutePrefix("application/services")] // Your Application will be served as http(s)://<host>:port/application/services/...
+       public class USSDServiceController : ApiController
+       {
+           [Route("ussdservice")]  // http(s)://<host>:port/application/services/ussdservice
+           [HttpPost,ActionName("ussdservice")]
+
+           public HttpResponseMessage httpResponseMessage([FromBody] UssdResponse ussdResponse)
+           {
+               HttpResponseMessage responseMessage;
+               string response;
+
+               if (ussdResponse.text == null)
+               {
+                   ussdResponse.text = "";
+               }
+
+               if (ussdResponse.text.Equals("",StringComparison.Ordinal))
+               {
+                   response = "CON USSD Demo in Action\n";
+                   response += "1. Do something\n";
+                   response += "2. Do some other thing\n";
+                   response += "3. Get my Number\n";
+               }
+               else if (ussdResponse.text.Equals("1",StringComparison.Ordinal))
+               {
+                   response = "END I am doing something \n";
+               }else if (ussdResponse.text.Equals("2",StringComparison.Ordinal))
+               {
+                   response = "END Some other thing has been done \n";
+               }else if (ussdResponse.text.Equals("3",StringComparison.Ordinal))
+               {
+                   response = $"END Here is your phone number : {ussdResponse.phoneNumber} \n";
+               }
+               else
+               {
+                   response = "END Invalid option \n";
+               }
+
+               responseMessage = Request.CreateResponse(HttpStatusCode.Created,response);
+
+               responseMessage.Content = new StringContent(response, Encoding.UTF8, "text/plain");
+
+               return responseMessage;
+           }
+       }
+   }
+
+   ```
+
+   This code basically gives you 3 menus :, you can create more complex logic as you wish, also , as a hack, for deeper level menus use the `*` symbol to separate between levels and sub-levels (menus and submenus). Eg `Level1>Sublevel1>Sub-sublevel1` can be represented as `1*1*1` e.t.c.
+
+   We also have a class `UssdResponse`  as part of our controllers that makes getter and setter for whatever payload we receive from the server. It should look as so:  
+
+   ```c#
+   namespace USSDDemo.Controllers
+   {
+       public class UssdResponse
+       {
+           public string text { get; set; }
+           public string phoneNumber { get; set; }
+           public string sessionId { get; set; }
+           public string serviceCode { get; set; }
+
+       }
+   }
+   ```
+
+   To wrap up our project, ensure you have at least  
+
+   ![Project Structure](ScreenShots/ussdapp/ProjectStructure.PNG)
+
+8.  **Build and Run** 
+
+   1. Your application will be served as `http(s)://<host>:port/application/services/ussdservice` 
+
+   2. You can use Postman to test your USSD application as well ![Postman Sample](ScreenShots/ussdapp/PostmanSample.PNG)
+
+      In Postman request body, send `"tetx":"1"` for example and see the results. 
