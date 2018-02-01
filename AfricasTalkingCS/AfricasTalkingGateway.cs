@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AfricasTalkingGateway.cs" company="Africa's Talking">
-//   2017
+//   2018
 // </copyright>
 // <summary>
 //   Defines the AfricasTalkingGateway type.
@@ -376,8 +376,8 @@ namespace AfricasTalkingCS
                 var dict = new Dictionary<string, string>
                 {
                     ["username"] = this._username,
-                    ["from"] = from,
-                    ["to"] = to
+                    ["to"] = to,
+                    ["from"] = from
                 };
                 try
                 {

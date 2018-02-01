@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SerializeCardDetails.cs" company="Africa's Talking">
-//   2017
+//   2018
 // </copyright>
 // <summary>
 //   The serialize.
