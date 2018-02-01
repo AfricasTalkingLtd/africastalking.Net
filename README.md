@@ -862,7 +862,7 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
 
    This code basically gives you 3 menus :, you can create more complex logic as you wish, also , as a hack, for deeper level menus use the `*` symbol to separate between levels and sub-levels (menus and submenus). Eg `Level1>Sublevel1>Sub-sublevel1` can be represented as `1*1*1` e.t.c.
 
-   We also have a class `UssdResponse`  as part of our controllers that makes getter and setter for whatever payload we receive from the server. It should look as so:  
+   We also have a class `UssdResponse`  as part of our controllers that makes getters and setters for whatever payload we receive from the server. It should look as so:  
 
    ```c#
    namespace USSDDemo.Controllers
@@ -888,4 +888,4 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
 
    2. You can use Postman to test your USSD application as well ![Postman Sample](ScreenShots/ussdapp/PostmanSample.PNG)
 
-      In Postman request body, send `"tetx":"1"` for example and see the results. 
+      In Postman request body, send `"text":"1"` for example and see the results. 
