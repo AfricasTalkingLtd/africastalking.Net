@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2036
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AfricasTalkingSDK", "AfricasTalkingSDK\AfricasTalkingSDK.csproj", "{D2C15810-FEA8-4AEB-8295-3DB272DC8912}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestAfricasTalkingSDK", "UnitTestAfricasTalkingSDK\UnitTestAfricasTalkingSDK.csproj", "{EAA77776-69D6-463D-AA50-100139D80F94}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D2C15810-FEA8-4AEB-8295-3DB272DC8912}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2C15810-FEA8-4AEB-8295-3DB272DC8912}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2C15810-FEA8-4AEB-8295-3DB272DC8912}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2C15810-FEA8-4AEB-8295-3DB272DC8912}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAA77776-69D6-463D-AA50-100139D80F94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAA77776-69D6-463D-AA50-100139D80F94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAA77776-69D6-463D-AA50-100139D80F94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAA77776-69D6-463D-AA50-100139D80F94}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EC46E6C8-390E-4B3B-A187-D924AE32515B}
+	EndGlobalSection
+EndGlobal
