@@ -111,12 +111,9 @@ namespace AfricasTalkingSDK
 
         public string MakeRequest(string urlSegment)
         {
-            if (_serviceUrl != null)
-            {
-                string requestUrl = _serviceUrl + "/" + urlSegment;
-                return MakeGetRequest(requestUrl);
-            }
-            return "";
+            if (_serviceUrl == null) return "";
+            var requestUrl = _serviceUrl + "/" + urlSegment;
+            return MakeGetRequest(requestUrl);
         }
 
         private string MakePostRequest(IDictionary data, string urlString)

@@ -8,6 +8,7 @@ namespace AfricasTalkingSDK.SMS
     public class SmsService : Service
     {
         private dynamic _instance;
+
         public SmsService(string username, string apiKey) : base(username, apiKey, "sms") { }
 
         protected override dynamic GetInstance(string username, string apiKey)
@@ -20,16 +21,39 @@ namespace AfricasTalkingSDK.SMS
         }
 
 
-        public List<SMSRecipient> Send(string message, List<string> recipients) => Send(message, recipients, enqueue: false);
-
+        public List<SMSRecipient> Send(string message, List<string> recipients)
+        {
+            var recipientsString = string.Join(",", recipients.ToArray());
+            var requestData = new Dictionary<string, string>
+            {
+                { "message", message },
+                { "recipients", recipientsString }
+            };
+            var response = MakeRequest("messaging", "POST", requestData);
+            var smsResponse = JsonConvert.DeserializeObject<SendMessageResponse>(response);
+            return smsResponse.Data.recipients;
+        }
         public List<SMSRecipient> Send(string message, List<string> recipients, bool enqueue)
         {
             var recipientsString = string.Join(",", recipients.ToArray());
             var requestData = new Dictionary<string, string>
             {
                 { "message", message },
-                { "from", null },
                 { "enqueue", enqueue ? "1" : "0" },
+                { "recipients", recipientsString }
+            };
+            var response = MakeRequest("messaging", "POST", requestData);
+            var smsResponse = JsonConvert.DeserializeObject<SendMessageResponse>(response);
+            return smsResponse.Data.recipients;
+        }
+
+        public List<SMSRecipient> Send(string message, List<string> recipients, string from)
+        {
+            var recipientsString = string.Join(",", recipients.ToArray());
+            var requestData = new Dictionary<string, string>
+            {
+                { "message", message },
+                { "from", from },
                 { "recipients", recipientsString }
             };
             var response = MakeRequest("messaging", "POST", requestData);
@@ -43,7 +67,7 @@ namespace AfricasTalkingSDK.SMS
             var requestData = new Dictionary<string, string>
             {
                 { "message", message },
-                { "from", from ?? from },
+                { "from", from },
                 { "enqueue", enqueue ? "1" : "0" },
                 { "recipients", recipientsString }
             };
