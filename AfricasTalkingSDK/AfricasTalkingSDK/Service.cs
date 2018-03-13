@@ -26,7 +26,7 @@ namespace AfricasTalkingSDK
             _username = username;
             _apiKey = apiKey;
             SetBaseUrl();
-            SetServiceUrl(serviceName);
+            SetServiceUrl();
         }
 
         public Service(string username, string apiKey, string baseUrlPrefix, string serviceName)
@@ -34,7 +34,7 @@ namespace AfricasTalkingSDK
             _username = username;
             _apiKey = apiKey;
             SetBaseUrl(baseUrlPrefix);
-            SetServiceUrl(serviceName);
+            SetServiceUrl();
         }
 
         public Service() { }
@@ -65,13 +65,13 @@ namespace AfricasTalkingSDK
             }
         }
 
-        private void SetServiceUrl(string serviceName)
+        private void SetServiceUrl()
         {
             if(_baseUrl == null)
             {
                 SetBaseUrl();
             }
-            _serviceUrl = _baseUrl + "/" + serviceName.ToLower();
+            _serviceUrl = _baseUrl ;
         }
 
         public string MakeRequest(string urlSegment, string method, IDictionary data)
