@@ -91,18 +91,17 @@ namespace AfricasTalkingSDK.SMS
             return smsResponse as string;
         }
 
-        public List<Message> FetchMessages(int lastReceivedId)
+        public string FetchMessages(int lastReceivedId)
         {
             var requestData = new Dictionary<string, string>
             {
                 { "lastReceivedId", lastReceivedId.ToString() }
             };
             var response = MakeRequest("messaging", requestData);
-            var fetchResponse = JsonConvert.DeserializeObject<FetchMessageResponse>(response);
-            return fetchResponse.Data.messages;
+            return response;
         }
 
-        public List<Subscription> FetchSubscriptions(string shortCode, string keyword, int lastReceivedId)
+        public string FetchSubscriptions(string shortCode, string keyword, int lastReceivedId)
         {
             var requestData = new Dictionary<string, string>
             {
@@ -111,8 +110,7 @@ namespace AfricasTalkingSDK.SMS
                 { "keyword", keyword }
             };
             var response = MakeRequest("subscription", requestData);
-            var fetchResponse = JsonConvert.DeserializeObject<FetchSubscriptionResponse>(response);
-            return fetchResponse.Data.subscriptions;
+            return response;
         }
 
         public SubscriptionResponse CreateSubscription(string shortCode, string keyword, string phoneNumber, string checkoutToken)
