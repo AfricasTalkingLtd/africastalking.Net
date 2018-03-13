@@ -21,47 +21,44 @@ namespace AfricasTalkingSDK.SMS
         }
 
 
-        public List<SMSRecipient> Send(string message, List<string> recipients)
+        public string Send(string message, List<string> recipients)
         {
             var recipientsString = string.Join(",", recipients.ToArray());
             var requestData = new Dictionary<string, string>
             {
                 { "message", message },
-                { "recipients", recipientsString }
+                { "to", recipientsString }
             };
             var response = MakeRequest("messaging", "POST", requestData);
-            var smsResponse = JsonConvert.DeserializeObject<SendMessageResponse>(response);
-            return smsResponse.Data.recipients;
+            return response;
         }
-        public List<SMSRecipient> Send(string message, List<string> recipients, bool enqueue)
+        public string Send(string message, List<string> recipients, bool enqueue)
         {
             var recipientsString = string.Join(",", recipients.ToArray());
             var requestData = new Dictionary<string, string>
             {
                 { "message", message },
                 { "enqueue", enqueue ? "1" : "0" },
-                { "recipients", recipientsString }
+                { "to", recipientsString }
             };
             var response = MakeRequest("messaging", "POST", requestData);
-            var smsResponse = JsonConvert.DeserializeObject<SendMessageResponse>(response);
-            return smsResponse.Data.recipients;
+            return response;
         }
 
-        public List<SMSRecipient> Send(string message, List<string> recipients, string from)
+        public string Send(string message, List<string> recipients, string from)
         {
             var recipientsString = string.Join(",", recipients.ToArray());
             var requestData = new Dictionary<string, string>
             {
                 { "message", message },
                 { "from", from },
-                { "recipients", recipientsString }
+                { "to", recipientsString }
             };
             var response = MakeRequest("messaging", "POST", requestData);
-            var smsResponse = JsonConvert.DeserializeObject<SendMessageResponse>(response);
-            return smsResponse.Data.recipients;
+            return response;
         }
 
-        public List<SMSRecipient> Send(string message, List<string> recipients, string from, bool enqueue)
+        public string Send(string message, List<string> recipients, string from, bool enqueue)
         {
             var recipientsString = string.Join(",", recipients.ToArray());
             var requestData = new Dictionary<string, string>
@@ -69,21 +66,20 @@ namespace AfricasTalkingSDK.SMS
                 { "message", message },
                 { "from", from },
                 { "enqueue", enqueue ? "1" : "0" },
-                { "recipients", recipientsString }
+                { "to", recipientsString }
             };
             var response = MakeRequest("messaging", "POST", requestData);
-            var smsResponse = JsonConvert.DeserializeObject<SendMessageResponse>(response);
-            return smsResponse.Data.recipients;
+            return response;
         }
 
-        public List<SMSRecipient> SendPremium(string message, string keyword, string linkId, List<string> recipients, string senderId, int retryDurationInHours)
+        public string SendPremium(string message, string keyword, string linkId, List<string> recipients, string senderId, int retryDurationInHours)
         {
             var retryDuration = retryDurationInHours <= 0 ? null : retryDurationInHours.ToString();
             var recipientsString = string.Join(",", recipients.ToArray());
             var requestData = new Dictionary<string, string>
             {
                 { "message", message },
-                { "recipients", recipientsString },
+                { "to", recipientsString },
                 { "keyword", keyword },
                 { "linkId", linkId },
                 { "retryDuration", retryDuration },
@@ -91,8 +87,8 @@ namespace AfricasTalkingSDK.SMS
             };
             var response = MakeRequest("send", "POST", requestData);
 
-            var smsResponse = JsonConvert.DeserializeObject<SendMessageResponse>(response);
-            return smsResponse.Data.recipients;
+            var smsResponse = JsonConvert.DeserializeObject(response);
+            return smsResponse as string;
         }
 
         public List<Message> FetchMessages(int lastReceivedId)
