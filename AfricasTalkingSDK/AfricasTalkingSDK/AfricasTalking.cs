@@ -1,19 +1,18 @@
-﻿using System;
-
-namespace AfricasTalkingSDK
+﻿namespace AfricasTalkingSDK
 {
-    public class AfricasTalking
+    using System;
+
+    public  class AfricasTalking
     {
         
-        private readonly string _username;
-        private readonly string _apiKey;
+        private string _username;
+        private string _apiKey;
 
-        public  AfricasTalking(string username, string apiKey)
+        public  void Initialize(string username, string apiKey)
         {
             _username = username;
             _apiKey = apiKey;
         }
-
 
         public static dynamic GetService(string serviceName)
         {
