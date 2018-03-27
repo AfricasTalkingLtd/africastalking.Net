@@ -96,16 +96,21 @@ namespace UnitTestAfricasTalkingSDK
     [TestClass]
     public class TestSmsFeatures
     {
+      
+       
+
         static string username = "sandbox";
         static string apikey = "afd635a4f295dd936312836c0b944d55f2a836e8ff2b63987da5e717cd5ff745";
 
-        private readonly SmsService _sms = new SmsService(username, apikey);
-       
+        private readonly SmsService _sms = AfricasTalkingSDK.AfricasTalkingSDK.GetService(AfricasTalkingSDK.AfricasTalkingSDK.SMS_SERVICE);
+        
         [TestMethod]
         public void TestFetchMessage()
         {
+            AfricasTalkingSDK.AfricasTalkingSDK.Initialize(username, apikey);
             const int receivedId = 0;
-            var response = _sms.FetchMessages(lastReceivedId:receivedId);
+            
+            var response = _sms.FetchMessages(receivedId);
             bool assertFetchSuccess = response.Length > 0;
             Assert.IsFalse(!assertFetchSuccess);
         }
@@ -113,6 +118,7 @@ namespace UnitTestAfricasTalkingSDK
         [TestMethod]
         public void TestFetchSubscription()
         {
+            AfricasTalkingSDK.AfricasTalkingSDK.Initialize(username, apikey);
             const int receivedId = 0;
             const string shortCode = "44005";
             const string keyword = "Coolguy";
