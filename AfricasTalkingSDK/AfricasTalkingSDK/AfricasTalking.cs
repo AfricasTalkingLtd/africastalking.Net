@@ -2,13 +2,14 @@
 {
     using System;
 
-    public  class AfricasTalking
+    public static class AfricasTalkingSDK
     {
+        public static string SMS_SERVICE = "SMS.SmsService";
         
-        private string _username;
-        private string _apiKey;
+        private static string _username;
+        private static string _apiKey;
 
-        public  void Initialize(string username, string apiKey)
+        public static void Initialize(string username, string apiKey)
         {
             _username = username;
             _apiKey = apiKey;
@@ -18,7 +19,7 @@
         {
             try
             {
-                var myType = typeof(AfricasTalking);
+                var myType = typeof(AfricasTalkingSDK);
                 var t = GetType(myType.Namespace + "." + serviceName);
                 var instance = Activator.CreateInstance(t);
                 return instance;
