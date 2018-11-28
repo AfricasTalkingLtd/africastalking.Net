@@ -11,7 +11,7 @@ namespace ConsoleApp1
             var username = "YourUSERNAME";
             var apiKey = "yourAPIKEY";
             string env = "sandbox";
-            var recep = "+254724587654";
+            var recep = "recipient";
             var msg = "Super awesome message ☻ 😁";
                
 
