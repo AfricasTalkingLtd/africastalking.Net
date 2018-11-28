@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AfricasTalkingGateway.cs" company="Africa's Talking">
 //   2018
 // </copyright>
@@ -203,27 +203,27 @@ namespace AfricasTalkingCS
         /// <exception cref="AfricasTalkingGatewayException">
         /// Errors from our gateway class
         /// </exception>
-        public void UploadMediaFile(string url)
+        public dynamic UploadMediaFile(string url, string phoneNumber)
         {
             var isUrl = Uri.IsWellFormedUriString(url, UriKind.RelativeOrAbsolute);
-            if (!isUrl)
+            string[] numbers = phoneNumber.Split(separator: new[] {','}, options: StringSplitOptions.RemoveEmptyEntries);
+            var isPhoneNumber = IsPhoneNumber(numbers);
+
+            if (!(isUrl || isPhoneNumber))
             {
-              throw new AfricasTalkingGatewayException("Malformed Url");
+              throw new AfricasTalkingGatewayException("Malformed Url or Invalid Phone Number");
             }
             else
             {
                 var data = new Hashtable
                                {
                                    ["username"] = this._username,
-                                   ["url"] = url
+                                   ["url"] = url,
+                                   ["phoneNumber"] = phoneNumber
                                };
                 var urlString = this.VoiceUrl + "/mediaUpload";
-                var response = this.SendPostRequest(data, urlString);
-                dynamic json = JObject.Parse(response);
-                if ((string)json["errorMesage"] != "None")
-                {
-                    throw new AfricasTalkingGatewayException(json["errorMessage"]);
-                }
+                var response = this.SendPostRequest(data, urlString);   
+                return response;
             }
         }
 
@@ -362,7 +362,7 @@ namespace AfricasTalkingCS
         /// <exception cref="AfricasTalkingGatewayException">
         /// Errors from our gateway
         /// </exception>
-        public dynamic Call(string from, string to)
+        public dynamic Call(string from, string to, string requestId = null)
         {
             var numbersFrom = from.Split(separator: new[] {','}, options: StringSplitOptions.RemoveEmptyEntries);
             var numbersTo = to.Split(separator: new[] {','}, options: StringSplitOptions.RemoveEmptyEntries);
