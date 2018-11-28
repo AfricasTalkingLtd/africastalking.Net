@@ -175,6 +175,25 @@ namespace AfricasTalkingCS
         }
 
         /// <summary>
+        /// Validates SIP address without scheme 
+        /// </summary>
+        /// <param name="address">
+        /// This sip Address to validate against 
+        /// </params>
+        /// <returns>
+        /// True or false <see cref="bool"/>
+        /// </returns>
+        private static bool IsValidSIPAddress(string[] address)
+        {
+            bool isValidSIP = true;
+            foreach (string _address in address)
+            {
+                isValidSIP = Regex.Match(_address, @"^(?P<agent>[\w\.]+\@[a-z]\w\.sip\.africastalking\.com)$").Success;
+            }
+            return isValidSIP;
+        }
+
+        /// <summary>
         /// Checks if the number given is a valid phoneNumber.
         /// </summary>
         /// <param name="number">
@@ -185,13 +204,15 @@ namespace AfricasTalkingCS
         /// </returns>
         private static bool IsPhoneNumber(string[] number)
         {
-            bool valid = true;
+            var phoneNumberUtil = PhoneNumbers.PhoneNumberUtil.GetInstance();
+
+            bool isValid = false;
             foreach (string num in number)
             {
-               var status = Regex.Match(num, @"^\+?(\d[\d-. ]+)?(\([\d-. ]+\))?[\d-. ]+\d{5,}$").Success;
-                valid = valid & status;
+                var numProto = phoneNumberUtil.Parse(num, null);
+                isValid = phoneNumberUtil.IsValidNumber(numProto);
             }
-            return valid;
+            return isValid;
         }
 
         /// <summary>
