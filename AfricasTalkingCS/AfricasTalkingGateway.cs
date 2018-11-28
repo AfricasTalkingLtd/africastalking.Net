@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AfricasTalkingGateway.cs" company="Africa's Talking">
 //   2018
 // </copyright>
@@ -24,6 +24,7 @@ namespace AfricasTalkingCS
     using System.Web;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
+    using PhoneNumbers;
 
     /// <summary>
     /// The africas talking gateway class. Accepting sandbox as an environment
@@ -197,10 +198,10 @@ namespace AfricasTalkingCS
         /// Checks if the number given is a valid phoneNumber.
         /// </summary>
         /// <param name="number">
-        /// The phone number.
+        /// Internationally formatted phone number
         /// </param>
         /// <returns>
-        /// The <see cref="bool"/>.
+        /// True or False <see cref="bool"/>.
         /// </returns>
         private static bool IsPhoneNumber(string[] number)
         {
@@ -216,13 +217,14 @@ namespace AfricasTalkingCS
         }
 
         /// <summary>
-        /// The upload media file method.
+        /// This alllows you to upload media files of type WAV or MP3 to our server \
+        /// The file will live in the server forever
         /// </summary>
         /// <param name="url">
-        /// The url.
+        /// A properly formatted web url.
         /// </param>
         /// <exception cref="AfricasTalkingGatewayException">
-        /// Errors from our gateway class
+        /// Any Exceptions from the gateway
         /// </exception>
         public dynamic UploadMediaFile(string url, string phoneNumber)
         {
@@ -369,13 +371,13 @@ namespace AfricasTalkingCS
         }
 
         /// <summary>
-        /// The call method.
+        /// Initiates an API request to make an outbound voice call.
         /// </summary>
         /// <param name="from">
-        /// The from.
+        /// The registered callerID/ Virtual Number, defaults to Africas's Talking CallerID
         /// </param>
         /// <param name="to">
-        /// The to.
+        /// Caller address, can be a series of SIM numbers in or SIP addresses of the form {agentName/test}.{user}@{countrycode -eg ke/ug/ng}.sip.africastalking.com
         /// </param>
         /// <returns>
         /// The <see cref="dynamic"/>.
@@ -669,10 +671,41 @@ namespace AfricasTalkingCS
             ? "https://voice.sandbox.africastalking.com"
             : "https://voice.africastalking.com");
 
+
+        /// <summary>
+        /// Wallet Transfer Endpont
+        /// </summary>
+        private string WalletTransferUrl => this.PaymentsHost + "/wallet/transfer";
+
+        /// <summary>
+        /// Topup Stash Endpoint
+        /// </summary>
+        private string TopupStashUrl => this.PaymentsHost + "/topup/stash";
+
         /// <summary>
         /// SMS Endpoint.
         /// </summary>
         private string SmsUrl => this.ApiHost + "/version1/messaging";
+
+        /// <summary>
+        /// Find Transaction by ID Endpoint
+        /// </summary>
+        private string FindTransactionIdUrl => this.PaymentsHost + "/query/transaction/find";
+
+        /// <summary>
+        /// The Fetch product transactions endpoint
+        /// </summary>
+        private string FetchProductTransactionsUrl => this.PaymentsHost + "/query/transaction/fetch";
+
+        /// <summary>
+        /// The Fetch wallet details Endpoint
+        /// </summary>
+        private string FetchWalletDetailsUrl => this.PaymentsHost + "/query/wallet/fetch";
+
+        /// <summary>
+        /// Fetch Wallet Balance
+        /// </summary> 
+        private string FetchWalletBalanceUrl => this.PaymentsHost + "/query/wallet/balance";
 
         /// <summary>
         /// Root API host.
@@ -1064,6 +1097,178 @@ namespace AfricasTalkingCS
             }
         }
 
+
+        public dynamic TopupStash(string productName, string currencyCode, decimal amount, Dictionary<string, string> metadata)
+        {
+            var topupStash = new StashData()
+            {
+                Username = this._username,
+                ProductName = productName,
+                CurrencyCode = currencyCode,
+                Amount = amount,
+                Metadata = metadata
+            };
+
+            try
+                {
+                    var response = this.ProcessStashTopUp(topupStash, TopupStashUrl);
+                    return response;
+                }
+            catch (Exception exception)
+                {
+                    throw new AfricasTalkingGatewayException(exception);
+                }
+        }
+
+        private string ProcessStashTopUp(StashData stashData, string url)
+        {
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Add("apiKey", this._apikey);
+            var result = client.PostAsJsonAsync(url, value: stashData).Result;
+            result.EnsureSuccessStatusCode();
+            var stringResult = result.Content.ReadAsStringAsync().Result;
+            return stringResult;
+        }
+
+        public dynamic WalletTransfer(
+            string poductName,
+            int targetProductCode,
+            string currencyCode,
+            decimal amount,
+            Dictionary<string, string> metadata)
+        {
+            // if(productName.length == 0 && !IsValidCurrency(currencyCode))
+            // {
+            //     throw new ArgumentOutOfRangeException("Invalid Product Name or Currency Code");
+            // }
+            var walletTransferData = new WalletTransfer()
+            {
+                Username = this._username,
+                ProductName = poductName,
+                TargetProductCode = targetProductCode,
+                CurrencyCode = currencyCode,
+                Amount = amount,
+                Metadata = metadata
+            };
+
+            try
+                {
+                    var response = this.ProcessWalletTransfer(walletTransferData, this.WalletTransferUrl);
+                    return response;
+                }
+                 catch (Exception exception)
+                {
+                    throw new AfricasTalkingGatewayException(exception);
+                }
+        }
+
+       private string ProcessWalletTransfer(WalletTransfer walletTransfer, string url)
+        {
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Add("apiKey", this._apikey);
+            var result = client.PostAsJsonAsync(url, value: walletTransfer).Result;
+            result.EnsureSuccessStatusCode();
+            var stringResult = result.Content.ReadAsStringAsync().Result;
+            return stringResult;
+        }
+
+        public string FindTransaction(string productName) {
+
+            var url = this.FindTransactionIdUrl + "?username=" + this._username + "&transactionId=" + productName;
+            var response = this.SendGetRequest(url);
+
+            if (this._responseCode != (int)HttpStatusCode.OK)
+            {
+                throw new AfricasTalkingGatewayException(response);
+            }
+
+            dynamic json = JObject.Parse(response);
+            return json;
+        }
+
+        /// <summary>
+        /// Fetch transaction details for a particular product
+        /// </summary>
+        public string FetchProductTransactions(string productName, string pageNumber, string count, string startDate=null, string endDate=null, string category=null, string provider=null, string status=null, string source=null, string destination=null, string providerChannel=null){
+            string response;
+            string requestBody = $"?username={this._username}&productName={productName}&pageNumber={pageNumber}&count={count}";
+            if(startDate != null)
+                requestBody += $"startDate={startDate}";
+            if(endDate != null)
+                requestBody += $"endDate={endDate}";
+            if(category != null)
+                requestBody += $"category={category}";
+            if(provider != null)
+                requestBody += $"provider={provider}";
+            if(status != null)
+                requestBody += $"status={status}";
+            if(source != null)
+                requestBody += $"source={source}";
+            if(destination != null)
+                requestBody += $"destination={destination}";
+            if(providerChannel != null) 
+                requestBody += $"providerChannel={providerChannel}";
+            
+            var url = this.FetchProductTransactionsUrl + requestBody;
+            response = this.SendGetRequest(url);
+
+            if (this._responseCode != (int)HttpStatusCode.OK)
+            {
+                throw new AfricasTalkingGatewayException(response);
+            }
+            dynamic json = JObject.Parse(response);
+            return json;
+        }
+
+        public string FetchProductTransactions(string productName, string pageNumber, string count, string startDate, string endDate) => FetchProductTransactions(productName, pageNumber, count, startDate, endDate, null, null, null, null, null, null);
+
+        public string FetchProductTransactions(string productName, string pageNumber, string count, string category) => FetchProductTransactions(productName, pageNumber, count, null, null, category, null, null, null, null, null);
+
+        public string FetchProductTransactions(string productName, string pageNumber, string count) => FetchProductTransactions(productName, pageNumber, count, null, null, null, null, null, null, null, null);
+
+        /// <summary>
+        /// Fetch Wallet Transactions
+        /// </summary>
+        public string FetchWalletTransactions(string productName, string pageNumber, string count, string startDate=null, string endDate=null, string[] categories=null){
+            string requestBody = $"?username={this._username}&productName={productName}&pageNumber={pageNumber}&count={count}";
+            if(startDate != null)
+                requestBody += $"startDate={startDate}";
+            if(endDate != null)
+                requestBody += $"endDate={endDate}";
+            if(categories != null)
+                requestBody += $"category={categories}";
+            
+            var url = this.FetchWalletDetailsUrl + requestBody;
+            var response = this.SendGetRequest(url);
+            if (this._responseCode != (int)HttpStatusCode.OK)
+            {
+                throw new AfricasTalkingGatewayException(response);
+            }
+            dynamic json = JObject.Parse(response);
+            return json;
+        }
+
+        public string FetchWalletTransactions(string productName, string pageNumber, string count) => FetchWalletTransactions(productName, pageNumber, count, null, null, null);
+        
+        public string FetchWalletTransactions(string productName, string pageNumber, string count, string startDate, string endDate) => FetchWalletTransactions(productName, pageNumber, count, startDate, endDate, null);
+
+        /// <summary>
+        /// Fetches wallet Balance
+        /// </summary>
+
+        public string FetchWalletBalance(){
+            string requestBody = $"?username={this._username}";
+            var url = this.FetchWalletBalanceUrl + requestBody;
+            
+            var response = this.SendGetRequest(url);
+            if (this._responseCode != (int)HttpStatusCode.OK)
+            {
+                throw new AfricasTalkingGatewayException(response);
+            }
+            dynamic json = JObject.Parse(response);
+            return json;
+        }
+
         // http://docs.africastalking.com/bank/checkout
 
         /// <summary>
@@ -1093,13 +1298,7 @@ namespace AfricasTalkingCS
         /// <exception cref="AfricasTalkingGatewayException">
         /// Any Errors thrown by our Gateway
         /// </exception>
-        public dynamic BankCheckout(
-            string productName,
-            BankAccount bankAccount,
-            string currencyCode,
-            decimal amount,
-            string narration,
-            Dictionary<string, string> metadata = null)
+        public dynamic BankCheckout(string productName, BankAccount bankAccount, string currencyCode, decimal amount, string narration, Dictionary<string, string> metadata = null)
         {
             string curSym;
             if (productName.Length != 0 && IsValidCurrency(currencyCode, out curSym) && narration.Length != 0)
