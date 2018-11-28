@@ -400,6 +400,10 @@ namespace AfricasTalkingCS
                     ["to"] = to,
                     ["from"] = from
                 };
+                if (requestId != null)
+                {
+                    dict["clientRequestId"] = requestId;
+                }
                 try
                 {
                     var url = VoiceUrl + "/call";
