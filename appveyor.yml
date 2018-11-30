@@ -15,6 +15,12 @@ clone_depth: 5
 
 configuration: Release
 
+branches:
+  only:
+    - master
+    - develop
+    - master-patch_01
+
 skip_commits:
   files:
     - ScreenShots/*
