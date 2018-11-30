@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AfricasTalkingGateway.cs" company="Africa's Talking">
 //   2018
 // </copyright>
@@ -662,7 +662,7 @@ namespace AfricasTalkingCS
         /// <summary>
         /// Airtime Endpoint.
         /// </summary>
-        private string AirtimeUrl => this.ApiHost + "/version1/airtime";
+        private string AirtimeUrl => this.ApiHost + "/version1/airtime/send";
 
         /// <summary>
         /// Voice endpoint.
