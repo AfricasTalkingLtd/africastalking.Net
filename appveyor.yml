@@ -2,16 +2,45 @@ version: 1.0.{build}
 
 platform: Any CPU
 
-build_script:
+image: Visual Studio 2017
+
+init:
+  - git config --global core.autocrlf input
+
+# clone directory
+clone_folder: c:\projects\africastalking
+
+# set clone depth
+clone_depth: 5  
+
+configuration: Release
+
+skip_commits:
+  files:
+    - ScreenShots/*
+    - '*.yml' 
+    - '.gitignore'
+    - 'README.md'
+
+build:
+  parallel: true
+  project: AfricasTalkingCS.sln
+  verbosity: detailed
+
+after_build:
 
 - ps: >-
 
-    git clone -q --branch=master https://github.com/AfricasTalkingLtd/africastalking.Net.git C:\projects\africastalking
+    .\build\build.cmd 
+     
+# on successful build
+on_success:
+  - echo Success
 
-    git checkout -qf master
+# on build failure
+on_failure:
+  - echo Error occurred
 
-    dotnet restore -v quiet
-
-    dotnet build /p:configuration=Release /p:Version=$($env:appveyor_build_version)
-
-    .\build\build.cmd
+# after build failure or success
+on_finish:
+  - echo Done!   
