@@ -198,6 +198,81 @@ public ActionResult SomeCoolMethod(awesome, params)
 ```
 
 
+### [Voice](http://docs.africastalking.com/voice)  
+#### [Call](http://docs.africastalking.com/voice/call) 
+- This allows you to push an outbound call to a set of phone numbers and sip addresses.
+```csharp 
+var callees = "test.user@ke.sip.africastalking.com,+2ABCXXYYYYYY,agent.smith@ug.sip.africastalking.com,neo.theone@ng.sip.africastalking.com";
+var callerId = "+2ABaxxyyyyyy";
+var clientRequestId = "fieldAgents";
+var callAction = gateway.Call(callerId, callees, clientRequestId); 
+``` 
+- `Call(from, to, client)`: 
+    - `from`: This is the set caller ID also known as the virtual number provided by Africa's Talking.`REQUIRED`. 
+    - `to`: This is a list of destinations to which the call is to be terminated. `REQUIRED`
+    -  `clientRequestId`: This is parameter that is set to track the particular outbound call session. The value will be snet to your callback url once the call is complete. `OPTIONAL`; 
+```csharp  
+            var username = "UserName";
+            var apiKey = "APIKEY";
+            var from = "virtualNumber";
+            var to = "Number";
+            var id = "RegionA";
+
+            var gateway = new AfricasTalkingGateway(username, apiKey);
+
+            try
+            {
+                var results = gateway.Call(from, to, id);
+                Console.WriteLine(results);
+            }
+            catch (AfricasTalkingGatewayException exception)
+            {
+                Console.WriteLine("Something went horribly wrong: " + exception.Message + ".\nCaused by :" + exception.StackTrace);
+            }
+```
+
+#### [UploadMediaFile](http://docs.africastalking.com/voice/uploadmedia) 
+- This feature alllows you to upload a media file from a known url to our servers. This media file can then be played on demand for example when executing `<Play>` action from your dialplan or `musicOnHold` or `ringBackTone` attributes on a dialplan. 
+```csharp 
+const string fileLocation = "http(s)://<url>.mp3/wav";
+const string phoneNumber = "callerID"; 
+var results = gateway.UploadMediaFile(fileLocation, phoneNumber); 
+``` 
+- `UploadMediaFile(url,  phoneNumber)` : 
+    - `url`: A valid web url pointing to the server on which the file is hosted. `REQUIRED`. 
+    - `phoneNumber`: A registered virtual number provided by Africa's Talking. `REQUIRED`.
+
+```csharp 
+            const string username    = "UserName";
+            const string apikey      = "APIKEY";
+            const string fileLocation = "http(s)://<url>.mp3||wav";
+            const string phoneNumber = "callerID";
+
+            var gateway = new AfricasTalkingGateway(username, apikey);
+
+            try
+            {
+                var results = gateway.UploadMediaFile(fileLocation, phoneNumber);
+                Console.WriteLine(results);
+                
+            }
+            catch (AfricasTalkingGatewayException exception)
+            {
+                Console.WriteLine("Something went horribly wrong: " + exception.Message + ".\nCaused by :" + exception.StackTrace);
+            }
+```
+ 
+#### [FetchCallQueue](http://docs.africastalking.com/voice/queuedcalls)  
+This feature allows you to get number of queued calls from the service. Ideally for this to work you should have a virtual number whose dialplan is set to `<Enqueue>`.  
+```csharp 
+const string queueNumber = "+2ABCXYYYYYY";
+const string queueName = "myQueue";
+var results = gateway.GetNumberOfQueuedCalls(queueNumber,queueName); 
+``` 
+- `GetNumberOfQueuedCalls(phoneNumber, queueName)`: 
+    - `phoneNumber`: This is an Africa's Talking virtual number with an `<Enqueue>` dialplan.`REQUIRED`.
+    - `queueName`: This is a user defined name assigned to the queue.`OPTIONAL`
+
 
 ### [Airtime](http://docs.africastalking.com/airtime/sending)
 
@@ -205,20 +280,31 @@ public ActionResult SomeCoolMethod(awesome, params)
 var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
 ```
 - `SendAirtime(recipients)`: 
-    - `recipients`: Contains JSON objects containing the following keys
+    - `recipients`: Contains **JSON objects**  containing the following keys
         - `phoneNumber`: Recipient of airtime
         - `amount`: Amount sent `>= 10 && <= 10K` with currency e.g `KES 100`
 
 
 ```csharp
 
-            var username = "sandbox";
-            var apikey = "MyAPIKEY";
-            var airtimerecipients = @"{'phoneNumber':'+254XXXXXXXX','amount':'KES 250'}"; // Send any JSON object of n-Length
+            class AirtimeUsers {
+                    [JsonProperty("phoneNumber")]
+                    public string PhoneNumber { get; set; }
+
+                    [JsonProperty("amount")]
+                    public string Amount { get; set; }
+            }
+            const string username = "UserName";
+            const string apikey = "MyAPIKEY";
+            var airtimeUser = new AirtimeUsers();
+            airtimeUser.PhoneNumber = "+2547XXYYYYYY";
+            airtimeUser.Amount = "KES 100";
+            var airtimeRecipient = JsonConvert.SerializeObject(airtimeUser);
+            // {"phoNumber":"+2547XXYYYYYY", "amount":"KES 100"}
             var gateway = new AfricasTalkingGateway(username, apikey);
             try
             {
-                var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
+                var airtimeTransaction = gateway.SendAirtime(airtimeRecipient);
                 Console.WriteLine(airtimeTransaction);
             }
             catch (AfricasTalkingGatewayException e)
