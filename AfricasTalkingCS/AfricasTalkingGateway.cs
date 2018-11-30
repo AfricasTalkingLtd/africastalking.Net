@@ -567,9 +567,8 @@ namespace AfricasTalkingCS
                 throw new AfricasTalkingGatewayException("Your recepients list is malformed");
             }
 
-            var urlString = this.AirtimeUrl + "/send";
-            var recipientsList = JObject.Parse(recipients);
-            var data = new Hashtable { ["username"] = this._username, ["recipients"] = "[" + recipientsList + "]" };
+            var urlString = this.AirtimeUrl;
+            var data = new Hashtable { ["username"] = this._username, ["recipients"] = "[" + recipients + "]" };
             try
             {
                 var response = this.SendPostRequest(data, urlString);
