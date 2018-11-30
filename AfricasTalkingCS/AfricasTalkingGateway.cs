@@ -217,7 +217,7 @@ namespace AfricasTalkingCS
         }
 
         /// <summary>
-        /// This alllows you to upload media files of type WAV or MP3 to our server \
+        /// This alllows you to upload media files of type WAV or MP3 to our server 
         /// The file will live in the server forever
         /// </summary>
         /// <param name="url">
@@ -245,8 +245,16 @@ namespace AfricasTalkingCS
                                    ["phoneNumber"] = phoneNumber
                                };
                 var urlString = this.VoiceUrl + "/mediaUpload";
-                var response = this.SendPostRequest(data, urlString);   
-                return response;
+                try
+                {
+                    var response = this.SendPostRequest(data, urlString);  
+                    return response; 
+                }
+                catch (AfricasTalkingGatewayException )
+                {
+                    throw new AfricasTalkingGatewayException("Failed to upload media file");
+                }
+                
             }
         }
 
