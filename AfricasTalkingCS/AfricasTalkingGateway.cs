@@ -512,12 +512,12 @@ namespace AfricasTalkingCS
         /// The queue name.
         /// </param>
         /// <returns>
-        /// The <see cref="int"/>.
+        /// The <see cref="dynamic"/>.
         /// </returns>
         /// <exception cref="AfricasTalkingGatewayException">
         /// Errors from our gateway class
         /// </exception>
-        public int GetNumberOfQueuedCalls(string phoneNumber, string queueName = null)
+        public dynamic GetNumberOfQueuedCalls(string phoneNumber, string queueName)
         {
             string[] numbers = phoneNumber.Split(separator: new[] {','}, options: StringSplitOptions.RemoveEmptyEntries);
             if (!IsPhoneNumber(numbers))
@@ -539,14 +539,12 @@ namespace AfricasTalkingCS
                 var url = this.VoiceUrl + "/queueStatus";
                 var response = this.SendPostRequest(data, url);
                 dynamic json = JObject.Parse(response);
-                if ((string)json["errorMessage"] == "None")
-                {
-                    return json["entries"];
-                }
-
-                throw new AfricasTalkingGatewayException(json["errorMessage"]);
+                return json;
             }
         }
+
+        public dynamic GetNumberOfQueuedCalls(string phoneNumber) => GetNumberOfQueuedCalls(phoneNumber, null);
+
 
         /// <summary>
         /// The send airtime method.
