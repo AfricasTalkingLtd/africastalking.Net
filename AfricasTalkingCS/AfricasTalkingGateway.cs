@@ -385,17 +385,9 @@ namespace AfricasTalkingCS
         /// <exception cref="AfricasTalkingGatewayException">
         /// Errors from our gateway
         /// </exception>
-        public dynamic Call(string from, string to, string requestId = null)
+        public dynamic Call(string from, string to, string requestId)
         {
-            var numbersFrom = from.Split(separator: new[] {','}, options: StringSplitOptions.RemoveEmptyEntries);
-            var numbersTo = to.Split(separator: new[] {','}, options: StringSplitOptions.RemoveEmptyEntries);
-            var numbersAreValid = IsPhoneNumber(numbersTo) && IsPhoneNumber(numbersFrom);
-            if (!numbersAreValid)
-            {
-                throw new AfricasTalkingGatewayException("One or both of the phonenumber(s) provided is (are) not valid");
-            }
-            else
-            {
+                // We do not Validate against phone numbers since it could be a mixture of numbers and sip addresses TBD , very hacky
                 var dict = new Dictionary<string, string>
                 {
                     ["username"] = this._username,
@@ -410,14 +402,16 @@ namespace AfricasTalkingCS
                 {
                     var url = VoiceUrl + "/call";
                     var response = SendPostRequest(dict, url);
-                    return response;
+                    dynamic json = JObject.Parse(response);
+                    return json;
                 }
                 catch (AfricasTalkingGatewayException e)
                 {
                     throw new AfricasTalkingGatewayException(e);
                 }
-            }
         }
+
+        public dynamic Call(string from, string to) => Call(from, to, requestId: null);
 
        // private  static string RawConvert()
 
