@@ -1638,7 +1638,7 @@ namespace AfricasTalkingCS
         {
             var httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Add("apikey", this._apikey);
-             var res = httpClient.PostAsJsonAsync(url, requestBody).Result;
+            var res = httpClient.PostAsJsonAsync(url, requestBody).Result;
             res.EnsureSuccessStatusCode();
             var result = res.Content.ReadAsAsync<DataResult>();
             return result.Result;
