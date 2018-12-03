@@ -13,7 +13,7 @@ namespace AfricasTalkingCS_Tests
         [TestMethod]
         public void DoSendUssdPush()
         {
-            var phoneNumber = "+254720000000";
+            var phoneNumber = "+254720000002";
             var menu = "CON What is your purpose?\n";
             var checkoutToken = _atGWInstance.CreateCheckoutToken(phoneNumber);
             string tkn = checkoutToken["token"];
