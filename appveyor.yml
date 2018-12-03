@@ -28,6 +28,11 @@ skip_commits:
     - '.gitignore'
     - 'README.md'
 
+before_build:
+  - nuget restore   
+  - choco install opencover.portable
+  - choco install codecov 
+
 build:
   parallel: true
   project: AfricasTalkingCS.sln
@@ -38,7 +43,10 @@ after_build:
 - ps: >-
 
     .\build\build.cmd 
-     
+
+test_script:
+  - OpenCover.Console.exe  -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:".\AfricasTalkingCS.Tests\bin\netcoreapp2.1\bin\Debug\AfricasTalkingCS.Tests.dll -noshadow" -filter:"+[AfricasTalkingCS*]* -[AfricasTalkingCS.Tests*]*" -output:".\AfricasTalkingCS_coverage.xml"
+  - codecov -f  AfricasTalkingCS_coverage.xml
 # on successful build
 on_success:
   - echo Success
