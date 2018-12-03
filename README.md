@@ -832,7 +832,8 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
 > A few things to note about USSD: 
 
 + USSD is session driven. Every request we send you will contain a sessionId, and this will be maintained until that session is completed
-+ **USSD push currently works in Nigeria only** 
++ **USSD push currently works in Nigeria only**  
++ For this to work properly ensure you have registered a callback URL in your account
 
 
 ```csharp 
@@ -840,7 +841,7 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
             const string Username = "sandbox";
             const string Apikey = "Key";
             var gateway = new AfricasTalkingGateway(Username, Apikey);
-            var tokenId = "tkn";
+            string tokenId = "tkn";
             const string PhoneNumber = "+236XXXXXXXXX";
             const string Menu = "CON You're about to love C#\n1.Accept my fate\n2.No Never\n";
 
