@@ -533,6 +533,11 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
                     destinationAccount,
                     metadataDetails);
                 Console.WriteLine(response);
+                // This method avails the B2BResults object that can be unpacked to obtain:
+                // 1 - B2BResults.ProviderChannel
+                // 2 - B2BResults.TransactionId
+                // 3 - B2BResults.TransactionFee
+                // 4 - B2BResults.Status
             }
             catch (AfricasTalkingGatewayException e)
             {
