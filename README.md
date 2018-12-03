@@ -438,6 +438,14 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
                 var response = gateway.MobileB2C(productName, heroes);
                 Console.WriteLine(heroes);
                 Console.WriteLine(response);
+                // The response type is of type DataResult.
+                // You can query : 
+                // 1 - DataResult.NumQueued (type int)
+                // 2 - DataResult.Entries (type IList)
+                // 3 - DataResult.TotalValue (type string)
+                // 4 - DataResult.TotalTransactionFee (type string)
+                // You also have a DataResult.ToString() method available
+        
             }
             catch (AfricasTalkingGatewayException e)
             {
