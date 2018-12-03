@@ -1510,14 +1510,14 @@ namespace AfricasTalkingCS
     /// <returns>
     /// Server response.
     /// </returns>
-    private string PostB2BJson(B2BData dataMap, string url)
+    private B2BResult PostB2BJson(B2BData dataMap, string url)
         {
             var client = new HttpClient();
             client.DefaultRequestHeaders.Add("apiKey", this._apikey);
             var result = client.PostAsJsonAsync(url, dataMap).Result;
             result.EnsureSuccessStatusCode();
-            var stringResult = result.Content.ReadAsStringAsync().Result;
-            return stringResult;
+            var stringResult = result.Content.ReadAsAsync<B2BResult>();
+            return stringResult.Result;
         }
 
         /// <summary>
