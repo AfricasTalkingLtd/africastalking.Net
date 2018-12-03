@@ -5,14 +5,6 @@ using System.Text;
 
 namespace AfricasTalkingCS_Tests
 {
-    public class CallResponse
-    {
-        [JsonProperty("entries")]
-        public string [] Entries {get; set;}
-
-        [JsonProperty("errorMessage")]
-        public string ErrorMessage {get; set;}
-    }
     
     [TestClass]
     public class VoiceService
