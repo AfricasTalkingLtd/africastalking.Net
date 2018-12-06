@@ -674,7 +674,7 @@ namespace AfricasTalkingCS
         /// <summary>
         /// Wallet Transfer Endpont
         /// </summary>
-        private string WalletTransferUrl => this.PaymentsHost + "/wallet/transfer";
+        private string WalletTransferUrl => this.PaymentsHost + "/transfer/wallet";
 
         /// <summary>
         /// Topup Stash Endpoint
