@@ -1180,9 +1180,7 @@ namespace AfricasTalkingCS
             {
                 throw new AfricasTalkingGatewayException(response);
             }
-
-            dynamic json = JObject.Parse(response);
-            return json;
+            return response;
         }
 
         /// <summary>
@@ -1192,21 +1190,21 @@ namespace AfricasTalkingCS
             string response;
             string requestBody = $"?username={this._username}&productName={productName}&pageNumber={pageNumber}&count={count}";
             if(startDate != null)
-                requestBody += $"startDate={startDate}";
+                requestBody += $"&startDate={startDate}";
             if(endDate != null)
-                requestBody += $"endDate={endDate}";
+                requestBody += $"&endDate={endDate}";
             if(category != null)
-                requestBody += $"category={category}";
+                requestBody += $"&category={category}";
             if(provider != null)
-                requestBody += $"provider={provider}";
+                requestBody += $"&provider={provider}";
             if(status != null)
-                requestBody += $"status={status}";
+                requestBody += $"&status={status}";
             if(source != null)
-                requestBody += $"source={source}";
+                requestBody += $"&source={source}";
             if(destination != null)
-                requestBody += $"destination={destination}";
+                requestBody += $"&destination={destination}";
             if(providerChannel != null) 
-                requestBody += $"providerChannel={providerChannel}";
+                requestBody += $"&providerChannel={providerChannel}";
             
             var url = this.FetchProductTransactionsUrl + requestBody;
             response = this.SendGetRequest(url);
@@ -1215,8 +1213,7 @@ namespace AfricasTalkingCS
             {
                 throw new AfricasTalkingGatewayException(response);
             }
-            dynamic json = JObject.Parse(response);
-            return json;
+            return response;
         }
 
         public string FetchProductTransactions(string productName, string pageNumber, string count, string startDate, string endDate) => FetchProductTransactions(productName, pageNumber, count, startDate, endDate, null, null, null, null, null, null);
@@ -1228,14 +1225,14 @@ namespace AfricasTalkingCS
         /// <summary>
         /// Fetch Wallet Transactions
         /// </summary>
-        public string FetchWalletTransactions(string productName, string pageNumber, string count, string startDate=null, string endDate=null, string[] categories=null){
-            string requestBody = $"?username={this._username}&productName={productName}&pageNumber={pageNumber}&count={count}";
+        public string FetchWalletTransactions(string pageNumber, string count, string startDate=null, string endDate=null, string[] categories=null){
+            string requestBody = $"?username={this._username}&pageNumber={pageNumber}&count={count}";
             if(startDate != null)
-                requestBody += $"startDate={startDate}";
+                requestBody += $"&startDate={startDate}";
             if(endDate != null)
-                requestBody += $"endDate={endDate}";
+                requestBody += $"&endDate={endDate}";
             if(categories != null)
-                requestBody += $"category={categories}";
+                requestBody += $"&category={categories}";
             
             var url = this.FetchWalletDetailsUrl + requestBody;
             var response = this.SendGetRequest(url);
@@ -1243,13 +1240,12 @@ namespace AfricasTalkingCS
             {
                 throw new AfricasTalkingGatewayException(response);
             }
-            dynamic json = JObject.Parse(response);
-            return json;
+            return response;
         }
 
-        public string FetchWalletTransactions(string productName, string pageNumber, string count) => FetchWalletTransactions(productName, pageNumber, count, null, null, null);
+        public string FetchWalletTransactions(string pageNumber, string count) => FetchWalletTransactions(pageNumber, count, null, null, null);
         
-        public string FetchWalletTransactions(string productName, string pageNumber, string count, string startDate, string endDate) => FetchWalletTransactions(productName, pageNumber, count, startDate, endDate, null);
+        public string FetchWalletTransactions(string pageNumber, string count, string startDate, string endDate) => FetchWalletTransactions(pageNumber, count, startDate, endDate, null);
 
         /// <summary>
         /// Fetches wallet Balance
@@ -1264,8 +1260,7 @@ namespace AfricasTalkingCS
             {
                 throw new AfricasTalkingGatewayException(response);
             }
-            dynamic json = JObject.Parse(response);
-            return json;
+            return response;
         }
 
         // http://docs.africastalking.com/bank/checkout
