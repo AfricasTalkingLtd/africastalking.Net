@@ -48,7 +48,6 @@ namespace AfricasTalkingCS_Tests
             // Hack
             airtimeStringBuilderInstance.Append($",{airtime2Recipient}");
             var gatewayResponse = _atGWInstance.SendAirtime(airtimeStringBuilderInstance);
-            System.Console.WriteLine(gatewayResponse);
             var success = gatewayResponse["errorMessage"] == "None" || gatewayResponse["errorMessage"] == "A duplicate request was received within the last 5 minutes";
             Assert.IsTrue(success);
         }
