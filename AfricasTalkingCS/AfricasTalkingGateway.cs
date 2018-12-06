@@ -1488,14 +1488,14 @@ namespace AfricasTalkingCS
         /// <returns>
         /// The <see cref="string"/>.
         /// </returns>
-        private string ProcessBankTransfer(BankTransfer transfer, string url)
+        private BankTransferResults ProcessBankTransfer(BankTransfer transfer, string url)
         {
             var transferClient = new HttpClient();
             transferClient.DefaultRequestHeaders.Add("apiKey", this._apikey);
             var transferResult = transferClient.PostAsJsonAsync(this.BankTransferUrl, value: transfer).Result;
             transferResult.EnsureSuccessStatusCode();
-            var transferRes = transferResult.Content.ReadAsStringAsync().Result;
-            return transferRes;
+            var transferRes = transferResult.Content.ReadAsAsync<BankTransferResults>();
+            return transferRes.Result;
         }
 
     /// <summary>
