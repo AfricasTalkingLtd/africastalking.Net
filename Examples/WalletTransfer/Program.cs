@@ -27,8 +27,8 @@ namespace WalletTransfer
             {
                 
                 Console.WriteLine("Hello World!");
-                var res = gw.WalletTransfer(productName, productCode, currencyCode, amount, metadata);
-                Console.WriteLine(res);
+                StashResult res = gw.WalletTransfer(productName, productCode, currencyCode, amount, metadata);
+                Console.WriteLine(res.ToString());
             }
             catch (AfricasTalkingGatewayException e)
             {

@@ -25,8 +25,8 @@ namespace TopupStash
             {
                 
                 Console.WriteLine("Hello World!");
-                var res = gw.TopupStash(productName, currencyCode, amount, metadata);
-                Console.WriteLine(res);
+                StashResponse res = gw.TopupStash(productName, currencyCode, amount, metadata);
+                Console.WriteLine(res.ToString());
             }
             catch (AfricasTalkingGatewayException e)
             {
