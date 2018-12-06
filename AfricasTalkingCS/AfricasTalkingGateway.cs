@@ -1656,15 +1656,15 @@ namespace AfricasTalkingCS
         /// <returns>
         /// The <see cref="string"/>.
         /// </returns>
-        private string PostAsJson(CheckOutData dataMap, string url)
+        private C2BDataResults PostAsJson(CheckOutData dataMap, string url)
         {
             var client = new HttpClient();
 
             client.DefaultRequestHeaders.Add("apiKey", this._apikey);
             var result = client.PostAsJsonAsync(url, dataMap).Result;
             result.EnsureSuccessStatusCode();
-            var stringResult = result.Content.ReadAsStringAsync().Result;
-            return stringResult;
+            var stringResult = result.Content.ReadAsAsync<C2BDataResults>();
+            return stringResult.Result;
         }
         
         /// <summary>
