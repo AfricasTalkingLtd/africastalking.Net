@@ -1171,9 +1171,9 @@ namespace AfricasTalkingCS
             return stringResult.Result;
         }
 
-        public string FindTransaction(string productName) {
+        public string FindTransaction(string transactionId) {
 
-            var url = this.FindTransactionIdUrl + "?username=" + this._username + "&transactionId=" + productName;
+            var url = this.FindTransactionIdUrl + "?username=" + this._username + "&transactionId=" + transactionId;
             var response = this.SendGetRequest(url);
 
             if (this._responseCode != (int)HttpStatusCode.OK)
