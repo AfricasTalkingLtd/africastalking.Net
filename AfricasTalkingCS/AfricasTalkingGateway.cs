@@ -1689,9 +1689,6 @@ namespace AfricasTalkingCS
             object sender,
             X509Certificate certificate,
             X509Chain chain,
-            SslPolicyErrors sslpolicyerrors)
-        {
-            return true;
-        }
+            SslPolicyErrors sslpolicyerrors) => true;
     }
 }
