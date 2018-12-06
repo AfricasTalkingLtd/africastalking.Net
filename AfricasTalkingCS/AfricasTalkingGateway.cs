@@ -1161,14 +1161,14 @@ namespace AfricasTalkingCS
                 }
         }
 
-       private string ProcessWalletTransfer(WalletTransfer walletTransfer, string url)
+       private StashResponse ProcessWalletTransfer(WalletTransfer walletTransfer, string url)
         {
             var client = new HttpClient();
             client.DefaultRequestHeaders.Add("apiKey", this._apikey);
             var result = client.PostAsJsonAsync(url, value: walletTransfer).Result;
             result.EnsureSuccessStatusCode();
-            var stringResult = result.Content.ReadAsStringAsync().Result;
-            return stringResult;
+            var stringResult = result.Content.ReadAsAsync<StashResponse>();
+            return stringResult.Result;
         }
 
         public string FindTransaction(string productName) {
