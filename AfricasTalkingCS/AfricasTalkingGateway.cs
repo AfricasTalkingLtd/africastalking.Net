@@ -1344,14 +1344,14 @@ namespace AfricasTalkingCS
         /// <returns>
         /// The <see cref="string"/>.
         /// </returns>
-        private string ProcessBankCheckout(BankCheckout checkout, string url)
+        private BankCheckoutResponse ProcessBankCheckout(BankCheckout checkout, string url)
         {
             var client = new HttpClient();
             client.DefaultRequestHeaders.Add("apiKey", this._apikey);
             var result = client.PostAsJsonAsync(url, value: checkout).Result;
             result.EnsureSuccessStatusCode();
-            var stringResult = result.Content.ReadAsStringAsync().Result;
-            return stringResult;
+            var stringResult = result.Content.ReadAsAsync<BankCheckoutResponse>();
+            return stringResult.Result;
         }
 
         // http://docs.africastalking.com/bank/validate
