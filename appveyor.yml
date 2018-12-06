@@ -24,7 +24,6 @@ branches:
 skip_commits:
   files:
     - ScreenShots/*
-    - '*.yml' 
     - '.gitignore'
     - 'README.md'
 
