@@ -1402,14 +1402,14 @@ namespace AfricasTalkingCS
         /// <returns>
         /// The <see cref="string"/>.
         /// </returns>
-        private string ProcessCardCheckout(CardDetails details, string checkoutUrl)
+        private CardCheckoutResults ProcessCardCheckout(CardDetails details, string checkoutUrl)
         {
             var client = new HttpClient();
             client.DefaultRequestHeaders.Add("apiKey", this._apikey);
             var result = client.PostAsJsonAsync(checkoutUrl, details).Result;
             result.EnsureSuccessStatusCode();
-            var stringResult = result.Content.ReadAsStringAsync().Result;
-            return stringResult;
+            var stringResult = result.Content.ReadAsAsync<CardCheckoutResults>();
+            return stringResult.Result;
         }
 
         /// <summary>
