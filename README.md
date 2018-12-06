@@ -362,8 +362,15 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
 
             try
             {
-                var checkout = gateway.Checkout(productName, phoneNumber, currency, amount, channel, metadata);
-                Console.WriteLine(checkout);
+                // You will get an object of type C2BDataResults :
+                // From which you can extract the following properties
+                // 1. C2BDataResults.ProviderChannel
+                // 2. C2BDataResults.Status
+                // 3. C2BDataResults.Description
+                // 4. C2BDataResults.TransactionId
+                // You also get a ToString() method
+                C2BDataResults checkout = gateway.Checkout(productName, phoneNumber, currency, amount, channel, metadata);
+                Console.WriteLine(checkout.Status);
             }
             catch (AfricasTalkingGatewayException e)
             {
@@ -583,12 +590,16 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
             var receBank = new BankAccount(accountNumber, bankCode, dob, accountName);
             try
             {
-                var res = gateway.BankCheckout(productName, receBank, currencyCode, amount, narration, metadata);
-                res = JsonConvert.DeserializeObject(res);
+                // You get a BankCheckoutResponse object that contains the following properties
+                // 1. BankCheckoutResponse.Status
+                // 2. BankCheckoutResponse.TransactionId
+                // 3. BankCheckoutResponse.Description
+                // And a ToString() method
+                BankCheckoutResponse res = gateway.BankCheckout(productName, receBank, currencyCode, amount, narration, metadata);
                 Console.WriteLine(res);
-                if (res["status"] == "PendingValidation")
+                if (res.Status == "PendingValidation")
                 {
-                    transId = res["transactionId"];
+                    transId = res.TransactionId;
                     Console.WriteLine("Validating...");
                 }
 
@@ -667,8 +678,10 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
                                                            };
             try
             {
-               var res = gateway.BankTransfer(productname, recipients);
-                Console.WriteLine(res);
+                // Responds with BankTransferResults object that contans:
+                // An IList object called Entries and a ToString() method
+               BankTransferResults res = gateway.BankTransfer(productname, recipients);
+                Console.WriteLine(res.Entries.ToString());
             }
             catch (AfricasTalkingGatewayException e)
             {
@@ -805,11 +818,10 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
                     }
                  * 
                  */
-                var resObject = JsonConvert.DeserializeObject(checkout);
-                Console.WriteLine(resObject);
-                if (resObject["status"] == "PendingValidation")
+                if (checkout.Status == "PendingValidation")
                 {
                     transactionId = resObject["transactionId"];
+                    // Go ahead and validate with the OTP
                     Console.WriteLine(transactionId);
                 }
             }
@@ -842,7 +854,41 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
 
             Console.ReadLine();
 ```
+#### [WalletTransfer](http://docs.africastalking.com/payments/wallettransfer) 
+> This feature allows you to transfer money between Africas's Talking hosted products 
 
+- `WalletTransfer( poductName, targetProductCode, currencyCode, amount, metadata)`:
+    - `productName`: Your Africa's Talking Payment product to initiate this transaction. `REQUIRED`.
+    - `targetProductCode`: Unique product code of the Africa's Talking Payment Product to transfer the funds to. `REQUIRED`.
+    - `currencyCode`:  3-digit ISO format currency code for the value of this transaction (e.g KES, UGX, USD, ...). `REQUIRED`.
+    - `amount`:  Amount - in the provided currency - that the application will be topped up with. `REQUIRED`.
+    - `metadata`: A Map of any metadata that you would like us to associate with the request. `REQUIRED`.
+
+```csharp 
+StashResponse stashResponse = gateway.WalletTransfer(productName, productCode, currencyCode, amount, metadata);
+// StashResponse is an object that contains the following properties:
+// StashResponse.Status
+// StashResponse.TransactionId
+// StashResponse.Description
+// And a ToString() method
+```
+
+#### [TopUpStash](http://docs.africastalking.com/payments/topupstash)
+> Topup stash APIs allow you to move money from a Payment Product to an Africa's Talking application stash. An application stash is the wallet that funds your service usage expences 
+
+- `TopupStash(productName, currencyCode, amount, metadata)`:
+    - `productName`: Your Africa's Talking Payment product to initiate this transaction. `REQUIRED`.
+    - `currencyCode`:  3-digit ISO format currency code for the value of this transaction (e.g KES, UGX, USD, ...). `REQUIRED`.
+    - `amount`:  Amount - in the provided currency - that the application will be topped up with. `REQUIRED`.
+    - `metadata`: A Map of any metadata that you would like us to associate with the request. `REQUIRED`.
+```csharp 
+StashResponse stashResponse = gateway.TopupStash(productName, currencyCode, amount, metadata);
+// StashResponse is an object that contains the following properties:
+// StashResponse.Status
+// StashResponse.TransactionId
+// StashResponse.Description
+// And a ToString() method
+```
 
 ### [USSD Push](http://docs.africastalking.com/ussd)
 > A few things to note about USSD: 
