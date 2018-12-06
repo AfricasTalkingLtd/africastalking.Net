@@ -44,7 +44,7 @@ after_build:
     .\build\build.cmd 
 
 test_script:
-  - OpenCover.Console.exe  -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:".\AfricasTalkingCS.Tests\bin\netcoreapp2.1\bin\Debug\AfricasTalkingCS.Tests.dll -noshadow" -filter:"+[AfricasTalkingCS*]* -[AfricasTalkingCS.Tests*]*" -output:".\AfricasTalkingCS_coverage.xml"
+  - OpenCover.Console.exe  -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:".\AfricasTalkingCS.Tests\bin\netcoreapp2.1\bin\Debug\AfricasTalkingCS.Tests.dll -noshadow" -filter:"+[AfricasTalkingCS*]* -[AfricasTalkingCS_Tests*]*" -output:".\AfricasTalkingCS_coverage.xml"
   - codecov -f  AfricasTalkingCS_coverage.xml
 # on successful build
 on_success:
