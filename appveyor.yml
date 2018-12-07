@@ -42,7 +42,7 @@ build_script:
 - ps: >-
 
     dotnet restore -v quiet
-    dotnet build /p:configuration=Release /p:Version=$($env:appveyor_build_version)
+    dotnet build 
 
 after_build:
 
