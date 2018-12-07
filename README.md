@@ -213,7 +213,7 @@ var callAction = gateway.Call(callerId, callees, clientRequestId);
 - `Call(from, to, clientRequestId)`: 
     - `from`: This is the set caller ID also known as the virtual number provided by Africa's Talking.`REQUIRED`. 
     - `to`: This is a list of destinations to which the call is to be terminated. `REQUIRED`
-    -  `clientRequestId`: This is parameter that is set to track the particular outbound call session. The value will be snet to your callback url once the call is complete. `OPTIONAL`; 
+    -  `clientRequestId`: This is parameter that is set to track the particular outbound call session. The value will be sent to your callback url once the call is complete. `OPTIONAL`; 
 ```csharp  
             var username = "UserName";
             var apiKey = "APIKEY";
@@ -889,6 +889,88 @@ StashResponse stashResponse = gateway.TopupStash(productName, currencyCode, amou
 // StashResponse.Description
 // And a ToString() method
 ```
+
+#### [FindTransaction](http://docs.africastalking.com/query/findtransaction) 
+> This functionality allows you to find a particular payment transaction by it's ID. 
+
+- `FindTransaction(transactionId)`: 
+    - `transactionId`: ID of the transaction you would like to find. `REQUIRED`.
+
+```csharp 
+var findId = gateway.FindTransaction(transactionId); 
+ 
+ // ... Unmarshall as so
+JObject findIdObject = JObject.Parse(findId);
+ // ...
+```
+
+#### [FetchProductTransactions](http://docs.africastalking.com/query/producttransactions) 
+> This feature allows you to fetch transactions of a particular payment product. 
+
+> Note, for the filters (except for `startDate` and `endDate` which can be passed simultaneously) you can only use one filter for any given query, otherwise your query will return an empty set. Pass `null` for those that you wont need.
+
+- `FetchProductTransactions(productName, pageNumber, count, startDate, endDate, category, provider, status, source, destination,  providerChannel)`:
+    - `productName`: The name of the payment product whose transactions you'd like to fetch. `REQUIRED`.
+    - `pageNumber`: The number of the page you'd like to read results from. __Please Note: This STARTS from 1 and NOT 0__. `REQUIRED`.
+    - `count`: The number of transaction results you would like for this query. `REQUIRED`.
+    - `startDate`: Transaction start date you would like to consider in the format __YYYY-MM-DD__. `OPTIONAL`. (Type = filter) 
+    - `endDate`: Transaction end date you would like to consider in the format __YYYY-MM-DD__. `OPTIONAL`. (Type = filter)
+    - `category`: Transaction category you would like to consider. Possible values are: `BankCheckout`, `CardCheckout`, `MobileCheckout`, `MobileC2B`, `MobileB2C`, `MobileB2B`, `BankTransfer`, `BankWithdrawal`, `AdminWalletTopup`, `AdminWalletRefund`, `UserWalletTransfer`, `UserWalletTopup`, `UserStashTopup`. `OPTIONAL`.  (Type = filter)
+    - `provider`: Transaction provider you would like to consider. Possible values are: `Mpesa`, `Segovia`, `Flutterwave`, `Admin`, `Athena`. `OPTIONAL`. (Type = filter)
+    - `status`: Transaction status you would like to consider. Possible values are: `Success`, `Failed` . `OPTIONAL`. (Type = filter)
+    - `source`: Transaction source you would like to consider. Possible values are: `phoneNumber`, `BankAccount`, `Card`, `Wallet`. `OPTIONAL`. (Type = filter)
+    - `destination`: Transaction destinatiom you would like to consider. Possible values are: `PhoneNumber`, `BankAccount`, `Card`, `Wallet`. `OPTIONAL`. (Type = filter)
+    - `providerChannel`: Transaction provider channel you would like to consider. This could, for example, be the Mobile Provider's Paybill or Buy Goods number that belongs to your organization. `OPTIONAL`. (Type = filter)
+
+```csharp 
+// Without filters 
+string fetchTransactionsResponse = gateway.FetchProductTransactions(productName, pageNumber,count);
+JObject fetchTransactionsResponseJson = JObject.Parse(fetchTransactionsResponse); 
+// With filters (Date)
+const string productName = "coolproduct";
+const string pageNumber = "1";
+const string count = "3";
+DateTime today = DateTime.Today;           
+string startDate = today.ToString("yyyy-MM-dd");
+string endDate = today.ToString("yyyy-MM-dd");
+string fetchTransactionsResponse = gateway.FetchProductTransactions(productName, pageNumber,count, startDate, endDate);
+```
+
+
+#### [FetchWalletTransactions](http://docs.africastalking.com/query/wallettransactions) 
+> This feature allows you to fetch your wallet transactions. 
+
+> Note, for the filters (except for `startDate` and `endDate` which can be passed simultaneously) you can only use one filter for any given query, otherwise your query will return an empty set. Pass `null` for those that you wont need.
+
+- `FetchProductTransactions(pageNumber, count, startDate, endDate, categories, provider, status, source, destination,  providerChannel)`:
+    - `pageNumber`: The number of the page you'd like to read results from. __Please Note: This STARTS from 1 and NOT 0__. `REQUIRED`.
+    - `count`: The number of transaction results you would like for this query. __Must be > 1 and < 1,000__. `REQUIRED`.
+    - `startDate`: Transaction start date you would like to consider in the format __YYYY-MM-DD__. `OPTIONAL`. (Type = filter) 
+    - `endDate`: Transaction end date you would like to consider in the format __YYYY-MM-DD__. `OPTIONAL`. (Type = filter)
+    - `categories`: A comma delimited list of transaction categories you would like to consider. Possible values are: `Debit`, `Credit`, `Refund` and `Topup`. `OPTIONAL`.  (Type = filter)
+
+```csharp 
+// Without filters 
+string fetchTransactionsResponse = gateway.FetchWalletTransactions(pageNumber,count);
+JObject fetchTransactionsResponseJson = JObject.Parse(fetchTransactionsResponse); 
+// With filters (Date)
+const string productName = "coolproduct";
+const string pageNumber = "1";
+const string count = "3";
+DateTime today = DateTime.Today;           
+string startDate = today.ToString("yyyy-MM-dd");
+string endDate = today.ToString("yyyy-MM-dd");
+string fetchTransactionsResponse = gateway.FetchWalletTransactions(pageNumber,count, startDate, endDate);
+```
+
+#### [FetchWalletBalance](http://docs.africastalking.com/query/walletbalance)
+> This feature allows you to fetch your current wallet balance.
+
+```csharp 
+string fetchBalanceResponse = _atGWInstance.FetchWalletBalance();
+JObject fetchBalanceResponseJson = JObject.Parse(fetchBalanceResponse);
+```
+
 
 ### [USSD Push](http://docs.africastalking.com/ussd)
 > A few things to note about USSD: 
