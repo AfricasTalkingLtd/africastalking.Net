@@ -2,16 +2,53 @@ version: 1.0.{build}
 
 platform: Any CPU
 
-build_script:
+image: Visual Studio 2015
+
+init:
+  - git config --global core.autocrlf input
+
+# clone directory
+clone_folder: c:\projects\africastalking
+
+# set clone depth
+clone_depth: 5  
+
+configuration: Release
+
+skip_commits:
+  files:
+    - ScreenShots/*
+    - '.gitignore'
+    - 'README.md'
+
+before_build:
+  - nuget restore   
+  - choco install opencover.portable
+  - choco install codecov 
+
+build:
+  parallel: true
+  project: AfricasTalkingCS.sln
+  verbosity: detailed
+
+
+after_build:
 
 - ps: >-
 
-    git clone -q --branch=master https://github.com/AfricasTalkingLtd/africastalking.Net.git C:\projects\africastalking
+    .\build\build.cmd 
 
-    git checkout -qf master
+test_script:
+  - OpenCover.Console.exe  -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:".\AfricasTalkingCS.Tests\bin\Debug\netcoreapp2.1\AfricasTalkingCS.Tests.dll -noshadow" -filter:"+[AfricasTalkingCS*]* -[AfricasTalkingCS_Tests*]*" -output:".\AfricasTalkingCS_coverage.xml"
+  - codecov -f  "AfricasTalkingCS_coverage.xml"
+# on successful build
+on_success:
+  - echo Success
 
-    dotnet restore -v quiet
+# on build failure
+on_failure:
+  - echo Error occurred
 
-    dotnet build /p:configuration=Release /p:Version=$($env:appveyor_build_version)
-
-    .\build\build.cmd
+# after build failure or success
+on_finish:
+  - echo Done!   

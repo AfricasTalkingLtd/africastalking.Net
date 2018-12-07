@@ -2,6 +2,15 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v2.0": {
+      "libphonenumber-csharp/8.9.16": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/PhoneNumbers.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/PhoneNumbers.dll": {}
+        }
+      },
       "Microsoft.AspNet.WebApi.Client/5.2.3": {
         "type": "package",
         "compile": {
@@ -1337,13 +1346,14 @@
           "lib/netstandard1.3/System.Xml.XmlDocument.dll": {}
         }
       },
-      "AfricasTalking.NET/1.1.700": {
+      "AfricasTalking.NET/1.1.720": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
           "Microsoft.AspNet.WebApi.Client": "5.2.3",
           "Newtonsoft.Json": "10.0.3",
-          "System.Net.Http": "4.3.3"
+          "System.Net.Http": "4.3.3",
+          "libphonenumber-csharp": "8.9.16"
         },
         "compile": {
           "bin/placeholder/AfricasTalking.NET.dll": {}
@@ -1355,6 +1365,22 @@
     }
   },
   "libraries": {
+    "libphonenumber-csharp/8.9.16": {
+      "sha512": "Tx5mUaReav2Lj2jQBagDKGVLpKhDtSYhS7MaKtjHZxonMApJ2VJen91DrjE0WJnCjxLWqKX6b0BB9xb/EkejBQ==",
+      "type": "package",
+      "path": "libphonenumber-csharp/8.9.16",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net35/PhoneNumbers.dll",
+        "lib/net40/PhoneNumbers.dll",
+        "lib/netstandard1.3/PhoneNumbers.dll",
+        "lib/netstandard2.0/PhoneNumbers.dll",
+        "lib/portable-net45+win8+wp8+wpa81/PhoneNumbers.dll",
+        "libphonenumber-csharp.8.9.16.nupkg.sha512",
+        "libphonenumber-csharp.nuspec"
+      ]
+    },
     "Microsoft.AspNet.WebApi.Client/5.2.3": {
       "sha512": "3kiI8peSXbXHDDrRuo+QaX0iCEVRe0nvn2dBDRw656uPX32UalbBlSIDUDlJxu05eau4tnuhsikiUuugvvoUoQ==",
       "type": "package",
@@ -1369,7 +1395,7 @@
       ]
     },
     "Microsoft.CSharp/4.3.0": {
-      "sha512": "UdFT7ycXrkxXhtfTxIYyaNzsUwafnvbkpfXczfpiBMl3jgsrgOU0ViSiePvqNM1rBBgKffIHfxzb3mzNUnzQhw==",
+      "sha512": "P+MBhIM0YX+JqROuf7i306ZLJEjQYA9uUyRDE+OqwUI5sh41e2ZbPQV3LfAPh+29cmceE1pUffXsGfR4eMY3KA==",
       "type": "package",
       "path": "microsoft.csharp/4.3.0",
       "files": [
@@ -1740,10 +1766,12 @@
       ]
     },
     "Microsoft.NETCore.Platforms/2.0.0": {
-      "sha512": "VdLJOCXhZaEMY7Hm2GKiULmn7IEPFE4XC5LPSfBVCUIA8YLZVh846gtfBJalsPQF2PlzdD7ecX7DZEulJ402ZQ==",
+      "sha512": "5BdAWDgMNwf90L0J+C/eh6kfHDa37ViL1cBL1nv5zPA4TB2cGV51YiQyvzCEy9DBE0LwwMI4+PkUpIekKyocSA==",
       "type": "package",
       "path": "microsoft.netcore.platforms/2.0.0",
       "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
         "lib/netstandard1.0/_._",
@@ -1896,7 +1924,7 @@
       ]
     },
     "Newtonsoft.Json/10.0.3": {
-      "sha512": "wBM7i7i3U2WX0ecor4zdVGvgrwFUjuigBoHKiL+nH39fCOpCPjBY3RDqJM32edvdyTAVdjzlccHsg41+/+zpSA==",
+      "sha512": "hSXaFmh7hNCuEoC4XNY5DrRkLDzYHqPx/Ik23R4J86Z7PE/Y6YidhG602dFVdLBRSdG6xp9NabH3dXpcoxWvww==",
       "type": "package",
       "path": "newtonsoft.json/10.0.3",
       "files": [
@@ -1959,7 +1987,7 @@
       ]
     },
     "runtime.native.System/4.3.0": {
-      "sha512": "lYuSdb9+GRcA1QXCzvyS/9PhyxlYS0JGMdtlJttyIUeXaG/IC4WcxJaLbyykHDPlA14eB4FAuiPiBnh4vbi4dg==",
+      "sha512": "c/qWt2LieNZIj1jGnVNsE2Kl23Ya2aSTBuXMD6V7k9KWr6l16Tqdwq+hJScEpWER9753NWC8h96PaVNY5Ld7Jw==",
       "type": "package",
       "path": "runtime.native.system/4.3.0",
       "files": [
@@ -1971,7 +1999,7 @@
       ]
     },
     "runtime.native.System.Net.Http/4.3.0": {
-      "sha512": "2pcFLCz1h1u6j833vqsEUjYoMhhuTzIgugCW4U4jfi+uLrfqGHBCqPyfJs0+4RDuuC02C/8jBIYHVEBF9Eaytg==",
+      "sha512": "ZVuZJqnnegJhd2k/PtAbbIcZ3aZeITq3sj06oKfMBSfphW3HDmk/t4ObvbOk/JA/swGR0LNqMksAh/f7gpTROg==",
       "type": "package",
       "path": "runtime.native.system.net.http/4.3.0",
       "files": [
@@ -1983,7 +2011,7 @@
       ]
     },
     "runtime.native.System.Security.Cryptography.Apple/4.3.0": {
-      "sha512": "lP62xbwJRo5sFWgnbzZOc7+3f1ajxjT4ltebHowKUHEH62AC7coYsh67ohRBL7aediR3Yc7cEWsCJWhqmsKDBQ==",
+      "sha512": "DloMk88juo0OuOWr56QG7MNchmafTLYWvABy36izkrLI5VledI0rq28KGs1i9wbpeT9NPQrx/wTf8U2vazqQ3Q==",
       "type": "package",
       "path": "runtime.native.system.security.cryptography.apple/4.3.0",
       "files": [
@@ -2031,7 +2059,7 @@
       ]
     },
     "runtime.osx.10.10-x64.runtime.native.System.Security.Cryptography.Apple/4.3.0": {
-      "sha512": "cJrlH6gGy0XnGrERgqGne0oEZtrR+LJgRZ8mHXU9zjlBYhJvZcY+eHLwZeaQu/uLBiYvOQYEyNMvhrGXVOf8Jw==",
+      "sha512": "kVXCuMTrTlxq4XOOMAysuNwsXWpYeboGddNGpIgNSZmv1b6r/s/DPk0fYMB7Q5Qo4bY68o48jt4T4y5BVecbCQ==",
       "type": "package",
       "path": "runtime.osx.10.10-x64.runtime.native.system.security.cryptography.apple/4.3.0",
       "files": [
@@ -2235,7 +2263,7 @@
       ]
     },
     "System.Collections.NonGeneric/4.3.0": {
-      "sha512": "mmBcGkLDDSlh1bdwgfbW/e6HYkUjqKew07R+LCeIVhPg2KN6XURFf1SdI2V/GOR5yL8rIm4GhvvV36rX68H/IQ==",
+      "sha512": "prtjIEMhGUnQq6RnPEYLpFt8AtLbp9yq2zxOSrY7KJJZrw25Fi97IzBqY7iqssbM61Ek5b8f3MG/sG1N2sN5KA==",
       "type": "package",
       "path": "system.collections.nongeneric/4.3.0",
       "files": [
@@ -2272,7 +2300,7 @@
       ]
     },
     "System.Collections.Specialized/4.3.0": {
-      "sha512": "Mw9MZBKjv/b5UgaDO6zYSQ6AGCjBY84dN5MzThRY/mA0EPUn/Qg5h3Z0NCI8eq3s37kTcvLh0lIKqS1VYybHIw==",
+      "sha512": "Epx8PoVZR0iuOnJJDzp7pWvdfMMOAvpUo95pC4ScH2mJuXkKA2Y4aR3cG9qt2klHgSons1WFh4kcGW7cSXvrxg==",
       "type": "package",
       "path": "system.collections.specialized/4.3.0",
       "files": [
@@ -2309,7 +2337,7 @@
       ]
     },
     "System.ComponentModel/4.3.0": {
-      "sha512": "8m5h+cz1iuiVQumFUEeOAj3MebJw6O0XCJXLaMGf+EzJT+UtUH4mNwv6lIDyFPcWe1DyKIuUMXAeWe4ZsN+w8A==",
+      "sha512": "VyGn1jGRZVfxnh8EdvDCi71v3bMXrsu8aYJOwoV7SNDLVhiEqwP86pPMyRGsDsxhXAm2b3o9OIqeETfN5qfezw==",
       "type": "package",
       "path": "system.componentmodel/4.3.0",
       "files": [
@@ -2366,7 +2394,7 @@
       ]
     },
     "System.ComponentModel.Primitives/4.3.0": {
-      "sha512": "p7a3DPzWZzUozV6NApTD9AcZvoL6opos5rWCjgGyWD+4KDNZ5ZdEtmk1z/CQQUxoiy+18mNaLOQoSb9n26Lesw==",
+      "sha512": "j8GUkCpM8V4d4vhLIIoBLGey2Z5bCkMVNjEZseyAlm4n5arcsJOeI3zkUP+zvZgzsbLTYh4lYeP/ZD/gdIAPrw==",
       "type": "package",
       "path": "system.componentmodel.primitives/4.3.0",
       "files": [
@@ -2403,7 +2431,7 @@
       ]
     },
     "System.ComponentModel.TypeConverter/4.3.0": {
-      "sha512": "JYwBJG17ePhWJmYE4rkEoa4oyvQ7ZZAvzJ/BAJJ/W40Qzl/OtoSd2qO1+moyj4s0c1qkeyJriRUd2AF0BfKmSQ==",
+      "sha512": "16pQ6P+EdhcXzPiEK4kbA953Fu0MNG2ovxTZU81/qsCd1zPRsKc3uif5NgvllCY598k6bI0KUyKW8fanlfaDQg==",
       "type": "package",
       "path": "system.componentmodel.typeconverter/4.3.0",
       "files": [
@@ -2627,7 +2655,7 @@
       ]
     },
     "System.Dynamic.Runtime/4.3.0": {
-      "sha512": "wIWGY53NpS5OX7FpUEF++/4znpLi4mm2u1RDdbbjKTuCQ09ii37oZs4ZGokzt4EZ/BhzZy0aQguS1jw5+OCHaw==",
+      "sha512": "SNVi1E/vfWUAs/WYKhE9+qlS6KqK0YVhnlT0HQtr8pMIA8YX3lwy3uPMownDwdYISBdmAF/2holEIldVp85Wag==",
       "type": "package",
       "path": "system.dynamic.runtime/4.3.0",
       "files": [
@@ -2798,7 +2826,7 @@
       ]
     },
     "System.Globalization.Extensions/4.3.0": {
-      "sha512": "OLhyZQo6TwVizVyiNuKhFo1O4IZ6FmP1h4c/khd3A/6BLn7bqjzSJPzLaWs68mVKFNQ8PyJh1SWyxawmJWqwlw==",
+      "sha512": "FhKmdR6MPG+pxow6wGtNAWdZh7noIOpdD5TwQ3CprzgIE1bBBoim0vbR1+AWsWjQmU7zXHgQo4TWSP6lCeiWcQ==",
       "type": "package",
       "path": "system.globalization.extensions/4.3.0",
       "files": [
@@ -3405,7 +3433,7 @@
       ]
     },
     "System.Reflection.Emit/4.3.0": {
-      "sha512": "uhMo0Pq2qT24fSmTRtqccO6FuA0xgR3mRrYqve1BG2EA4ljgNc7T0epr4dVOGKVa5m5+BuNUrjUjqcPUPAHuNw==",
+      "sha512": "228FG0jLcIwTVJyz8CLFKueVqQK36ANazUManGaJHkO0icjiIypKW7YLWLIWahyIkdh5M7mV2dJepllLyA1SKg==",
       "type": "package",
       "path": "system.reflection.emit/4.3.0",
       "files": [
@@ -4120,7 +4148,7 @@
       ]
     },
     "System.Runtime.Serialization.Primitives/4.3.0": {
-      "sha512": "eWQQa4COAIw85SKcuQV/TeZYctcG0sbfN6IhePNmq7AN46Vw1egu8jpNQTIzC/B7EuQErsugvGaLf6TcfXawCw==",
+      "sha512": "Wz+0KOukJGAlXjtKr+5Xpuxf8+c8739RI1C+A2BoQZT+wMCCoMDDdO8/4IRHfaVINqL78GO8dW8G2lW/e45Mcw==",
       "type": "package",
       "path": "system.runtime.serialization.primitives/4.3.0",
       "files": [
@@ -4256,7 +4284,7 @@
       ]
     },
     "System.Security.Cryptography.Csp/4.3.0": {
-      "sha512": "LQMbUL5yifQC7srQLHXT4mFIwAJp89Gag5ZY5Sz0to7cskq2A4J2RqGZ49S5rVBeBBBRY8Cdcg0Z1cUxBS+P0Q==",
+      "sha512": "X4s/FCkEUnRGnwR3aSfVIkldBmtURMhmexALNTwpjklzxWU7yjMk7GHLKOZTNkgnWnE0q7+BCf9N2LVRWxewaA==",
       "type": "package",
       "path": "system.security.cryptography.csp/4.3.0",
       "files": [
@@ -4325,7 +4353,7 @@
       ]
     },
     "System.Security.Cryptography.OpenSsl/4.3.0": {
-      "sha512": "awvYM6w97K4n0tjLwBAne25vgyGcyOumO+4Amy8GUfeQQrGmI2lhm1IhJYybL1nQmMBlS85z4/XwYsaqa3/SXg==",
+      "sha512": "h4CEgOgv5PKVF/HwaHzJRiVboL2THYCou97zpmhjghx5frc7fIvlkY1jL+lnIQyChrJDMNEXS6r7byGif8Cy4w==",
       "type": "package",
       "path": "system.security.cryptography.openssl/4.3.0",
       "files": [
@@ -4890,7 +4918,7 @@
         "system.xml.xmldocument.nuspec"
       ]
     },
-    "AfricasTalking.NET/1.1.700": {
+    "AfricasTalking.NET/1.1.720": {
       "type": "project",
       "path": "../../AfricasTalkingCS/AfricasTalkingCS.csproj",
       "msbuildProject": "../../AfricasTalkingCS/AfricasTalkingCS.csproj"
@@ -4898,49 +4926,40 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
-      "AfricasTalking.NET >= 1.1.700",
+      "AfricasTalking.NET >= 1.1.720",
       "Microsoft.NETCore.App >= 2.0.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Kennedy Otieno\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "/home/kennedy/.nuget/packages/": {},
+    "/usr/share/dotnet/sdk/NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
-    "restoreSettings": {
-      "hideWarningsAndErrors": true
-    },
     "restore": {
-      "projectUniqueName": "D:\\RepoMan\\africastalking.Net\\Examples\\ConsoleApp2\\SampleC2BApp.csproj",
+      "projectUniqueName": "/home/kennedy/Documents/git/africastalking.Net/Examples/ConsoleApp2/SampleC2BApp.csproj",
       "projectName": "SampleC2BApp",
-      "projectPath": "D:\\RepoMan\\africastalking.Net\\Examples\\ConsoleApp2\\SampleC2BApp.csproj",
-      "packagesPath": "C:\\Users\\Kennedy Otieno\\.nuget\\packages\\",
-      "outputPath": "D:\\RepoMan\\africastalking.Net\\Examples\\ConsoleApp2\\obj\\",
+      "projectPath": "/home/kennedy/Documents/git/africastalking.Net/Examples/ConsoleApp2/SampleC2BApp.csproj",
+      "packagesPath": "/home/kennedy/.nuget/packages/",
+      "outputPath": "/home/kennedy/Documents/git/africastalking.Net/Examples/ConsoleApp2/obj/",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\",
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        "/usr/share/dotnet/sdk/NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Kennedy Otieno\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.Fallback.config"
+        "/home/kennedy/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Users\\Kennedy Otieno\\Documents\\Visual Studio 2017\\LocalPacakages": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "netcoreapp2.0": {
           "projectReferences": {
-            "D:\\RepoMan\\africastalking.Net\\AfricasTalkingCS\\AfricasTalkingCS.csproj": {
-              "projectPath": "D:\\RepoMan\\africastalking.Net\\AfricasTalkingCS\\AfricasTalkingCS.csproj"
+            "/home/kennedy/Documents/git/africastalking.Net/AfricasTalkingCS/AfricasTalkingCS.csproj": {
+              "projectPath": "/home/kennedy/Documents/git/africastalking.Net/AfricasTalkingCS/AfricasTalkingCS.csproj"
             }
           }
         }

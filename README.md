@@ -1,4 +1,7 @@
-# Official Africa's Talking C# API wrapper [![Build status](https://ci.appveyor.com/api/projects/status/bpabkvba88xt2nh2?svg=true)](https://ci.appveyor.com/project/TheBeachMaster/africastalking-net) [![NuGet](https://img.shields.io/nuget/v/AfricasTalking.NET.svg)](https://www.nuget.org/packages/AfricasTalking.NET/)
+# Official Africa's Talking C# API wrapper  
+__Active Branch__ [![Build status *devel](https://ci.appveyor.com/api/projects/status/69oe4amag0nefels?svg=true)](https://ci.appveyor.com/project/TheBeachMaster/africastalking-net)  
+__Master Branch__ [![Build status master](https://ci.appveyor.com/api/projects/status/69oe4amag0nefels/branch/master?svg=true)](https://ci.appveyor.com/project/TheBeachMaster/africastalking-net/branch/master)  
+[![NuGet](https://img.shields.io/nuget/v/AfricasTalking.NET.svg)](https://www.nuget.org/packages/AfricasTalking.NET/)
 
 The Africa's Talking C# API wrapper provides convenient access to the Africa's Talking API from applications written in C#. With support for .NET45, .NET46 and .NET Standard 2.0. 
 
@@ -198,6 +201,81 @@ public ActionResult SomeCoolMethod(awesome, params)
 ```
 
 
+### [Voice](http://docs.africastalking.com/voice)  
+#### [Call](http://docs.africastalking.com/voice/call) 
+- This allows you to push an outbound call to a set of phone numbers and sip addresses.
+```csharp 
+var callees = "test.user@ke.sip.africastalking.com,+2ABCXXYYYYYY,agent.smith@ug.sip.africastalking.com,neo.theone@ng.sip.africastalking.com";
+var callerId = "+2ABaxxyyyyyy";
+var clientRequestId = "fieldAgents";
+var callAction = gateway.Call(callerId, callees, clientRequestId); 
+``` 
+- `Call(from, to, clientRequestId)`: 
+    - `from`: This is the set caller ID also known as the virtual number provided by Africa's Talking.`REQUIRED`. 
+    - `to`: This is a list of destinations to which the call is to be terminated. `REQUIRED`
+    -  `clientRequestId`: This is parameter that is set to track the particular outbound call session. The value will be sent to your callback url once the call is complete. `OPTIONAL`; 
+```csharp  
+            var username = "UserName";
+            var apiKey = "APIKEY";
+            var from = "virtualNumber";
+            var to = "Number";
+            var id = "RegionA";
+
+            var gateway = new AfricasTalkingGateway(username, apiKey);
+
+            try
+            {
+                var results = gateway.Call(from, to, id);
+                Console.WriteLine(results);
+            }
+            catch (AfricasTalkingGatewayException exception)
+            {
+                Console.WriteLine("Something went horribly wrong: " + exception.Message + ".\nCaused by :" + exception.StackTrace);
+            }
+```
+
+#### [UploadMediaFile](http://docs.africastalking.com/voice/uploadmedia) 
+- This feature alllows you to upload a media file from a known url to our servers. This media file can then be played on demand for example when executing `<Play>` action from your dialplan or `musicOnHold` or `ringBackTone` attributes on a dialplan. 
+```csharp 
+const string fileLocation = "http(s)://<url>.mp3/wav";
+const string phoneNumber = "callerID"; 
+var results = gateway.UploadMediaFile(fileLocation, phoneNumber); 
+``` 
+- `UploadMediaFile(url,  phoneNumber)` : 
+    - `url`: A valid web url pointing to the server on which the file is hosted. `REQUIRED`. 
+    - `phoneNumber`: A registered virtual number provided by Africa's Talking. `REQUIRED`.
+
+```csharp 
+            const string username    = "UserName";
+            const string apikey      = "APIKEY";
+            const string fileLocation = "http(s)://<url>.mp3||wav";
+            const string phoneNumber = "callerID";
+
+            var gateway = new AfricasTalkingGateway(username, apikey);
+
+            try
+            {
+                var results = gateway.UploadMediaFile(fileLocation, phoneNumber);
+                Console.WriteLine(results);
+                
+            }
+            catch (AfricasTalkingGatewayException exception)
+            {
+                Console.WriteLine("Something went horribly wrong: " + exception.Message + ".\nCaused by :" + exception.StackTrace);
+            }
+```
+ 
+#### [FetchCallQueue](http://docs.africastalking.com/voice/queuedcalls)  
+This feature allows you to get number of queued calls from the service. Ideally for this to work you should have a virtual number whose dialplan is set to `<Enqueue>`.  
+```csharp 
+const string queueNumber = "+2ABCXYYYYYY";
+const string queueName = "myQueue";
+var results = gateway.GetNumberOfQueuedCalls(queueNumber,queueName); 
+``` 
+- `GetNumberOfQueuedCalls(phoneNumber, queueName)`: 
+    - `phoneNumber`: This is an Africa's Talking virtual number with an `<Enqueue>` dialplan.`REQUIRED`.
+    - `queueName`: This is a user defined name assigned to the queue.`OPTIONAL`
+
 
 ### [Airtime](http://docs.africastalking.com/airtime/sending)
 
@@ -205,20 +283,31 @@ public ActionResult SomeCoolMethod(awesome, params)
 var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
 ```
 - `SendAirtime(recipients)`: 
-    - `recipients`: Contains JSON objects containing the following keys
+    - `recipients`: Contains **JSON objects**  containing the following keys
         - `phoneNumber`: Recipient of airtime
         - `amount`: Amount sent `>= 10 && <= 10K` with currency e.g `KES 100`
 
 
 ```csharp
 
-            var username = "sandbox";
-            var apikey = "MyAPIKEY";
-            var airtimerecipients = @"{'phoneNumber':'+254XXXXXXXX','amount':'KES 250'}"; // Send any JSON object of n-Length
+            class AirtimeUsers {
+                    [JsonProperty("phoneNumber")]
+                    public string PhoneNumber { get; set; }
+
+                    [JsonProperty("amount")]
+                    public string Amount { get; set; }
+            }
+            const string username = "UserName";
+            const string apikey = "MyAPIKEY";
+            var airtimeUser = new AirtimeUsers();
+            airtimeUser.PhoneNumber = "+2547XXYYYYYY";
+            airtimeUser.Amount = "KES 100";
+            var airtimeRecipient = JsonConvert.SerializeObject(airtimeUser);
+            // {"phoNumber":"+2547XXYYYYYY", "amount":"KES 100"}
             var gateway = new AfricasTalkingGateway(username, apikey);
             try
             {
-                var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
+                var airtimeTransaction = gateway.SendAirtime(airtimeRecipient);
                 Console.WriteLine(airtimeTransaction);
             }
             catch (AfricasTalkingGatewayException e)
@@ -273,8 +362,15 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
 
             try
             {
-                var checkout = gateway.Checkout(productName, phoneNumber, currency, amount, channel, metadata);
-                Console.WriteLine(checkout);
+                // You will get an object of type C2BDataResults :
+                // From which you can extract the following properties
+                // 1. C2BDataResults.ProviderChannel
+                // 2. C2BDataResults.Status
+                // 3. C2BDataResults.Description
+                // 4. C2BDataResults.TransactionId
+                // You also get a ToString() method
+                C2BDataResults checkout = gateway.Checkout(productName, phoneNumber, currency, amount, channel, metadata);
+                Console.WriteLine(checkout.Status);
             }
             catch (AfricasTalkingGatewayException e)
             {
@@ -349,6 +445,14 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
                 var response = gateway.MobileB2C(productName, heroes);
                 Console.WriteLine(heroes);
                 Console.WriteLine(response);
+                // The response type is of type DataResult.
+                // You can query : 
+                // 1 - DataResult.NumQueued (type int)
+                // 2 - DataResult.Entries (type IList)
+                // 3 - DataResult.TotalValue (type string)
+                // 4 - DataResult.TotalTransactionFee (type string)
+                // You also have a DataResult.ToString() method available
+        
             }
             catch (AfricasTalkingGatewayException e)
             {
@@ -436,6 +540,11 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
                     destinationAccount,
                     metadataDetails);
                 Console.WriteLine(response);
+                // This method avails the B2BResults object that can be unpacked to obtain:
+                // 1 - B2BResults.ProviderChannel
+                // 2 - B2BResults.TransactionId
+                // 3 - B2BResults.TransactionFee
+                // 4 - B2BResults.Status
             }
             catch (AfricasTalkingGatewayException e)
             {
@@ -481,12 +590,16 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
             var receBank = new BankAccount(accountNumber, bankCode, dob, accountName);
             try
             {
-                var res = gateway.BankCheckout(productName, receBank, currencyCode, amount, narration, metadata);
-                res = JsonConvert.DeserializeObject(res);
+                // You get a BankCheckoutResponse object that contains the following properties
+                // 1. BankCheckoutResponse.Status
+                // 2. BankCheckoutResponse.TransactionId
+                // 3. BankCheckoutResponse.Description
+                // And a ToString() method
+                BankCheckoutResponse res = gateway.BankCheckout(productName, receBank, currencyCode, amount, narration, metadata);
                 Console.WriteLine(res);
-                if (res["status"] == "PendingValidation")
+                if (res.Status == "PendingValidation")
                 {
-                    transId = res["transactionId"];
+                    transId = res.TransactionId;
                     Console.WriteLine("Validating...");
                 }
 
@@ -565,8 +678,10 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
                                                            };
             try
             {
-               var res = gateway.BankTransfer(productname, recipients);
-                Console.WriteLine(res);
+                // Responds with BankTransferResults object that contans:
+                // An IList object called Entries and a ToString() method
+               BankTransferResults res = gateway.BankTransfer(productname, recipients);
+                Console.WriteLine(res.Entries.ToString());
             }
             catch (AfricasTalkingGatewayException e)
             {
@@ -703,11 +818,10 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
                     }
                  * 
                  */
-                var resObject = JsonConvert.DeserializeObject(checkout);
-                Console.WriteLine(resObject);
-                if (resObject["status"] == "PendingValidation")
+                if (checkout.Status == "PendingValidation")
                 {
                     transactionId = resObject["transactionId"];
+                    // Go ahead and validate with the OTP
                     Console.WriteLine(transactionId);
                 }
             }
@@ -740,13 +854,130 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
 
             Console.ReadLine();
 ```
+#### [WalletTransfer](http://docs.africastalking.com/payments/wallettransfer) 
+> This feature allows you to transfer money between Africas's Talking hosted products 
+
+- `WalletTransfer( poductName, targetProductCode, currencyCode, amount, metadata)`:
+    - `productName`: Your Africa's Talking Payment product to initiate this transaction. `REQUIRED`.
+    - `targetProductCode`: Unique product code of the Africa's Talking Payment Product to transfer the funds to. `REQUIRED`.
+    - `currencyCode`:  3-digit ISO format currency code for the value of this transaction (e.g KES, UGX, USD, ...). `REQUIRED`.
+    - `amount`:  Amount - in the provided currency - that the application will be topped up with. `REQUIRED`.
+    - `metadata`: A Map of any metadata that you would like us to associate with the request. `REQUIRED`.
+
+```csharp 
+StashResponse stashResponse = gateway.WalletTransfer(productName, productCode, currencyCode, amount, metadata);
+// StashResponse is an object that contains the following properties:
+// StashResponse.Status
+// StashResponse.TransactionId
+// StashResponse.Description
+// And a ToString() method
+```
+
+#### [TopUpStash](http://docs.africastalking.com/payments/topupstash)
+> Topup stash APIs allow you to move money from a Payment Product to an Africa's Talking application stash. An application stash is the wallet that funds your service usage expences 
+
+- `TopupStash(productName, currencyCode, amount, metadata)`:
+    - `productName`: Your Africa's Talking Payment product to initiate this transaction. `REQUIRED`.
+    - `currencyCode`:  3-digit ISO format currency code for the value of this transaction (e.g KES, UGX, USD, ...). `REQUIRED`.
+    - `amount`:  Amount - in the provided currency - that the application will be topped up with. `REQUIRED`.
+    - `metadata`: A Map of any metadata that you would like us to associate with the request. `REQUIRED`.
+```csharp 
+StashResponse stashResponse = gateway.TopupStash(productName, currencyCode, amount, metadata);
+// StashResponse is an object that contains the following properties:
+// StashResponse.Status
+// StashResponse.TransactionId
+// StashResponse.Description
+// And a ToString() method
+```
+
+#### [FindTransaction](http://docs.africastalking.com/query/findtransaction) 
+> This functionality allows you to find a particular payment transaction by it's ID. 
+
+- `FindTransaction(transactionId)`: 
+    - `transactionId`: ID of the transaction you would like to find. `REQUIRED`.
+
+```csharp 
+var findId = gateway.FindTransaction(transactionId); 
+ 
+ // ... Unmarshall as so
+JObject findIdObject = JObject.Parse(findId);
+ // ...
+```
+
+#### [FetchProductTransactions](http://docs.africastalking.com/query/producttransactions) 
+> This feature allows you to fetch transactions of a particular payment product. 
+
+> Note, for the filters (except for `startDate` and `endDate` which can be passed simultaneously) you can only use one filter for any given query, otherwise your query will return an empty set. Pass `null` for those that you wont need.
+
+- `FetchProductTransactions(productName, pageNumber, count, startDate, endDate, category, provider, status, source, destination,  providerChannel)`:
+    - `productName`: The name of the payment product whose transactions you'd like to fetch. `REQUIRED`.
+    - `pageNumber`: The number of the page you'd like to read results from. __Please Note: This STARTS from 1 and NOT 0__. `REQUIRED`.
+    - `count`: The number of transaction results you would like for this query. `REQUIRED`.
+    - `startDate`: Transaction start date you would like to consider in the format __YYYY-MM-DD__. `OPTIONAL`. (Type = filter) 
+    - `endDate`: Transaction end date you would like to consider in the format __YYYY-MM-DD__. `OPTIONAL`. (Type = filter)
+    - `category`: Transaction category you would like to consider. Possible values are: `BankCheckout`, `CardCheckout`, `MobileCheckout`, `MobileC2B`, `MobileB2C`, `MobileB2B`, `BankTransfer`, `BankWithdrawal`, `AdminWalletTopup`, `AdminWalletRefund`, `UserWalletTransfer`, `UserWalletTopup`, `UserStashTopup`. `OPTIONAL`.  (Type = filter)
+    - `provider`: Transaction provider you would like to consider. Possible values are: `Mpesa`, `Segovia`, `Flutterwave`, `Admin`, `Athena`. `OPTIONAL`. (Type = filter)
+    - `status`: Transaction status you would like to consider. Possible values are: `Success`, `Failed` . `OPTIONAL`. (Type = filter)
+    - `source`: Transaction source you would like to consider. Possible values are: `phoneNumber`, `BankAccount`, `Card`, `Wallet`. `OPTIONAL`. (Type = filter)
+    - `destination`: Transaction destinatiom you would like to consider. Possible values are: `PhoneNumber`, `BankAccount`, `Card`, `Wallet`. `OPTIONAL`. (Type = filter)
+    - `providerChannel`: Transaction provider channel you would like to consider. This could, for example, be the Mobile Provider's Paybill or Buy Goods number that belongs to your organization. `OPTIONAL`. (Type = filter)
+
+```csharp 
+// Without filters 
+string fetchTransactionsResponse = gateway.FetchProductTransactions(productName, pageNumber,count);
+JObject fetchTransactionsResponseJson = JObject.Parse(fetchTransactionsResponse); 
+// With filters (Date)
+const string productName = "coolproduct";
+const string pageNumber = "1";
+const string count = "3";
+DateTime today = DateTime.Today;           
+string startDate = today.ToString("yyyy-MM-dd");
+string endDate = today.ToString("yyyy-MM-dd");
+string fetchTransactionsResponse = gateway.FetchProductTransactions(productName, pageNumber,count, startDate, endDate);
+```
+
+
+#### [FetchWalletTransactions](http://docs.africastalking.com/query/wallettransactions) 
+> This feature allows you to fetch your wallet transactions. 
+
+> Note, for the filters (except for `startDate` and `endDate` which can be passed simultaneously) you can only use one filter for any given query, otherwise your query will return an empty set. Pass `null` for those that you wont need.
+
+- `FetchProductTransactions(pageNumber, count, startDate, endDate, categories, provider, status, source, destination,  providerChannel)`:
+    - `pageNumber`: The number of the page you'd like to read results from. __Please Note: This STARTS from 1 and NOT 0__. `REQUIRED`.
+    - `count`: The number of transaction results you would like for this query. __Must be > 1 and < 1,000__. `REQUIRED`.
+    - `startDate`: Transaction start date you would like to consider in the format __YYYY-MM-DD__. `OPTIONAL`. (Type = filter) 
+    - `endDate`: Transaction end date you would like to consider in the format __YYYY-MM-DD__. `OPTIONAL`. (Type = filter)
+    - `categories`: A comma delimited list of transaction categories you would like to consider. Possible values are: `Debit`, `Credit`, `Refund` and `Topup`. `OPTIONAL`.  (Type = filter)
+
+```csharp 
+// Without filters 
+string fetchTransactionsResponse = gateway.FetchWalletTransactions(pageNumber,count);
+JObject fetchTransactionsResponseJson = JObject.Parse(fetchTransactionsResponse); 
+// With filters (Date)
+const string productName = "coolproduct";
+const string pageNumber = "1";
+const string count = "3";
+DateTime today = DateTime.Today;           
+string startDate = today.ToString("yyyy-MM-dd");
+string endDate = today.ToString("yyyy-MM-dd");
+string fetchTransactionsResponse = gateway.FetchWalletTransactions(pageNumber,count, startDate, endDate);
+```
+
+#### [FetchWalletBalance](http://docs.africastalking.com/query/walletbalance)
+> This feature allows you to fetch your current wallet balance.
+
+```csharp 
+string fetchBalanceResponse = _atGWInstance.FetchWalletBalance();
+JObject fetchBalanceResponseJson = JObject.Parse(fetchBalanceResponse);
+```
 
 
 ### [USSD Push](http://docs.africastalking.com/ussd)
 > A few things to note about USSD: 
 
 + USSD is session driven. Every request we send you will contain a sessionId, and this will be maintained until that session is completed
-+ **USSD push currently works in Nigeria only** 
++ **USSD push currently works in Nigeria only**  
++ For this to work properly ensure you have registered a callback URL in your account
 
 
 ```csharp 
@@ -754,7 +985,7 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
             const string Username = "sandbox";
             const string Apikey = "Key";
             var gateway = new AfricasTalkingGateway(Username, Apikey);
-            var tokenId = "tkn";
+            string tokenId = "tkn";
             const string PhoneNumber = "+236XXXXXXXXX";
             const string Menu = "CON You're about to love C#\n1.Accept my fate\n2.No Never\n";
 
