@@ -213,7 +213,7 @@ var callAction = gateway.Call(callerId, callees, clientRequestId);
 - `Call(from, to, clientRequestId)`: 
     - `from`: This is the set caller ID also known as the virtual number provided by Africa's Talking.`REQUIRED`. 
     - `to`: This is a list of destinations to which the call is to be terminated. `REQUIRED`
-    -  `clientRequestId`: This is parameter that is set to track the particular outbound call session. The value will be snet to your callback url once the call is complete. `OPTIONAL`; 
+    -  `clientRequestId`: This is parameter that is set to track the particular outbound call session. The value will be sent to your callback url once the call is complete. `OPTIONAL`; 
 ```csharp  
             var username = "UserName";
             var apiKey = "APIKEY";
