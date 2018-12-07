@@ -15,12 +15,6 @@ clone_depth: 5
 
 configuration: Release
 
-branches:
-  only:
-    - master
-    - develop
-    - master-patch_01
-
 skip_commits:
   files:
     - ScreenShots/*
@@ -37,12 +31,6 @@ build:
   project: AfricasTalkingCS.sln
   verbosity: detailed
 
-build_script:
-
-- ps: >-
-
-    dotnet restore -v quiet
-    dotnet build /p:configuration=Release /p:Version=$($env:appveyor_build_version)
 
 after_build:
 
