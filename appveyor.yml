@@ -6,8 +6,7 @@ platform: Any CPU
 build_script:
 
 - ps: >-
-    git clone -q --branch=master https://github.com/AfricasTalkingLtd/africastalking.Net.git C:\projects\africastalking
-    git checkout -qf master
+    git clone  --branch=master https://github.com/AfricasTalkingLtd/africastalking.Net.git C:\projects\africastalking
     dotnet restore -v quiet
     dotnet build /p:configuration=Release /p:Version=$($env:appveyor_build_version)
     dotnet test
