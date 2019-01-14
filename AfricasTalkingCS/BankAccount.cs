@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="BankAccount.cs" company="Africa's Talking">
-//   2018
+//   2019
 // </copyright>
 // <summary>
 //   Defines the BankAccout type.

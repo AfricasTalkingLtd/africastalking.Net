@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="C2BDataResults.cs" company="Africa's Talking">
-//   2018
+//   2019
 // </copyright>
 // <summary>
 //   Defines the C2BDataResults Class.

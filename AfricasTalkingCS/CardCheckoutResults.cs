@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CardCheckoutResults.cs" company="Africa's Talking">
-//   2018
+//   2019
 // </copyright>
 // <summary>
 //   Defines the CardCheckoutResults Class.

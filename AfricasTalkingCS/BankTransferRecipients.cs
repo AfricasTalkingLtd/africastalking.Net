@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="BankTransferRecipients.cs" company="Africa's Talking">
-//   2018
+//   2019
 // </copyright>
 // <summary>
 //   This contains a list of Recipient elements.
