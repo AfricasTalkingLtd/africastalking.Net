@@ -10,4 +10,3 @@ build_script:
     dotnet restore -v quiet
     dotnet build /p:configuration=Release /p:Version=$($env:appveyor_build_version)
     dotnet test
-    .\build\build.cmd
