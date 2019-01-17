@@ -10,21 +10,28 @@ namespace AirtimeSample
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
+    class AirtimeUsers {
+        [JsonProperty("phoneNumber")]
+        public string PhoneNumber { get; set; }
+
+        [JsonProperty("amount")]
+        public string Amount { get; set; }
+    }
     class Program
     {
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
-            var username = "sandbox";
-            var apikey = "bc203009d2b240e461c22d7a959ca4d752591d4553295d991e74824d599fc9b3";
-            var airtimerecipients = @"{'phoneNumber':'+254724587654','amount':'KES 250'}"; // Send any JSON object
-            Console.WriteLine(airtimerecipients);
-            Console.ReadLine();
-            var env = "sandbox";
-            var airtimeGateway = new AfricasTalkingGateway(username, apikey, env);
+            var username = "Username";
+            var apikey = "ABCXYZ";
+            var airtimeUser = new AirtimeUsers();
+            airtimeUser.PhoneNumber = "+254XEPPPPPPP";
+            airtimeUser.Amount = "KES 10";
+            var airtimeRec = JsonConvert.SerializeObject(airtimeUser);
+            var airtimeGateway = new AfricasTalkingGateway(username, apikey);
             try
             {
-                dynamic airtimeTransaction = airtimeGateway.SendAirtime(airtimerecipients);
+                dynamic airtimeTransaction = airtimeGateway.SendAirtime(airtimeRec);
                 Console.WriteLine(airtimeTransaction);
             }
             catch (AfricasTalkingGatewayException e)

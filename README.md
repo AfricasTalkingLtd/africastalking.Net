@@ -303,7 +303,6 @@ var airtimeTransaction = gateway.SendAirtime(airtimerecipients);
             airtimeUser.PhoneNumber = "+2547XXYYYYYY";
             airtimeUser.Amount = "KES 100";
             var airtimeRecipient = JsonConvert.SerializeObject(airtimeUser);
-            // {"phoNumber":"+2547XXYYYYYY", "amount":"KES 100"}
             var gateway = new AfricasTalkingGateway(username, apikey);
             try
             {
