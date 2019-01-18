@@ -34,7 +34,7 @@ namespace Voice.Controllers
                 case "Inbound":
                     defaultVoiceAction = $"{xmlHeader}<Response><Redirect>http://{appUrl}/voice/inbound</Redirect></Response>";
                     break;
-                case "Otbound":
+                case "Outbound":
                     defaultVoiceAction = $"{xmlHeader}<Response><Redirect>http://{appUrl}/voice/outbound</Redirect><Response>";
                     break;
                 default:
@@ -120,7 +120,7 @@ namespace Voice.Controllers
             string appHostname = hostNameResolver();
             string sayActionPrompt = "<Say voice=\"man\"> Please enter your PIN to continue. Press the asterisk sign to finish</Say>";
             string sayActionTimeout = "<Say voice=\"man\"> Am sorry we did not get that. Good bye</Say>";
-            string getDigitsAction = $"<GetDigits numDigits=\"4\" finishOnKey=\"*\" callbackUrl=\"http://{appHostname}/service/voice/dtmf\" timeout=\"30\" >{sayActionPrompt}</GetDigits>";
+            string getDigitsAction = $"<GetDigits numDigits=\"4\" finishOnKey=\"*\" callbackUrl=\"http://{appHostname}/service/dtmf\" timeout=\"30\" >{sayActionPrompt}</GetDigits>";
             string getDigitsActionRes = $"{xmlHeader}<Response>{getDigitsAction}{sayActionTimeout}</Response>";
             return getDigitsActionRes;
         }
