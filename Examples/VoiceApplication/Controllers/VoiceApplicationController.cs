@@ -32,10 +32,10 @@ namespace Voice.Controllers
             switch (voiceResponse.direction)
             {
                 case "Inbound":
-                    defaultVoiceAction = $"{xmlHeader}<Response><Redirect>http://{appUrl}/service/inbound</Redirect></Response>";
+                    defaultVoiceAction = $"{xmlHeader}<Response><Redirect>http://{appUrl}:7380/service/inbound</Redirect></Response>";
                     break;
                 case "Outbound":
-                    defaultVoiceAction = $"{xmlHeader}<Response><Redirect>http://{appUrl}/service/outbound</Redirect><Response>";
+                    defaultVoiceAction = $"{xmlHeader}<Response><Redirect>http://{appUrl}:7380/service/outbound</Redirect><Response>";
                     break;
                 default:
                     throw new NotImplementedException();
@@ -112,7 +112,7 @@ namespace Voice.Controllers
             // In this case we'll be dialing our SIP agent on a soft-phone
             string appHostname = hostNameResolver();
             // string mySipNumber = "test.kennedy@ke.sip.africastalking.com";
-            string outboundDialAction = $"{xmlHeader}<Response><Play ur=\"http://{appHostname}/Static/IndianaCut.mp3\" />";
+            string outboundDialAction = $"{xmlHeader}<Response><Play ur=\"http://{appHostname}:7380/Static/IndianaCut.mp3\" />";
             // string outboundDialAction = $"{xmlHeader}<Response><Dial record=\"true\" phoneNumbers=\"{mySipNumber}\" /> </Response>";
             return outboundDialAction;
         }
