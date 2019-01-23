@@ -19,21 +19,21 @@ namespace SampleB2C
 
             // Developer Details
             string username = "sandbox";
-            string environment = "sandbox";
-            string apiKey = "e952920d25a20cc9a8144ae200363d722f3459273815201914d8d4603e59d047";
+            //string environment = "sandbox";
+            string apiKey = "APIKEY";
             string productName = "coolproduct";
             string currencyCode = "KES";
 
             // Recepient details,these can be retrieved from a db..or somewhere else then parsed...we'll keep it simple
-            string hero1PhoneNum = "+254724587654";
+            string hero1PhoneNum = "+254714978532";
             string hero2PhoneNum = "+254712387452";
             string hero1Name = "Batman";
             string hero2Name = "Superman";
-            decimal hero1amount = 15000M;
+            decimal hero1amount = 15M;
             decimal hero2amount = 54000M;
 
             // We invoke our gateway
-            var gateway = new AfricasTalkingGateway(username, apiKey, environment);
+            var gateway = new AfricasTalkingGateway(username, apiKey);
 
             // Let's create a bunch of people who'll be receiving the refund or monthly salary etc...
             var hero1 = new MobileB2CRecepient(hero1Name, hero1PhoneNum, currencyCode, hero1amount);
