@@ -5,31 +5,44 @@ using System.Net.Http;
 using System.Text;
 using System.Web.Http;
 using System.IO;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Voice.Controllers
 {
+    
     [Route("service")]
     public class VoiceApplicationController : ApiController
     {
+        
         private readonly string xmlHeader = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
         
         [Route("voice")] // https://www.mydomain.com/service/voice // http:1.2.3.4:8008/service/voice
         [HttpPost]
-        public HttpResponseMessage appHttpResponseMessage([FromBody] VoiceResponse voiceResponse)
+
+        //        public async Task<HttpResponseMessage> appHttpResponseMessage([FromBody] VoiceResponse voiceResponse)
+        //{
+        public async Task<HttpResponseMessage> appHttpResponseMessage()
         {
-            HttpResponseMessage responseMessage;
+            HttpResponseMessage responseMessage = new HttpResponseMessage();
             // The Default action here is to <Redirect> smartly...
             // Redirect to outbound handler or the call is outbound
             // Redirect to inbound hander if the call is inbound
             // The value is always derived from the call direction parameter
             string appUrl = hostNameResolver();
 
-            // You can save the session ID as well
-            //string sessionId = voiceResponse.sessionId;
+            // This is a very dangerous hack strive to do something cleaner
+            string value = await Request.Content.ReadAsStringAsync();
+            dynamic json = JObject.Parse(value.ToString());
+
+            // // You can save the session ID as well
+            // //string sessionId = voiceResponse.sessionId;
             string defaultVoiceAction = "";
-            if (voiceResponse.isActive == "1")
+            if (json["isActive"] == "1")
             {
-            switch (voiceResponse.direction)
+            switch (json["direction"])
             {
                 case "Inbound":
                     defaultVoiceAction = $"{xmlHeader}<Response><Redirect>http://{appUrl}:7380/service/inbound</Redirect></Response>";
@@ -38,27 +51,31 @@ namespace Voice.Controllers
                     defaultVoiceAction = $"{xmlHeader}<Response><Redirect>http://{appUrl}:7380/service/outbound</Redirect></Response>";
                     break;
                 default:
-                    throw new NotImplementedException();
+                    defaultVoiceAction = $"{xmlHeader}<Response><Redirect>http://{appUrl}:7380/service/inbound</Redirect></Response>";
                     break;
             }
             }
             responseMessage = Request.CreateResponse(HttpStatusCode.Created, defaultVoiceAction);
-            responseMessage.Content = new StringContent(defaultVoiceAction, Encoding.UTF8, "text/xml");
+            responseMessage.Content = new StringContent(defaultVoiceAction, Encoding.UTF8, "application/xml");
+            responseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/xml");
             return responseMessage;
         }
 
         [Route("outbound")]
         [HttpPost]
 
-        public HttpResponseMessage outboundHttpResponseMessage([FromBody] VoiceResponse voiceResponse)
+        public async Task<HttpResponseMessage> outboundHttpResponseMessage()
         {
-            HttpResponseMessage responseMessage;
+            HttpResponseMessage responseMessage = new HttpResponseMessage();
+            string value = await Request.Content.ReadAsStringAsync();
+            dynamic json = JObject.Parse(value.ToString());
             string defaultVoiceAction = "";
-            if (voiceResponse.isActive == "1")
+            if (json["isActive"] == "1")
             {
                 defaultVoiceAction = sampleOutboundResponse();
                 responseMessage = Request.CreateResponse(HttpStatusCode.Created, defaultVoiceAction);
-                responseMessage.Content = new StringContent(defaultVoiceAction, Encoding.UTF8, "text/xml");
+                responseMessage.Content = new StringContent(defaultVoiceAction, Encoding.UTF8, "application/xml");
+                responseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/xml");
                 return responseMessage;
             } else {
                 // do something else, the call is complete
@@ -69,15 +86,18 @@ namespace Voice.Controllers
 
         [Route("inbound")]
         [HttpPost]
-       public HttpResponseMessage inboundHttpResponseMessage([FromBody] VoiceResponse voiceResponse)
+       public async Task<HttpResponseMessage> inboundHttpResponseMessage()
         {
-            HttpResponseMessage responseMessage;
+            HttpResponseMessage responseMessage = new HttpResponseMessage();
+            string value = await Request.Content.ReadAsStringAsync();
+            dynamic json = JObject.Parse(value.ToString());
             string defaultVoiceAction = "";
-            if (voiceResponse.isActive == "1")
+            if (json["isActive"] == "1")
             {
                 defaultVoiceAction = sampleInboundAction();
                 responseMessage = Request.CreateResponse(HttpStatusCode.Created, defaultVoiceAction);
-                responseMessage.Content = new StringContent(defaultVoiceAction, Encoding.UTF8, "text/xml");
+                responseMessage.Content = new StringContent(defaultVoiceAction, Encoding.UTF8, "application/xml");
+                responseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/xml");
                 return responseMessage;
             } else {
                 // do something else, the call is complete
@@ -88,15 +108,18 @@ namespace Voice.Controllers
         [Route("dtmf")]
         [HttpPost]
 
-        public HttpResponseMessage dtmfHttpResponseMessage([FromBody] VoiceResponse voiceResponse)
+        public async Task<HttpResponseMessage> dtmfHttpResponseMessage()
         {
-            HttpResponseMessage responseMessage;
+            HttpResponseMessage responseMessage = new HttpResponseMessage();
+            string value = await Request.Content.ReadAsStringAsync();
+            dynamic json = JObject.Parse(value.ToString());
             string defaultVoiceAction = "";
-            if (voiceResponse.dtmfDigits != null)
+            if (json["dtmfDigits"] != null)
             {
-                defaultVoiceAction = finalDtmf(voiceResponse.callerNumber);
+                defaultVoiceAction = finalDtmf(json["callerNumber"]);
                 responseMessage = Request.CreateResponse(HttpStatusCode.Created, defaultVoiceAction);
-                responseMessage.Content = new StringContent(defaultVoiceAction, Encoding.UTF8, "text/xml");
+                responseMessage.Content = new StringContent(defaultVoiceAction, Encoding.UTF8, "application/xml");
+                responseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/xml");
                 return responseMessage;
             } else {
                 // do something else, the call is complete
@@ -123,7 +146,7 @@ namespace Voice.Controllers
             string appHostname = hostNameResolver();
             string sayActionPrompt = "<Say voice=\"man\"> Please enter your PIN to continue. Press the asterisk sign to finish</Say>";
             string sayActionTimeout = "<Say voice=\"man\"> Am sorry we did not get that. Good bye</Say>";
-            string getDigitsAction = $"<GetDigits numDigits=\"4\" finishOnKey=\"*\" callbackUrl=\"http://{appHostname}:7380/service/voice/dtmf\" timeout=\"30\" >{sayActionPrompt}</GetDigits>";
+            string getDigitsAction = $"<GetDigits numDigits=\"4\" finishOnKey=\"*\" callbackUrl=\"http://{appHostname}:7380/service/dtmf\" timeout=\"30\" >{sayActionPrompt}</GetDigits>";
             string getDigitsActionRes = $"{xmlHeader}<Response>{getDigitsAction}{sayActionTimeout}</Response>";
             return getDigitsActionRes;
         }
