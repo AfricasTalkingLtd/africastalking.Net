@@ -43,7 +43,7 @@ namespace Voice.Controllers
             }
             }
             responseMessage = Request.CreateResponse(HttpStatusCode.Created, defaultVoiceAction);
-            responseMessage.Content = new StringContent(defaultVoiceAction, Encoding.UTF8, "application/xml");
+            responseMessage.Content = new StringContent(defaultVoiceAction, Encoding.UTF8, "text/xml");
             return responseMessage;
         }
 
@@ -58,7 +58,7 @@ namespace Voice.Controllers
             {
                 defaultVoiceAction = sampleOutboundResponse();
                 responseMessage = Request.CreateResponse(HttpStatusCode.Created, defaultVoiceAction);
-                responseMessage.Content = new StringContent(defaultVoiceAction, Encoding.UTF8, "application/xml");
+                responseMessage.Content = new StringContent(defaultVoiceAction, Encoding.UTF8, "text/xml");
                 return responseMessage;
             } else {
                 // do something else, the call is complete
@@ -77,7 +77,7 @@ namespace Voice.Controllers
             {
                 defaultVoiceAction = sampleInboundAction();
                 responseMessage = Request.CreateResponse(HttpStatusCode.Created, defaultVoiceAction);
-                responseMessage.Content = new StringContent(defaultVoiceAction, Encoding.UTF8, "application/xml");
+                responseMessage.Content = new StringContent(defaultVoiceAction, Encoding.UTF8, "text/xml");
                 return responseMessage;
             } else {
                 // do something else, the call is complete
@@ -96,7 +96,7 @@ namespace Voice.Controllers
             {
                 defaultVoiceAction = finalDtmf(voiceResponse.callerNumber);
                 responseMessage = Request.CreateResponse(HttpStatusCode.Created, defaultVoiceAction);
-                responseMessage.Content = new StringContent(defaultVoiceAction, Encoding.UTF8, "application/xml");
+                responseMessage.Content = new StringContent(defaultVoiceAction, Encoding.UTF8, "text/xml");
                 return responseMessage;
             } else {
                 // do something else, the call is complete
