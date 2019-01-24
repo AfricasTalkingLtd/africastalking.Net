@@ -1,9 +1,9 @@
 namespace Voice.Controllers
 {
-    class DtmfResponse
+    public class DtmfResponse
     {
-        public string callerNumber { get; set; }
-        public string dtmfDigits { get; set; }
+        public string CallerNumber { get; set; }
+        public string DtmfDigits { get; set; }
 
         // You ca get other variables as well
     }
