@@ -1,6 +1,6 @@
 namespace Voice.Controllers
 {
-    public class VoiceResponse
+    public class VoiceEvents
     {
         public string sessionId { get; set; }
         public string isActive { get; set; }
@@ -8,7 +8,8 @@ namespace Voice.Controllers
         public string callerNumber {get; set; }
         public string callStartTime {get; set; }
         public string callerCountryCode {get; set;}
-
-                // etc
+        public string amount {get; set;}
+        public string callSessionState { get; set; }
+        public string status { get; set; }
     }
 }
