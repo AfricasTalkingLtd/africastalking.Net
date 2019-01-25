@@ -139,7 +139,7 @@ namespace Voice.Controllers
             
             // string mySipNumber = "test.kennedy@ke.sip.africastalking.com";
             //string outboundDialAction = $"{xmlHeader}<Response><Play url=\"{appHostname}/Static/IndianaCut.mp3\" /> </Response>";
-            string outboundDialAction = $"{xmlHeader}<Response><Play ur=\"http://{appHostname}:7380/Static/IndianaCut.mp3\" /> </Response>";
+            string outboundDialAction = $"{xmlHeader}<Response><Play url=\"http://{appHostname}:7380/Static/IndianaCut.mp3\" /> </Response>";
             // string outboundDialAction = $"{xmlHeader}<Response><Dial record=\"true\" phoneNumbers=\"{mySipNumber}\" /> </Response>";
             return outboundDialAction;
         }
