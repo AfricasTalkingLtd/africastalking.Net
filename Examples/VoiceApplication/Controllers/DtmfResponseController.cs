@@ -2,9 +2,13 @@ namespace Voice.Controllers
 {
     public class DtmfResponse
     {
-        public string CallerNumber { get; set; }
-        public string DtmfDigits { get; set; }
-
-        // You ca get other variables as well
+        public string callerNumber { get; set; }
+        public string dtmfDigits { get; set; }
+        public string callStartTime {get; set; }
+        public string callerCountryCode {get; set;}
+        public string destinationNumber { get; set; }
+        public string direction { get; set; }
+        public string isActive { get; set; }
+        public string sessionId { get; set; }
     }
 }

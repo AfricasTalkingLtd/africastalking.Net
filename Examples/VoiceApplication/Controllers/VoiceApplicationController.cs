@@ -14,7 +14,6 @@ namespace Voice.Controllers
 {
     
     [Route("service")]
-    //[Consumes("application/x-www-form-urlencoded")]
     public class VoiceApplicationController : ApiController
     {
         
@@ -23,35 +22,34 @@ namespace Voice.Controllers
         [Route("voice")] // https://www.mydomain.com/service/voice // http:1.2.3.4:8008/service/voice
         [HttpPost]
 
-        public HttpResponseMessage appHttpResponseMessage([FromBody]VoiceResponse voiceResponse)
+        public HttpResponseMessage appHttpResponseMessage([FromForm] VoiceResponse voiceResponse)
         {
             HttpResponseMessage responseMessage = new HttpResponseMessage();
             // The Default action here is to <Redirect> smartly...
             // Redirect to outbound handler or the call is outbound
             // Redirect to inbound hander if the call is inbound
             // The value is always derived from the call direction parameter
-            //string appUrl = hostNameResolver();
-            string appHostname = "https://d9298685.ngrok.io";
+            string appUrl = hostNameResolver();
+            //string appHostname = "https://cdb5482a.ngrok.io";
             // This is a very dangerous hack strive to do something cleaner
-
             // // You can save the session ID as well
-            // //string sessionId = voiceResponse.sessionId;
+            //string sessionId = voiceResponse.sessionId;
             string defaultVoiceAction = "";
             if (voiceResponse.isActive == "1")
             {
             switch (voiceResponse.direction)
             {
                 case "Inbound":
-                    defaultVoiceAction = $"{xmlHeader}<Response><Redirect>http://{appHostname}/service/inbound</Redirect></Response>";
-                    //defaultVoiceAction = $"{xmlHeader}<Response><Redirect>http://{appUrl}:7380/service/inbound</Redirect></Response>";
+                    //defaultVoiceAction = $"{xmlHeader}<Response><Redirect>{appHostname}/service/inbound</Redirect></Response>";
+                    defaultVoiceAction = $"{xmlHeader}<Response><Redirect>http://{appUrl}:7380/service/inbound</Redirect></Response>";
                     break;
                 case "Outbound":
-                    defaultVoiceAction = $"{xmlHeader}<Response><Redirect>http://{appHostname}/service/outbound</Redirect></Response>";
-                    // defaultVoiceAction = $"{xmlHeader}<Response><Redirect>http://{appUrl}:7380/service/outbound</Redirect></Response>";
+                    //defaultVoiceAction = $"{xmlHeader}<Response><Redirect>{appHostname}/service/outbound</Redirect></Response>";
+                    defaultVoiceAction = $"{xmlHeader}<Response><Redirect>http://{appUrl}:7380/service/outbound</Redirect></Response>";
                     break;
                 default:
-                    defaultVoiceAction = $"{xmlHeader}<Response><Redirect>http://{appHostname}/service/error</Redirect></Response>";
-                    //defaultVoiceAction = $"{xmlHeader}<Response><Redirect>http://{appUrl}:7380/service/inbound</Redirect></Response>";
+                    //defaultVoiceAction = $"{xmlHeader}<Response><Redirect>{appHostname}/service/error</Redirect></Response>";
+                    defaultVoiceAction = $"{xmlHeader}<Response><Redirect>http://{appUrl}:7380/service/inbound</Redirect></Response>";
                     break;
             }
             }
@@ -64,7 +62,7 @@ namespace Voice.Controllers
         [Route("outbound")]
         [HttpPost]
 
-        public HttpResponseMessage outboundHttpResponseMessage([FromBody] VoiceResponse voiceResponse)
+        public HttpResponseMessage outboundHttpResponseMessage([FromForm]  VoiceResponse voiceResponse)
         {
             HttpResponseMessage responseMessage = new HttpResponseMessage();
             string defaultVoiceAction = "";
@@ -84,7 +82,7 @@ namespace Voice.Controllers
 
         [Route("inbound")]
         [HttpPost]
-       public HttpResponseMessage inboundHttpResponseMessage([FromBody]VoiceResponse voiceResponse)
+       public HttpResponseMessage inboundHttpResponseMessage([FromForm] VoiceResponse voiceResponse)
         {
             HttpResponseMessage responseMessage = new HttpResponseMessage();
             string defaultVoiceAction = "";
@@ -106,17 +104,13 @@ namespace Voice.Controllers
         [Route("dtmf")]
         [HttpPost]
 
-        public HttpResponseMessage dtmfHttpResponseMessage([FromBody]DtmfResponse dtmfResponse)
+        public HttpResponseMessage dtmfHttpResponseMessage([FromForm] DtmfResponse dtmfResponse)
         {
             HttpResponseMessage responseMessage = new HttpResponseMessage();
-            // string value = await Request.Content.ReadAsStringAsync();
-            // dynamic json = JObject.Parse(value.ToString());
-            Console.WriteLine(dtmfResponse.DtmfDigits);
-            Console.WriteLine(dtmfResponse.CallerNumber);
             string defaultVoiceAction = "";
-            if (dtmfResponse.DtmfDigits != null)
+            if (dtmfResponse.dtmfDigits != null)
             {
-                defaultVoiceAction = finalDtmf(dtmfResponse.CallerNumber);
+                defaultVoiceAction = finalDtmf(dtmfResponse.callerNumber);
                 responseMessage = Request.CreateResponse(HttpStatusCode.Created, defaultVoiceAction);
                 responseMessage.Content = new StringContent(defaultVoiceAction, Encoding.UTF8, "application/xml");
                 responseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/xml");
@@ -127,17 +121,25 @@ namespace Voice.Controllers
             }
         }
 
+        [Route("events")]
+        [HttpPost]
+
+        public HttpResponseMessage dtmfHttpResponseMessage([FromForm] VoiceEvents events)
+        {
+            // Log and save stuff to DB
+            return null;
+        }
         public string sampleOutboundResponse()
         {
             // You can fetch number to dial or connect to a call from the DB etc 
             // The can be your agents
             // In this case we'll be dialing our SIP agent on a soft-phone
-            //string appHostname = hostNameResolver();
-            string appHostname = "https://d9298685.ngrok.io";
+            string appHostname = hostNameResolver();
+            //string appHostname = "https://cdb5482a.ngrok.io";
             
             // string mySipNumber = "test.kennedy@ke.sip.africastalking.com";
-            string outboundDialAction = $"{xmlHeader}<Response><Play ur=\"http://{appHostname}/Static/IndianaCut.mp3\" /> </Response>";
-           // string outboundDialAction = $"{xmlHeader}<Response><Play ur=\"http://{appHostname}:7380/Static/IndianaCut.mp3\" /> </Response>";
+            //string outboundDialAction = $"{xmlHeader}<Response><Play url=\"{appHostname}/Static/IndianaCut.mp3\" /> </Response>";
+            string outboundDialAction = $"{xmlHeader}<Response><Play ur=\"http://{appHostname}:7380/Static/IndianaCut.mp3\" /> </Response>";
             // string outboundDialAction = $"{xmlHeader}<Response><Dial record=\"true\" phoneNumbers=\"{mySipNumber}\" /> </Response>";
             return outboundDialAction;
         }
@@ -145,12 +147,12 @@ namespace Voice.Controllers
         
         public string sampleInboundAction()
         {
-            //string appHostname = hostNameResolver();
-            string appHostname = "https://d9298685.ngrok.io";
-            string sayActionPrompt = "<Say voice=\"man\"> Please enter your PIN to continue. Press the asterisk sign to finish</Say>";
+            string appHostname = hostNameResolver();
+            //string appHostname = "https://cdb5482a.ngrok.io";
+            string sayActionPrompt = "<Say voice=\"man\"> Please enter your PIN to continue. Press the pound sign to finish</Say>";
             string sayActionTimeout = "<Say voice=\"man\"> Am sorry we did not get that. Good bye</Say>";
-            string getDigitsAction = $"<GetDigits numDigits=\"4\" finishOnKey=\"*\" callbackUrl=\"http://{appHostname}/service/dtmf\" timeout=\"30\" >{sayActionPrompt}</GetDigits>";
-            // string getDigitsAction = $"<GetDigits numDigits=\"4\" finishOnKey=\"*\" callbackUrl=\"http://{appHostname}:7380/service/dtmf\" timeout=\"30\" >{sayActionPrompt}</GetDigits>";
+            //string getDigitsAction = $"<GetDigits numDigits=\"4\" finishOnKey=\"#\" callbackUrl=\"{appHostname}/service/dtmf\" timeout=\"30\" >{sayActionPrompt}</GetDigits>";
+            string getDigitsAction = $"<GetDigits numDigits=\"4\" finishOnKey=\"*\" callbackUrl=\"http://{appHostname}:7380/service/dtmf\" timeout=\"30\" >{sayActionPrompt}</GetDigits>";
             string getDigitsActionRes = $"{xmlHeader}<Response>{getDigitsAction}{sayActionTimeout}</Response>";
             return getDigitsActionRes;
         }
