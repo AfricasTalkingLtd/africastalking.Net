@@ -1,12 +1,43 @@
-
-version: 1.0.{build}
-
+version: 1.1.72{build}
+pull_requests:
+  do_not_increment_build_number: true
+skip_branch_with_pr: true
+configuration: Release
 platform: Any CPU
-
+clone_folder: c:\projects\africastalking
+environment:
+  NUGET:
+    secure: wcFL877ZizbAnWbCUYtklJ1PlSieYQ64DvtsXmR5qxGQYGW0k4AAGEjzpKNjrcaY
+nuget:
+  account_feed: true
+  project_feed: true
+  disable_publish_on_pr: true
+  disable_publish_octopus: true
 build_script:
-
+- ps: "dotnet restore -v quiet \n    dotnet build /p:configuration=Release /p:Version=$($env:appveyor_build_version)"
+test_script:
 - ps: >-
-    git clone  --branch=master https://github.com/AfricasTalkingLtd/africastalking.Net.git C:\projects\africastalking
-    dotnet restore -v quiet
-    dotnet build /p:configuration=Release /p:Version=$($env:appveyor_build_version)
+    cd AfricasTalkingCS.Tests
+
+    dotnet build
+
     dotnet test
+artifacts:
+- path: /.*\.nupkg/
+  name: africastalking.Net
+deploy:
+- provider: NuGet
+  api_key:
+    secure: fErJ9XhgG5wb412XUJbUtQ==
+  skip_symbols: true
+  artifact: /.*\.nupkg/
+  on:
+    branch: master
+- provider: GitHub
+  tag: AfricasTalking.NET-v$(appveyor_build_version)
+  release: AfricasTalking.NET-v$(appveyor_build_version)
+  auth_token:
+    secure: TObUMgd7EMcJIe97Fqp80/svs2v6QSI9NnEavQWVRWxa7aAYUhDKSZmirHiMUwyv218LC3igKOJq+ZHtGsmOZ0s0kqYxl3PZNU5fd5Pc/Z4=
+  repository: AfricasTalkingLtd/africastalking.Net
+  artifact: /.*\.nupkg/
+  force_update: true
