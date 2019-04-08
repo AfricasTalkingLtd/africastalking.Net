@@ -12,8 +12,8 @@ namespace SampleBulkSms
         static void Main(string[] args)
         {
             var username = "sandbox";
-            var apiKey = "afd635a4f295dd936312836c0b944d55f2a836e8ff2b63987da5e717cd5ff745";
-            var recep = "+254724587654,+254714587654,+254704876545";
+            var apiKey = "43aa714eb2dab0fab27466563a1c051464e94eb42068dca2b0da31d1b61bbf58";
+            var recep = "+254720000000,+254720000001";
             var msg = "Super awesome message ☻ 😁";
                
 
@@ -21,13 +21,8 @@ namespace SampleBulkSms
             try
             {
                 dynamic res = gateway.SendMessage(recep, msg);
-                foreach (var re in res["SMSMessageData"]["Recipients"])
-                {
-                    Console.WriteLine((string)re["number"] + ": ");
-                    Console.WriteLine((string)re["status"] + ": ");
-                    Console.WriteLine((string)re["messageId"] + ": ");
-                    Console.WriteLine((string)re["cost"] + ": ");
-                }
+                Console.WriteLine(res);
+
             }
             catch (AfricasTalkingGatewayException exception)
             {
