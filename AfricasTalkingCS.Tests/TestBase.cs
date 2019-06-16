@@ -4,7 +4,7 @@
     {
         private const string username = "sandbox";
         private const string environment = "sandbox";
-        private const string apikey = "7a264d01fb28ffa18eeb4947f6e7cbb40089bc0c45b9c47715969f02b5da5a60";
+        private const string apikey = "e952920d25a20cc9a8144ae200363d722f3459273815201914d8d4603e59d047";
         
         protected readonly AfricasTalkingGateway _atGWInstance;
 
