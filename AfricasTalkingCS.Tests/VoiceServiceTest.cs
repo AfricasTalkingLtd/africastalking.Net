@@ -1,25 +1,17 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using AfricasTalkingCS;
-using Newtonsoft.Json;
-using System.Text;
 
-namespace AfricasTalkingCS_Tests
+namespace AfricasTalkingCS.Tests
 {
-    
+
     [TestClass]
-    public class VoiceService
+    public class VoiceService : TestBase
     {
-        private static string apikey = "e952920d25a20cc9a8144ae200363d722f3459273815201914d8d4603e59d047";
-        private static string username = "sandbox";
-        private readonly AfricasTalkingGateway _atGWInstance = new AfricasTalkingGateway(username,apikey);
-
         private readonly AfricasTalkingGatewayException africasTalkingGatewayException = new AfricasTalkingGatewayException("Failed to upload media file");
-
         [TestMethod]
         public void DoPushOutboundCallToOneNumber()
         {
-            var phoneNumber = "+254720000001";
-            var callerId = "+254720000000";
+            var phoneNumber = phoneNumber1;
+            var callerId = phoneNumber0;
             var gatewayResponse  = _atGWInstance.Call(callerId, phoneNumber);
             var success = gatewayResponse["errorMessage"] == "None";
             Assert.IsTrue(success, "Should successfully push outbound call to one number");
@@ -28,8 +20,8 @@ namespace AfricasTalkingCS_Tests
         [TestMethod] 
         public void DoPushOutboundCallToMultipleNumbers() 
         {
-            var numberLists = "+254720000003,test.user@sandbox.sip.africastalking.com";
-            var callerId = "+254720000000";
+            var numberLists = $"{phoneNumber3},test.user@sandbox.sip.africastalking.com";
+            var callerId = phoneNumber0;
             var gatewayResponse = _atGWInstance.Call(callerId, numberLists); 
             var success = gatewayResponse["errorMessage"] == "None";
             Assert.IsTrue(success, "Should successfully push outbound call to one number");            
@@ -38,8 +30,8 @@ namespace AfricasTalkingCS_Tests
         [TestMethod] 
         public void DoPushOutboundCallWithRequestId()
         {
-            var callee = "+254720000002";
-            var callerId = "+254720000000";
+            var callee = phoneNumber2;
+            var callerId = phoneNumber0;
             var requestId = "test";
             var gatewayResponse = _atGWInstance.Call(callerId, callee, requestId); 
             var success = gatewayResponse["errorMessage"] == "None";

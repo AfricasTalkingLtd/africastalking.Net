@@ -1,9 +1,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using AfricasTalkingCS;
 using Newtonsoft.Json;
 using System.Text;
 
-namespace AfricasTalkingCS_Tests
+namespace AfricasTalkingCS.Tests
 {
     class AirtimeUsers {
         [JsonProperty("phoneNumber")]
@@ -14,19 +13,17 @@ namespace AfricasTalkingCS_Tests
     }
 
     [TestClass]
-    public class AirtimeService
+    public class AirtimeService : TestBase
     {
-        private static string apikey = "e952920d25a20cc9a8144ae200363d722f3459273815201914d8d4603e59d047";
-        private static string username = "sandbox";
-        private readonly AfricasTalkingGateway _atGWInstance = new AfricasTalkingGateway(username,apikey);
-
         [TestMethod]
         public void DoSendAirtimeToOneUser()
         {
-            var airtimeUser = new AirtimeUsers();
-            airtimeUser.PhoneNumber = "+254720000000";
-            airtimeUser.Amount = "KES 100";
-            var airtimeRec = JsonConvert.SerializeObject(airtimeUser);
+            var airtimeUser = new AirtimeUsers
+            {
+                PhoneNumber = phoneNumber0,
+                Amount = amount100
+            };
+            var airtimeRec = airtimeUser.ToJson();
             var gatewayResponse = _atGWInstance.SendAirtime(airtimeRec);
             var success = gatewayResponse["errorMessage"] == "None" || gatewayResponse["errorMessage"] == "A duplicate request was received within the last 5 minutes";
             Assert.IsTrue(success);
@@ -36,14 +33,18 @@ namespace AfricasTalkingCS_Tests
         [TestMethod]
         public void DoSendToManyUsers()
         {
-            var airtimeUser1 = new AirtimeUsers();
-            airtimeUser1.PhoneNumber = "+254720000001";
-            airtimeUser1.Amount = "KES 100";
-            string airtime1Recipient = JsonConvert.SerializeObject(airtimeUser1);
-            var airtimeUser2 = new AirtimeUsers();
-            airtimeUser2.PhoneNumber = "+254720000002";
-            airtimeUser2.Amount = "KES 100";
-            string airtime2Recipient = JsonConvert.SerializeObject(airtimeUser2);
+            var airtimeUser1 = new AirtimeUsers
+            {
+                PhoneNumber = phoneNumber0,
+                Amount = amount100
+            };
+            string airtime1Recipient = airtimeUser1.ToJson();
+            var airtimeUser2 = new AirtimeUsers
+            {
+                PhoneNumber = phoneNumber2,
+                Amount = amount100
+            };
+            string airtime2Recipient = airtimeUser2.ToJson();
             StringBuilder airtimeStringBuilderInstance = new StringBuilder(airtime1Recipient, 100);
             // Hack
             airtimeStringBuilderInstance.Append($",{airtime2Recipient}");
