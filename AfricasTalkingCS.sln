@@ -14,6 +14,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{953AEF7B-BDE8-481A-A2A1-DAD8064EF070}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		LICENSE = LICENSE
+		README.md = README.md
 		V.nuspec = V.nuspec
 	EndProjectSection
 EndProject
@@ -47,7 +49,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SandboxDefaultEnv", "Exampl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleBulkSms", "Examples\SampleBulkSms\SampleBulkSms.csproj", "{7C3CDAF4-78BA-40E7-AADF-CCBF04B82C72}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AfricasTalkingCS.Tests", "AfricasTalkingCS.Tests\AfricasTalkingCS.Tests.csproj", "{92BC088A-ABA2-4C23-A250-29C5581EBAA9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AfricasTalkingCS.Tests", "AfricasTalkingCS.Tests\AfricasTalkingCS.Tests.csproj", "{92BC088A-ABA2-4C23-A250-29C5581EBAA9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

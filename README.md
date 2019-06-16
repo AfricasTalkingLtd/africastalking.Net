@@ -1,6 +1,7 @@
 # Official Africa's Talking C# API wrapper  
+
 [![Build Status](https://arthurkennotieno.visualstudio.com/AfricasTalking.NET.C-Sharp/_apis/build/status/AfricasTalking.NET.C-Sharp-CI?branchName=master)](https://arthurkennotieno.visualstudio.com/AfricasTalking.NET.C-Sharp/_build/latest?definitionId=1?branchName=master) 
- 
+[![Build status](https://ci.appveyor.com/api/projects/status/f5h48x3nk98oslo3?svg=true)](https://ci.appveyor.com/project/tmacharia/africastalking-net)
 [![NuGet](https://img.shields.io/nuget/v/AfricasTalking.NET.svg)](https://www.nuget.org/packages/AfricasTalking.NET/)
 
 The Africa's Talking C# API wrapper provides convenient access to the Africa's Talking API from applications written in C#. With support for .NET45, .NET46 and .NET Standard 2.0. 
