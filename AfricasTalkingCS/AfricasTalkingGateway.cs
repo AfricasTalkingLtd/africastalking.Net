@@ -21,7 +21,9 @@ namespace AfricasTalkingCS
     using System.Security.Cryptography.X509Certificates;
     using System.Text;
     using System.Text.RegularExpressions;
+#if !NETSTANDARD1_6
     using System.Web;
+#endif
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
     using PhoneNumbers;
@@ -744,41 +746,59 @@ namespace AfricasTalkingCS
         {
             try
             {
-                ServicePointManager.ServerCertificateValidationCallback = RemoteCertificateValidationCallback;
-                var webRequest = (HttpWebRequest)WebRequest.Create(urlString);
-                webRequest.Method = "GET";
-                webRequest.Accept = "application/json";
-                webRequest.Headers.Add("apiKey", this._apikey);
-                var httpResponse = (HttpWebResponse)webRequest.GetResponse();
-                this._responseCode = (int)httpResponse.StatusCode;
-                var webpageReader = new StreamReader(httpResponse.GetResponseStream() ?? throw new InvalidOperationException());
-                var response = webpageReader.ReadToEnd();
-                if (this._debug)
+                using (HttpClient _http = new HttpClient())
                 {
-                    Console.WriteLine("Full response: " + response);
-                }
+                    _http.DefaultRequestHeaders.Add("apiKey", this._apikey);
+                    _http.DefaultRequestHeaders.Add("Accept", "application/json");
+                    HttpResponseMessage res = _http.GetAsync(urlString).Result;
+                    this._responseCode = res.StatusCode.ToInt();
+                    string responseBody = res.Content.ReadAsStringAsync().Result;
 
-                return response;
-            }
-            catch (WebException ex)
-            {
-                if (ex.Response == null)
-                {
-                    throw new AfricasTalkingGatewayException(ex.Message);
-                }
-
-                using (var stream = ex.Response.GetResponseStream())
-                using (var reader = new StreamReader(stream ?? throw new InvalidOperationException()))
-                {
-                    var response = reader.ReadToEnd();
-
-                    if (this._debug)
+                    if (!res.IsSuccessStatusCode)
                     {
-                        Console.WriteLine("Full response: " + response);
+                        if (this._debug)
+                        {
+                            Console.WriteLine("Exception: " + responseBody);
+                        }
                     }
-
-                    return response;
+                    return responseBody;
                 }
+                //ServicePointManager.ServerCertificateValidationCallback = RemoteCertificateValidationCallback;
+                //var webRequest = (HttpWebRequest)WebRequest.Create(urlString);
+                //webRequest.Method = "GET";
+                //webRequest.Accept = "application/json";
+                //webRequest.Headers.Add("apiKey", this._apikey);
+                //var httpResponse = (HttpWebResponse)webRequest.GetResponse();
+                //this._responseCode = (int)httpResponse.StatusCode;
+                //var webpageReader = new StreamReader(httpResponse.GetResponseStream() ?? throw new InvalidOperationException());
+                //var response = webpageReader.ReadToEnd();
+                //if (this._debug)
+                //{
+                //    Console.WriteLine("Full response: " + response);
+                //}
+
+                //return response;
+            }
+            catch (Exception ex)
+            {
+                throw new AfricasTalkingGatewayException(ex.Message);
+                //if (ex.Response == null)
+                //{
+                //    throw new AfricasTalkingGatewayException(ex.Message);
+                //}
+
+                //using (var stream = ex.Response.GetResponseStream())
+                //using (var reader = new StreamReader(stream ?? throw new InvalidOperationException()))
+                //{
+                //    var response = reader.ReadToEnd();
+
+                //    if (this._debug)
+                //    {
+                //        Console.WriteLine("Full response: " + response);
+                //    }
+
+                //    return response;
+                //}
             }
         }
 
@@ -801,63 +821,93 @@ namespace AfricasTalkingCS
         {
             try
             {
-                var dataStr = string.Empty;
-                foreach (string key in data.Keys)
+//                var dataStr = string.Empty;
+//                foreach (string key in data.Keys)
+//                {
+//                    if (dataStr.Length > 0)
+//                    {
+//                        dataStr += "&";
+//                    }
+
+//                    var value = data[key].ToString();
+//#if NET462
+//                    dataStr += WebUtility.UrlEncode(key);
+//                    dataStr += "=" + WebUtility.UrlEncode(value);
+//#else
+//                    dataStr += HttpUtility.UrlEncode(key, Encoding.UTF8);
+//                    dataStr += "=" + HttpUtility.UrlEncode(value, Encoding.UTF8);
+//#endif
+//                }
+                //var byteArray = Encoding.UTF8.GetBytes(dataStr);
+                //ServicePointManager.ServerCertificateValidationCallback = RemoteCertificateValidationCallback;
+                using (HttpClient _http = new HttpClient())
                 {
-                    if (dataStr.Length > 0)
+                    _http.DefaultRequestHeaders.Add("apiKey", this._apikey);
+                    _http.DefaultRequestHeaders.Add("Accept", "application/json");
+                    HttpContent content = new FormUrlEncodedContent(data.Cast<KeyValuePair<string, string>>());
+                    HttpResponseMessage res = _http.PostAsync(urlString, content).Result;
+                    this._responseCode = res.StatusCode.ToInt();
+                    string responseBody = res.Content.ReadAsStringAsync().Result;
+
+                    if (!res.IsSuccessStatusCode)
                     {
-                        dataStr += "&";
+                        if (this._debug)
+                        {
+                            Console.WriteLine("Exception: " + responseBody);
+                        }
                     }
-                    
-                    var value = data[key].ToString();
-                    dataStr += HttpUtility.UrlEncode(key, Encoding.UTF8);
-                    dataStr += "=" + HttpUtility.UrlEncode(value, Encoding.UTF8);
+                    return responseBody;
                 }
+                //HttpRequestMessage req = new HttpRequestMessage()
+                //{
+                //    Method = new HttpMethod("POST"),
+                //    RequestUri = new Uri(urlString),
+                //    Content = new FormUrlEncodedContent(data.Cast<KeyValuePair<string, string>>())
+                //};
+                
+                //var webRequest = (HttpWebRequest)WebRequest.Create(urlString);
+                //webRequest.Method = "POST";
+                //webRequest.ContentType = "application/x-www-form-urlencoded";
+                //webRequest.ContentLength = byteArray.Length;
+                //webRequest.Accept = "application/json";
+                //webRequest.Headers.Add("apiKey", this._apikey);
 
-                var byteArray = Encoding.UTF8.GetBytes(dataStr);
-                ServicePointManager.ServerCertificateValidationCallback = RemoteCertificateValidationCallback;
-                var webRequest = (HttpWebRequest)WebRequest.Create(urlString);
-                webRequest.Method = "POST";
-                webRequest.ContentType = "application/x-www-form-urlencoded";
-                webRequest.ContentLength = byteArray.Length;
-                webRequest.Accept = "application/json";
-                webRequest.Headers.Add("apiKey", this._apikey);
+                //var webpageStream = webRequest.GetRequestStream();
+                //webpageStream.Write(byteArray, 0, byteArray.Length);
+                //webpageStream.Close();
 
-                var webpageStream = webRequest.GetRequestStream();
-                webpageStream.Write(byteArray, 0, byteArray.Length);
-                webpageStream.Close();
+                //var httpResponse = (HttpWebResponse)webRequest.GetResponse();
+                //this._responseCode = (int)httpResponse.StatusCode;
+                //var webpageReader = new StreamReader(
+                //    httpResponse.GetResponseStream() ?? throw new InvalidOperationException());
+                //var response = webpageReader.ReadToEnd();
 
-                var httpResponse = (HttpWebResponse)webRequest.GetResponse();
-                this._responseCode = (int)httpResponse.StatusCode;
-                var webpageReader = new StreamReader(
-                    httpResponse.GetResponseStream() ?? throw new InvalidOperationException());
-                var response = webpageReader.ReadToEnd();
+                //if (this._debug)
+                //{
+                //    Console.WriteLine("Response: " + response);
+                //}
 
-                if (this._debug)
-                {
-                    Console.WriteLine("Response: " + response);
-                }
-
-                return response;
+                //return response;
             }
-            catch (WebException webException)
+            catch (Exception webException)
             {
-                if (webException.Response == null)
-                {
-                    throw new AfricasTalkingGatewayException(webException.Message);
-                }
+                throw new AfricasTalkingGatewayException(webException.Message);
+                //if (webException.Response == null)
+                //{
+                //    throw new AfricasTalkingGatewayException(webException.Message);
+                //}
 
-                using (var stream = webException.Response.GetResponseStream())
-                using (var reader = new StreamReader(stream ?? throw new InvalidOperationException()))
-                {
-                    var response = reader.ReadToEnd();
-                    if (this._debug)
-                    {
-                        Console.WriteLine("Exception: " + response);
-                    }
+                //using (var stream = webException.Response.GetResponseStream())
+                //using (var reader = new StreamReader(stream ?? throw new InvalidOperationException()))
+                //{
+                //    var response = reader.ReadToEnd();
+                //    if (this._debug)
+                //    {
+                //        Console.WriteLine("Exception: " + response);
+                //    }
 
-                    return response;
-                }
+                //    return response;
+                //}
             }
         }
 
@@ -1121,12 +1171,7 @@ namespace AfricasTalkingCS
 
         private StashResponse ProcessStashTopUp(StashData stashData, string url)
         {
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("apiKey", this._apikey);
-            var result = client.PostAsJsonAsync(url, value: stashData).Result;
-            result.EnsureSuccessStatusCode();
-            var stringResult = result.Content.ReadAsAsync<StashResponse>();
-            return stringResult.Result;
+            return RunHttpRequest<StashData, StashResponse>(url, stashData);
         }
 
         public dynamic WalletTransfer(
@@ -1163,12 +1208,7 @@ namespace AfricasTalkingCS
 
        private StashResponse ProcessWalletTransfer(WalletTransfer walletTransfer, string url)
         {
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("apiKey", this._apikey);
-            var result = client.PostAsJsonAsync(url, value: walletTransfer).Result;
-            result.EnsureSuccessStatusCode();
-            var stringResult = result.Content.ReadAsAsync<StashResponse>();
-            return stringResult.Result;
+            return RunHttpRequest<WalletTransfer, StashResponse>(url, walletTransfer);
         }
 
         public string FindTransaction(string transactionId) {
@@ -1341,12 +1381,7 @@ namespace AfricasTalkingCS
         /// </returns>
         private BankCheckoutResponse ProcessBankCheckout(BankCheckout checkout, string url)
         {
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("apiKey", this._apikey);
-            var result = client.PostAsJsonAsync(url, value: checkout).Result;
-            result.EnsureSuccessStatusCode();
-            var stringResult = result.Content.ReadAsAsync<BankCheckoutResponse>();
-            return stringResult.Result;
+            return RunHttpRequest<BankCheckout, BankCheckoutResponse>(url, checkout);
         }
 
         // http://docs.africastalking.com/bank/validate
@@ -1399,12 +1434,7 @@ namespace AfricasTalkingCS
         /// </returns>
         private CardCheckoutResults ProcessCardCheckout(CardDetails details, string checkoutUrl)
         {
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("apiKey", this._apikey);
-            var result = client.PostAsJsonAsync(checkoutUrl, details).Result;
-            result.EnsureSuccessStatusCode();
-            var stringResult = result.Content.ReadAsAsync<CardCheckoutResults>();
-            return stringResult.Result;
+            return RunHttpRequest<CardDetails, CardCheckoutResults>(checkoutUrl, details);
         }
 
         /// <summary>
@@ -1421,12 +1451,7 @@ namespace AfricasTalkingCS
         /// </returns>
         private string ValidateOtp(OTP otp, string url)
         {
-            var otpClient = new HttpClient();
-            otpClient.DefaultRequestHeaders.Add("apiKey", this._apikey);
-            var result = otpClient.PostAsJsonAsync(url, otp).Result;
-            result.EnsureSuccessStatusCode();
-            var otpResult = result.Content.ReadAsStringAsync().Result;
-            return otpResult;
+            return RunHttpRequest<OTP, string>(url, otp);
         }
 
         // http://docs.africastalking.com/bank/transfer
@@ -1485,12 +1510,7 @@ namespace AfricasTalkingCS
         /// </returns>
         private BankTransferResults ProcessBankTransfer(BankTransfer transfer, string url)
         {
-            var transferClient = new HttpClient();
-            transferClient.DefaultRequestHeaders.Add("apiKey", this._apikey);
-            var transferResult = transferClient.PostAsJsonAsync(this.BankTransferUrl, value: transfer).Result;
-            transferResult.EnsureSuccessStatusCode();
-            var transferRes = transferResult.Content.ReadAsAsync<BankTransferResults>();
-            return transferRes.Result;
+            return RunHttpRequest<BankTransfer, BankTransferResults>(url, transfer);
         }
 
     /// <summary>
@@ -1507,12 +1527,7 @@ namespace AfricasTalkingCS
     /// </returns>
     private B2BResult PostB2BJson(B2BData dataMap, string url)
         {
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("apiKey", this._apikey);
-            var result = client.PostAsJsonAsync(url, dataMap).Result;
-            result.EnsureSuccessStatusCode();
-            var stringResult = result.Content.ReadAsAsync<B2BResult>();
-            return stringResult.Result;
+            return RunHttpRequest<B2BData, B2BResult>(url, dataMap);
         }
 
         /// <summary>
@@ -1631,12 +1646,7 @@ namespace AfricasTalkingCS
         /// </returns>
         private DataResult Post(RequestBody requestBody, string url)
         {
-            var httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Add("apikey", this._apikey);
-            var res = httpClient.PostAsJsonAsync(url, requestBody).Result;
-            res.EnsureSuccessStatusCode();
-            var result = res.Content.ReadAsAsync<DataResult>();
-            return result.Result;
+            return RunHttpRequest<RequestBody, DataResult>(url, requestBody);
         }
 
         /// <summary>
@@ -1653,13 +1663,26 @@ namespace AfricasTalkingCS
         /// </returns>
         private C2BDataResults PostAsJson(CheckOutData dataMap, string url)
         {
-            var client = new HttpClient();
+            return RunHttpRequest<CheckOutData,C2BDataResults>(url, dataMap);
+        }
 
-            client.DefaultRequestHeaders.Add("apiKey", this._apikey);
-            var result = client.PostAsJsonAsync(url, dataMap).Result;
-            result.EnsureSuccessStatusCode();
-            var stringResult = result.Content.ReadAsAsync<C2BDataResults>();
-            return stringResult.Result;
+        private TResponse RunHttpRequest<TRequest, TResponse>(string url, TRequest request)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("apiKey", this._apikey);
+                var res = client.PostAsync(url, new StringContent(request.ToJson(), Encoding.UTF8, "application/json"))
+                    .Result;
+                if (res.IsSuccessStatusCode)
+                {
+                    string json = res.Content.ReadAsStringAsync().Result;
+                    return json.FromJsonTo<TResponse>();
+                }
+                else
+                {
+                    throw new Exception($"Unexpected error code: {res.StatusCode}, {res.ReasonPhrase}");
+                }
+            }
         }
         
         /// <summary>
