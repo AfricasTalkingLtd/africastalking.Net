@@ -1,5 +1,5 @@
-﻿using System;
-using AfricasTalkingCS;
+﻿using AfricasTalkingCS;
+using System;
 
 namespace ConsoleApp1
 {
@@ -21,10 +21,10 @@ namespace ConsoleApp1
                 var res = gateway.SendMessage(recep, msg);
                 foreach (var re in res["SMSMessageData"]["Recipients"])
                 {
-                    Console.WriteLine((string) re["number"] + ": ");
-                    Console.WriteLine((string) re["status"] + ": ");
-                    Console.WriteLine((string) re["messageId"] + ": ");
-                    Console.WriteLine((string) re["cost"] + ": ");
+                    Console.WriteLine((string)re["number"] + ": ");
+                    Console.WriteLine((string)re["status"] + ": ");
+                    Console.WriteLine((string)re["messageId"] + ": ");
+                    Console.WriteLine((string)re["cost"] + ": ");
                 }
             }
             catch (AfricasTalkingGatewayException exception)

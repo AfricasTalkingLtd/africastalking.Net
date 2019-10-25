@@ -1,6 +1,6 @@
-﻿using System;
+﻿using AfricasTalkingCS;
+using System;
 using System.Collections;
-using AfricasTalkingCS;
 
 namespace SendPremiumSMS
 {
@@ -13,7 +13,7 @@ namespace SendPremiumSMS
             var apikey = "KEY";
             var env = "sandbox";
             var gateway = new AfricasTalkingGateway(username, apikey, env);
-            var opts = new Hashtable {["keyword"] = "mykeyword"}; // ....
+            var opts = new Hashtable { ["keyword"] = "mykeyword" }; // ....
             var from = "NNNNN";
             var to = "+2547XXXXX";
             var message = "Super Cool Message";

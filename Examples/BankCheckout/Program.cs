@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using AfricasTalkingCS;
+﻿using AfricasTalkingCS;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 
 namespace BankCheckout
 {
@@ -23,7 +23,7 @@ namespace BankCheckout
             var currencyCode = "NGN";
             var amount = 1000.5M;
             var dob = "2017-11-22";
-            var metadata = new Dictionary<string, string> {{"Reason", "Buy Vega Records"}};
+            var metadata = new Dictionary<string, string> { { "Reason", "Buy Vega Records" } };
             var narration = "We're buying something cool";
             var receBank = new BankAccount(accountNumber, bankCode, dob, accountName);
             try

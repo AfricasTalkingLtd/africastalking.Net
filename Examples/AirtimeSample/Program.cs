@@ -1,6 +1,6 @@
-﻿using System;
-using AfricasTalkingCS;
+﻿using AfricasTalkingCS;
 using Newtonsoft.Json;
+using System;
 
 namespace AirtimeSample
 {
@@ -18,9 +18,7 @@ namespace AirtimeSample
             Console.WriteLine("Hello World!");
             var username = "Username";
             var apikey = "ABCXYZ";
-            var airtimeUser = new AirtimeUsers();
-            airtimeUser.PhoneNumber = "+254XEPPPPPPP";
-            airtimeUser.Amount = "KES 10";
+            var airtimeUser = new AirtimeUsers { PhoneNumber = "+254XEPPPPPPP", Amount = "KES 10" };
             var airtimeRec = JsonConvert.SerializeObject(airtimeUser);
             var airtimeGateway = new AfricasTalkingGateway(username, apikey);
             try

@@ -1,6 +1,6 @@
-﻿using System;
+﻿using AfricasTalkingCS;
+using System;
 using System.Collections.Generic;
-using AfricasTalkingCS;
 
 namespace ConsoleApp2
 {

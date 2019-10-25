@@ -1,5 +1,5 @@
-﻿using System;
-using AfricasTalkingCS;
+﻿using AfricasTalkingCS;
+using System;
 
 namespace CreateToken
 {

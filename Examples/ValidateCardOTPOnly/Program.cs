@@ -1,6 +1,6 @@
-﻿using System;
-using AfricasTalkingCS;
+﻿using AfricasTalkingCS;
 using Newtonsoft.Json;
+using System;
 
 namespace ValidateCardOTPOnly
 {

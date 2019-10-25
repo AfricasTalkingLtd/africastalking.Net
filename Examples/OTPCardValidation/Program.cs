@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using AfricasTalkingCS;
+﻿using AfricasTalkingCS;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 
 namespace OTPCardValidation
 {

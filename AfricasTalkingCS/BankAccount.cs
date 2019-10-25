@@ -7,8 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
 using Newtonsoft.Json;
+using System;
 
 namespace AfricasTalkingCS
 {
