@@ -1,26 +1,25 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using AfricasTalkingCS;
+using Xunit;
 
 namespace AfricasTalkingCS_Tests
 {
-    [TestClass]
     public class SMSService
     {
         private static string apikey = "e952920d25a20cc9a8144ae200363d722f3459273815201914d8d4603e59d047";
         private static string username = "sandbox";
         private static AfricasTalkingGateway _atGWInstance = new AfricasTalkingGateway(username,apikey);
 
-        [TestMethod]
+        [Fact]
         public void DoSendMessageToOneValidNumber()
         {
             var phoneNumber = "+254720000000";
             var message     = "Hello Mr. Anderson";
             var gatewayResponse = _atGWInstance.SendMessage(phoneNumber, message);
             var success = gatewayResponse["SMSMessageData"]["Recipients"][0]["status"] == "Success";
-            Assert.IsTrue(success, "Should successfully send message to a valid phone number");
+            Assert.True(success, "Should successfully send message to a valid phone number");
         }
 
-        [TestMethod]
+        [Fact]
         public void DoSendMessageToManyPeopleofValidNumbers()
         {
             var phoneNumerList  = "+254720000001,+254720000002,+254720000003";
@@ -31,10 +30,10 @@ namespace AfricasTalkingCS_Tests
             var recipient2Success = gatewayResponse["SMSMessageData"]["Recipients"][1]["status"] == "Success";
             var recipient3Success = gatewayResponse["SMSMessageData"]["Recipients"][2]["status"] == "Success";
             var success = recipient1Success && recipient2Success && recipient3Success;
-            Assert.IsTrue(success, "Should successfully send a message to multiple recipients");
+            Assert.True(success, "Should successfully send a message to multiple recipients");
         }
 
-        [TestMethod] 
+        [Fact] 
         public void DoSendMessageViaSenderId() 
         {
             var phoneNumber = "+254720000000";
@@ -42,10 +41,10 @@ namespace AfricasTalkingCS_Tests
             var senderID = "Coolguy";
             var gatewayResponse = _atGWInstance.SendMessage(phoneNumber, message, senderID);
             var success = gatewayResponse["SMSMessageData"]["Recipients"][0]["status"] == "Success";
-            Assert.IsTrue(success, "Should send message to avalid phoneNumber via SenderID");
+            Assert.True(success, "Should send message to avalid phoneNumber via SenderID");
         }
 
-        [TestMethod]
+        [Fact]
         public void DoSendMessageViaShortCode()
         {
             var phoneNumber = "+254720000000";
@@ -53,19 +52,20 @@ namespace AfricasTalkingCS_Tests
             var shortCode = "44000";
             var gatewayResponse = _atGWInstance.SendMessage(phoneNumber, message, shortCode);
             var success = gatewayResponse["SMSMessageData"]["Recipients"][0]["status"] == "Success";
-            Assert.IsTrue(success, "Should send message to avalid phoneNumber via Shortcode");
+            Assert.True(success, "Should send message to avalid phoneNumber via Shortcode");
         }
 
-        [TestMethod]
+        [Fact]
         public void DoCreateCheckoutToken()
         {
             var phoneNumber = "+254720000000";
             var gatewayResponse = _atGWInstance.CreateCheckoutToken(phoneNumber);
             var success = gatewayResponse["token"];
-            Assert.IsNotNull(success, "Should successfully create a checkout token for any valid number");
+            // "Should successfully create a checkout token for any valid number"
+            Assert.NotNull(success);
         }
 
-        [TestMethod]
+        [Fact]
         public void DoCreateSubscription()
         {
             var phoneNumber = "+254720000000";
@@ -75,10 +75,10 @@ namespace AfricasTalkingCS_Tests
             string token = getToken["token"];
             var gatewayResponse = _atGWInstance.CreateSubscription(phoneNumber, shortCode, keyword, token);
             var success = gatewayResponse["status"] == "Success";
-            Assert.IsTrue(success);
+            Assert.True(success);
         }
 
-        [TestMethod]
+        [Fact]
         public void DoDeleteSubscription()
         {
             var phoneNumber = "+254720000000";
@@ -90,7 +90,7 @@ namespace AfricasTalkingCS_Tests
             var deleteUserSub = _atGWInstance.DeleteSubscription(phoneNumber, shortCode, keyword);
             // Should be mocked
             var success = deleteUserSub["description"] == "Succeeded";
-            Assert.IsTrue(success, "Should successfully delete a subscription");
+            Assert.True(success, "Should successfully delete a subscription");
         }
 
     }

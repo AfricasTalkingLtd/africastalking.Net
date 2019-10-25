@@ -1,13 +1,12 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using AfricasTalkingCS;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System;
+using Xunit;
 
 namespace AfricasTalkingCS_Tests
 {
-    [TestClass]
     public class PaymentService
     {
         private static string apikey = "e952920d25a20cc9a8144ae200363d722f3459273815201914d8d4603e59d047";
@@ -16,7 +15,7 @@ namespace AfricasTalkingCS_Tests
 
         private string TestId = "ATPid_e738bcb66505a9c0cf00868e569e9026";
 
-        [TestMethod]
+        [Fact]
         public void DoMobileCheckout()
         {
             var phoneNumber = "+254720000001";
@@ -31,10 +30,10 @@ namespace AfricasTalkingCS_Tests
             C2BDataResults checkoutResponse = _atGWInstance.Checkout(productName, phoneNumber, currency, amount, providerChannel, metadata);
             var success = checkoutResponse.Status =="PendingConfirmation";
             TestId = checkoutResponse.TransactionId;
-            Assert.IsTrue(success, "Should successfully send Mobile Checkout prompt");
+            Assert.True(success, "Should successfully send Mobile Checkout prompt");
         }
 
-        [TestMethod]
+        [Fact]
         public void DoBusinessToClientTransaction()
         {
             const string rec1PhoneNum = "+254720000004";
@@ -59,10 +58,10 @@ namespace AfricasTalkingCS_Tests
 
             DataResult b2cresponse = _atGWInstance.MobileB2C(productName, recepients);
             var success = b2cresponse.NumQueued == 2;
-            Assert.IsTrue(success,  "Should successfully disburse B2C transactions to valid phone numbers");
+            Assert.True(success,  "Should successfully disburse B2C transactions to valid phone numbers");
         }
 
-        [TestMethod] 
+        [Fact] 
         public void DoBusinessToBusinessTransaction()
         {
             const string originProduct = "awesomeproduct";
@@ -77,10 +76,10 @@ namespace AfricasTalkingCS_Tests
             const string transferType = "BusinessToBusinessTransfer";
             B2BResult response = _atGWInstance.MobileB2B(originProduct, providerChannel, transferType, currency, amount, destChannel, destProduct, metadata);
             var success = response.Status == "Queued";
-            Assert.IsTrue(success);
+            Assert.True(success);
         }
 
-        [TestMethod]
+        [Fact]
         public void DoBankCheckout()
         {
             const string otp = "1234";
@@ -100,10 +99,10 @@ namespace AfricasTalkingCS_Tests
             var validateTransaction = _atGWInstance.OtpValidate(transId, otp);
             validateTransaction = JsonConvert.DeserializeObject(validateTransaction);
             var success = validateTransaction["status"] == "Success";
-            Assert.IsTrue(success, "Should succcessfully process bank checkout");
+            Assert.True(success, "Should succcessfully process bank checkout");
         }
 
-        [TestMethod]
+        [Fact]
         public void DoBankTransfer()
         {
             const string productname = "coolproduct";
@@ -131,10 +130,10 @@ namespace AfricasTalkingCS_Tests
                                                            };
             BankTransferResults bankTransferResults = _atGWInstance.BankTransfer(productname, recipients);
             var success = (bankTransferResults.Entries.Count == 2 ); // Number of recipinets is 2.
-            Assert.IsTrue(success, "Should succesfully transfer monies between bank accounts");
+            Assert.True(success, "Should succesfully transfer monies between bank accounts");
         }
 
-        [TestMethod]
+        [Fact]
         public void DoCardCheckout()
         {
             const string Otp = "1234";
@@ -166,10 +165,10 @@ namespace AfricasTalkingCS_Tests
             var validate = _atGWInstance.ValidateCardOtp(transactionId, Otp);
             var res = JsonConvert.DeserializeObject(validate);
             var success = res["status"] == "Success" && checkout.Status == "PendingValidation";
-            Assert.IsTrue(success, "Should succesfully complete a Card checkout transaction");
+            Assert.True(success, "Should succesfully complete a Card checkout transaction");
         }
 
-        [TestMethod]
+        [Fact]
         public void DoWalletTransfer()
         {
             const int productCode    = 1234;
@@ -183,10 +182,10 @@ namespace AfricasTalkingCS_Tests
 
             StashResponse stashResponse = _atGWInstance.WalletTransfer(productName, productCode, currencyCode, amount, metadata);
             var success = stashResponse.Status == "Success";
-            Assert.IsTrue(success, "Should transfer amounts between wallets");
+            Assert.True(success, "Should transfer amounts between wallets");
         }
         
-        [TestMethod]
+        [Fact]
         public void DoTopupStash()
         {
             const string productName = "coolproduct";
@@ -197,20 +196,20 @@ namespace AfricasTalkingCS_Tests
             };
             StashResponse stashResponse = _atGWInstance.TopupStash(productName, currencyCode, amount, metadata);
             var success = stashResponse.Status == "Success";
-            Assert.IsTrue(success, "Should successfully topup product stash");
+            Assert.True(success, "Should successfully topup product stash");
         }
 
-        [TestMethod]
+        [Fact]
         public void DoFindTransaction()
         {
             string transactionIdResponse = _atGWInstance.FindTransaction(TestId);
             JObject transactionIdResponseJson = JObject.Parse(transactionIdResponse);
             var status = transactionIdResponseJson.GetValue("status");
             var success = (status.ToString() == "Success");
-            Assert.IsTrue(success, "Should successfully find a transaction given it's ID");
+            Assert.True(success, "Should successfully find a transaction given it's ID");
         }
 
-        [TestMethod]
+        [Fact]
         public void DoFetchProductTransactions()
         {
             const string productName = "coolproduct";
@@ -220,10 +219,10 @@ namespace AfricasTalkingCS_Tests
             JObject fetchTransactionsResponseJson = JObject.Parse(fetchTransactionsResponse);
             var fetchTransactionsResponseStatus = fetchTransactionsResponseJson.GetValue("status");
             var success = (fetchTransactionsResponseStatus.ToString() == "Success");
-            Assert.IsTrue(success, "Should successfully fetch transactions with default params");
+            Assert.True(success, "Should successfully fetch transactions with default params");
         }
 
-        [TestMethod] 
+        [Fact] 
         public void DoFetchProductTransactionsByDateDate() 
         {
             const string productName = "coolproduct";
@@ -236,10 +235,10 @@ namespace AfricasTalkingCS_Tests
             JObject fetchTransactionsResponseJson = JObject.Parse(fetchTransactionsResponse);
             var fetchTransactionsResponseStatus = fetchTransactionsResponseJson.GetValue("status");
             var success = (fetchTransactionsResponseStatus.ToString() == "Success");
-            Assert.IsTrue(success, "Should successfully fetch transactions based on given date");
+            Assert.True(success, "Should successfully fetch transactions based on given date");
         }
 
-        [TestMethod]
+        [Fact]
         public void DoFetchProductTransactionByCategory()
         {
             const string productName = "coolproduct";
@@ -250,10 +249,10 @@ namespace AfricasTalkingCS_Tests
             JObject fetchTransactionsResponseJson = JObject.Parse(fetchTransactionsResponse);
             var fetchTransactionsResponseStatus = fetchTransactionsResponseJson.GetValue("status");
             var success = (fetchTransactionsResponseStatus.ToString() == "Success");
-            Assert.IsTrue(success, "Should successfully fetch transactions based on category");
+            Assert.True(success, "Should successfully fetch transactions based on category");
         }
 
-        [TestMethod]
+        [Fact]
         public void DoFetchWalletTransactions()
         {
             const string pageNumber = "1";
@@ -262,10 +261,10 @@ namespace AfricasTalkingCS_Tests
             JObject fetchTransactionsResponseJson = JObject.Parse(fetchTransactionsResponse);
             var fetchTransactionsResponseStatus = fetchTransactionsResponseJson.GetValue("status");
             var success = (fetchTransactionsResponseStatus.ToString() == "Success");
-            Assert.IsTrue(success, "Should successfully fetch wallet transactions with default params");
+            Assert.True(success, "Should successfully fetch wallet transactions with default params");
         }
 
-        [TestMethod]
+        [Fact]
         public void DoFetchWalletTransactionsByDate()
         {
             const string pageNumber = "1";
@@ -277,17 +276,17 @@ namespace AfricasTalkingCS_Tests
             JObject fetchTransactionsResponseJson = JObject.Parse(fetchTransactionsResponse);
             var fetchTransactionsResponseStatus = fetchTransactionsResponseJson.GetValue("status");
             var success = (fetchTransactionsResponseStatus.ToString() == "Success");
-            Assert.IsTrue(success, "Should successfully fetch wallet transactions by date");
+            Assert.True(success, "Should successfully fetch wallet transactions by date");
         }
 
-        [TestMethod]
+        [Fact]
         public void DoFetchWalletBalance()
         {
             string fetchBalanceResponse = _atGWInstance.FetchWalletBalance();
             JObject fetchBalanceResponseJson = JObject.Parse(fetchBalanceResponse);
             var fetchBalanceResponseStatus = fetchBalanceResponseJson.GetValue("status");
             var success = (fetchBalanceResponseStatus.ToString() == "Success");
-            Assert.IsTrue(success, "Should successfully fetch wallet balance");
+            Assert.True(success, "Should successfully fetch wallet balance");
         }
     }
 }

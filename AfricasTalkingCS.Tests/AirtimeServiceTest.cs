@@ -1,7 +1,7 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using AfricasTalkingCS;
 using Newtonsoft.Json;
 using System.Text;
+using Xunit;
 
 namespace AfricasTalkingCS_Tests
 {
@@ -13,14 +13,14 @@ namespace AfricasTalkingCS_Tests
         public string Amount { get; set; }
     }
 
-    [TestClass]
+
     public class AirtimeService
     {
         private static string apikey = "e952920d25a20cc9a8144ae200363d722f3459273815201914d8d4603e59d047";
         private static string username = "sandbox";
         private readonly AfricasTalkingGateway _atGWInstance = new AfricasTalkingGateway(username,apikey);
 
-        [TestMethod]
+        [Fact]
         public void DoSendAirtimeToOneUser()
         {
             var airtimeUser = new AirtimeUsers();
@@ -29,11 +29,11 @@ namespace AfricasTalkingCS_Tests
             var airtimeRec = JsonConvert.SerializeObject(airtimeUser);
             var gatewayResponse = _atGWInstance.SendAirtime(airtimeRec);
             var success = gatewayResponse["errorMessage"] == "None" || gatewayResponse["errorMessage"] == "A duplicate request was received within the last 5 minutes";
-            Assert.IsTrue(success);
+            Assert.True(success);
         }
 
 
-        [TestMethod]
+        [Fact]
         public void DoSendToManyUsers()
         {
             var airtimeUser1 = new AirtimeUsers();
@@ -49,7 +49,7 @@ namespace AfricasTalkingCS_Tests
             airtimeStringBuilderInstance.Append($",{airtime2Recipient}");
             var gatewayResponse = _atGWInstance.SendAirtime(airtimeStringBuilderInstance);
             var success = gatewayResponse["errorMessage"] == "None" || gatewayResponse["errorMessage"] == "A duplicate request was received within the last 5 minutes";
-            Assert.IsTrue(success);
+            Assert.True(success);
         }
     }
 }
