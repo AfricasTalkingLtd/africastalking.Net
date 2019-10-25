@@ -1,12 +1,12 @@
-﻿namespace ValidateCardOTPOnly
-{
-    using System;
-    using Newtonsoft.Json;
-    using AfricasTalkingCS;
+﻿using System;
+using AfricasTalkingCS;
+using Newtonsoft.Json;
 
-    class Program
+namespace ValidateCardOTPOnly
+{
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
             const string Username = "sandbox";
@@ -20,13 +20,9 @@
                 var validate = gateway.ValidateCardOtp(TransactionId, Otp);
                 var res = JsonConvert.DeserializeObject(validate);
                 if (res["status"] == "Success")
-                {
                     Console.WriteLine("Awesome");
-                }
                 else
-                {
                     Console.WriteLine("We had an error " + res["status"]);
-                }
             }
             catch (AfricasTalkingGatewayException e)
             {

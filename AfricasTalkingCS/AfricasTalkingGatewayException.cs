@@ -6,12 +6,10 @@ namespace AfricasTalkingCS
     {
         public AfricasTalkingGatewayException(string message) : base(message)
         {
-            
         }
 
-        public AfricasTalkingGatewayException(Exception exception) :base(exception.Message,exception)
+        public AfricasTalkingGatewayException(Exception exception) : base(exception.Message, exception)
         {
-            
         }
     }
 }

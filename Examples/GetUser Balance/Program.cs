@@ -1,22 +1,21 @@
 ﻿using System;
-using  AfricasTalkingCS;
+using AfricasTalkingCS;
+
 namespace GetUser_Balance
 {
-    using System.Xml.Schema;
-
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
             var username = "yourLIVEAccounntUsername";
             var apiKey = "yourLIVEAccountAPIKEY";
-            
+
             var gw = new AfricasTalkingGateway(username, apiKey);
 
             try
             {
-                dynamic res = gw.GetUserData();
+                var res = gw.GetUserData();
                 Console.WriteLine(res);
             }
             catch (AfricasTalkingGatewayException e)

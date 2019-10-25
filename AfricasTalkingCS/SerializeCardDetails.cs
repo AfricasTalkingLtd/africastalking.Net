@@ -6,24 +6,28 @@
 //   The serialize.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
+using Newtonsoft.Json;
+
 namespace AfricasTalkingCS
 {
-    using Newtonsoft.Json;
-
     /// <summary>
-    /// The serialize.
+    ///     The serialize.
     /// </summary>
     public static class SerializeCardDetails
     {
         /// <summary>
-        /// Serializes Card details to JSON objects.
+        ///     Serializes Card details to JSON objects.
         /// </summary>
         /// <param name="self">
-        /// The self.
+        ///     The self.
         /// </param>
         /// <returns>
-        /// The <see cref="string"/>.
+        ///     The <see cref="string" />.
         /// </returns>
-        public static string CardDetailsToJson(this CardDetails self) => JsonConvert.SerializeObject(self, CardDetailsConverter.Settings);
+        public static string CardDetailsToJson(this CardDetails self)
+        {
+            return JsonConvert.SerializeObject(self, CardDetailsConverter.Settings);
+        }
     }
 }

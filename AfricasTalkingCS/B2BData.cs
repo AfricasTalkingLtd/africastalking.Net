@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using  Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+
 namespace AfricasTalkingCS
 {
     public class B2BData
@@ -12,7 +12,7 @@ namespace AfricasTalkingCS
         public string transferType { get; set; }
         public string destinationChannel { get; set; }
         public string destinationAccount { get; set; }
-        public dynamic metadata { get;  set; }
+        public dynamic metadata { get; set; }
 
         public override string ToString()
         {

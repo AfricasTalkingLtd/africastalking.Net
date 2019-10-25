@@ -7,46 +7,44 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Newtonsoft.Json;
+
 namespace AfricasTalkingCS
 {
-    using System.Collections.Generic;
-
-    using Newtonsoft.Json;
-
     /// <summary>
-    /// The B2B response result.
+    ///     The B2B response result.
     /// </summary>
     public class B2BResult
     {
         /// <summary>
-        /// Gets or sets the Provider Channel.
+        ///     Gets or sets the Provider Channel.
         /// </summary>
         [JsonProperty("providerChannel")]
         public int ProviderChannel { get; set; }
 
         /// <summary>
-        /// Gets or sets the Transaction ID.
+        ///     Gets or sets the Transaction ID.
         /// </summary>
         [JsonProperty("transactionId")]
         public string TransactionId { get; set; }
 
         /// <summary>
-        /// Gets or sets the Transaction Fee.
+        ///     Gets or sets the Transaction Fee.
         /// </summary>
         [JsonProperty("transactionFee")]
         public string TransactionFee { get; set; }
 
         /// <summary>
-        /// Sets/ Gets status.
+        ///     Sets/ Gets status.
         /// </summary>
         [JsonProperty("status")]
         public string Status { get; set; }
 
         /// <summary>
-        /// The to string.
+        ///     The to string.
         /// </summary>
         /// <returns>
-        /// The <see cref="string"/>.
+        ///     The <see cref="string" />.
         /// </returns>
         public override string ToString()
         {

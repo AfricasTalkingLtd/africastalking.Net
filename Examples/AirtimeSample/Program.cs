@@ -1,25 +1,19 @@
 ﻿using System;
-using  AfricasTalkingCS;
+using AfricasTalkingCS;
+using Newtonsoft.Json;
 
 namespace AirtimeSample
 {
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
-
-    class AirtimeUsers {
-        [JsonProperty("phoneNumber")]
-        public string PhoneNumber { get; set; }
-
-        [JsonProperty("amount")]
-        public string Amount { get; set; }
-    }
-    class Program
+    internal class AirtimeUsers
     {
-        static void Main(string[] args)
+        [JsonProperty("phoneNumber")] public string PhoneNumber { get; set; }
+
+        [JsonProperty("amount")] public string Amount { get; set; }
+    }
+
+    internal class Program
+    {
+        private static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
             var username = "Username";
@@ -31,7 +25,7 @@ namespace AirtimeSample
             var airtimeGateway = new AfricasTalkingGateway(username, apikey);
             try
             {
-                dynamic airtimeTransaction = airtimeGateway.SendAirtime(airtimeRec);
+                var airtimeTransaction = airtimeGateway.SendAirtime(airtimeRec);
                 Console.WriteLine(airtimeTransaction);
             }
             catch (AfricasTalkingGatewayException e)

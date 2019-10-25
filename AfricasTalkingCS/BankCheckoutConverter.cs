@@ -7,22 +7,22 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Newtonsoft.Json;
+
 namespace AfricasTalkingCS
 {
-    using Newtonsoft.Json;
-
     /// <summary>
-    /// The bank checkout JSON converter.
+    ///     The bank checkout JSON converter.
     /// </summary>
     public static class BankCheckoutConverter
     {
         /// <summary>
-        /// The serializer settings.
+        ///     The serializer settings.
         /// </summary>
         public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
-                                                                     {
-                                                                         MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
-                                                                         DateParseHandling = DateParseHandling.None,
-                                                                     };
+        {
+            MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
+            DateParseHandling = DateParseHandling.None
+        };
     }
 }

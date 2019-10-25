@@ -7,22 +7,22 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Newtonsoft.Json;
+
 namespace AfricasTalkingCS
 {
-    using Newtonsoft.Json;
-
     /// <summary>
-    /// The converter.
+    ///     The converter.
     /// </summary>
     public static class CardDetailsConverter
     {
         /// <summary>
-        /// The settings.
+        ///     The settings.
         /// </summary>
         public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
-                                                                     {
-                                                                         MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
-                                                                         DateParseHandling = DateParseHandling.None,
-                                                                     };
+        {
+            MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
+            DateParseHandling = DateParseHandling.None
+        };
     }
 }

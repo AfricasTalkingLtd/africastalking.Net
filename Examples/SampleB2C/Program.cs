@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using  AfricasTalkingCS;
+using AfricasTalkingCS;
 
 namespace SampleB2C
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
 
@@ -18,19 +18,19 @@ namespace SampleB2C
              */
 
             // Developer Details
-            string username = "sandbox";
+            var username = "sandbox";
             //string environment = "sandbox";
-            string apiKey = "APIKEY";
-            string productName = "coolproduct";
-            string currencyCode = "KES";
+            var apiKey = "APIKEY";
+            var productName = "coolproduct";
+            var currencyCode = "KES";
 
             // Recepient details,these can be retrieved from a db..or somewhere else then parsed...we'll keep it simple
-            string hero1PhoneNum = "+254714978532";
-            string hero2PhoneNum = "+254712387452";
-            string hero1Name = "Batman";
-            string hero2Name = "Superman";
-            decimal hero1amount = 15M;
-            decimal hero2amount = 54000M;
+            var hero1PhoneNum = "+254714978532";
+            var hero2PhoneNum = "+254712387452";
+            var hero1Name = "Batman";
+            var hero2Name = "Superman";
+            var hero1amount = 15M;
+            var hero2amount = 54000M;
 
             // We invoke our gateway
             var gateway = new AfricasTalkingGateway(username, apiKey);
@@ -63,6 +63,7 @@ namespace SampleB2C
             {
                 Console.WriteLine("We ran into problems: " + e.StackTrace + e.Message);
             }
+
             Console.ReadLine();
         }
     }

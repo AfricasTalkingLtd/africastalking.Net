@@ -1,11 +1,11 @@
-﻿
+﻿using System;
+using AfricasTalkingCS;
+
 namespace CreateToken
 {
-    using System;
-    using  AfricasTalkingCS;
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
             var phoneNumber = "+254724587654";

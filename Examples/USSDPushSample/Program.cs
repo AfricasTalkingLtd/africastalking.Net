@@ -1,10 +1,11 @@
-﻿namespace USSDPushSample
+﻿using System;
+using AfricasTalkingCS;
+
+namespace USSDPushSample
 {
-    using System;
-    using AfricasTalkingCS;
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
             const string Username = "sandbox";
@@ -19,17 +20,11 @@
             try
             {
                 var tkn = gateway.CreateCheckoutToken(PhoneNumber);
-                if (tkn["description"] == "Success")
-                {
-                    tokenId = tkn["token"];
-                }
+                if (tkn["description"] == "Success") tokenId = tkn["token"];
 
                 // Then send user menu...
                 var prompt = gateway.InitiateUssdPushRequest(PhoneNumber, Menu, tokenId);
-                if (prompt["errorMessage"] == "None")
-                {
-                    Console.WriteLine("Awesome");
-                }
+                if (prompt["errorMessage"] == "None") Console.WriteLine("Awesome");
             }
             catch (AfricasTalkingGatewayException e)
             {

@@ -4,6 +4,9 @@ namespace AfricasTalkingCS
 {
     public static class SerializeOTP
     {
-        public static string OTPToJson(this OTP self) => JsonConvert.SerializeObject(self, OTPConverter.Settings);
+        public static string OTPToJson(this OTP self)
+        {
+            return JsonConvert.SerializeObject(self, OTPConverter.Settings);
+        }
     }
 }

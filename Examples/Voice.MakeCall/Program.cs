@@ -1,10 +1,11 @@
 ﻿using System;
 using AfricasTalkingCS;
+
 namespace Voice.MakeCall
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
             var username = "Username";
@@ -23,7 +24,8 @@ namespace Voice.MakeCall
             }
             catch (AfricasTalkingGatewayException exception)
             {
-                Console.WriteLine("Something went horribly wrong: " + exception.Message + ".\nCaused by :" + exception.StackTrace);
+                Console.WriteLine("Something went horribly wrong: " + exception.Message + ".\nCaused by :" +
+                                  exception.StackTrace);
             }
 
             Console.ReadLine();

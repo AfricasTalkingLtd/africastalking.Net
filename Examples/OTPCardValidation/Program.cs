@@ -1,16 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using AfricasTalkingCS;
+using Newtonsoft.Json;
 
 namespace OTPCardValidation
 {
-    using System.Collections.Generic;
-
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
-
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
             const string Username = "sandbox";
@@ -24,10 +21,10 @@ namespace OTPCardValidation
             const decimal Amount = 7500.50M;
             const string Narration = "Buy Aluku Records";
             var metadata = new Dictionary<string, string>
-                               {
-                                   { "Parent Company",  "Offering Records" },
-                                   { "C.E.O", "Boddhi Satva" }
-                               };
+            {
+                {"Parent Company", "Offering Records"},
+                {"C.E.O", "Boddhi Satva"}
+            };
             const short CardCvv = 123;
             const string CardNum = "123456789012345";
             const string CountryCode = "NG";
@@ -35,7 +32,7 @@ namespace OTPCardValidation
             const int ValidTillMonth = 9;
             const int ValidTillYear = 2019;
             var cardDetails = new PaymentCard(CardPin, CountryCode, CardCvv, ValidTillMonth, ValidTillYear, CardNum);
-            
+
 
             try
             {
@@ -71,19 +68,15 @@ namespace OTPCardValidation
             }
 
             Console.WriteLine("Attempting to Validate");
-            
+
             try
             {
                 var validate = gateway.ValidateCardOtp(transactionId, Otp);
                 var res = JsonConvert.DeserializeObject(validate);
                 if (res["status"] == "Success")
-                {
                     Console.WriteLine("Awesome");
-                }
                 else
-                {
                     Console.WriteLine("We had an error " + res["status"]);
-                }
             }
             catch (AfricasTalkingGatewayException e)
             {

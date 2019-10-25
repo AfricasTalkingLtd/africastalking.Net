@@ -7,46 +7,45 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using Newtonsoft.Json;
+
 namespace AfricasTalkingCS
 {
-    using System.Collections.Generic;
-
-    using Newtonsoft.Json;
-
     /// <summary>
-    /// The data result.
+    ///     The data result.
     /// </summary>
     public class DataResult
     {
         /// <summary>
-        /// Gets or sets the queued items.
+        ///     Gets or sets the queued items.
         /// </summary>
         [JsonProperty("numQueued")]
         public int NumQueued { get; set; }
 
         /// <summary>
-        /// Gets or sets the entries.
+        ///     Gets or sets the entries.
         /// </summary>
         [JsonProperty("entries")]
         public IList<Entry> Entries { get; set; }
 
         /// <summary>
-        /// Gets or sets the total value.
+        ///     Gets or sets the total value.
         /// </summary>
         [JsonProperty("totalValue")]
         public string TotalValue { get; set; }
 
         /// <summary>
-        /// Gets or sets the total transaction fee.
+        ///     Gets or sets the total transaction fee.
         /// </summary>
         [JsonProperty("totalTransactionFee")]
         public string TotalTransactionFee { get; set; }
 
         /// <summary>
-        /// The to string.
+        ///     The to string.
         /// </summary>
         /// <returns>
-        /// The <see cref="string"/>.
+        ///     The <see cref="string" />.
         /// </returns>
         public override string ToString()
         {

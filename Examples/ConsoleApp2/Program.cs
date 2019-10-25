@@ -1,12 +1,12 @@
 ﻿using System;
-using  AfricasTalkingCS;
+using System.Collections.Generic;
+using AfricasTalkingCS;
+
 namespace ConsoleApp2
 {
-    using System.Collections.Generic;
-
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var username = "sandbox";
             var environment = "sandbox";
@@ -14,11 +14,11 @@ namespace ConsoleApp2
             var productName = "coolproduct";
             var phoneNumber = "+254724587654";
             var currency = "KES";
-            int amount = 35700;
+            var amount = 35700;
             var channel = "mychannel";
             var metadata = new Dictionary<string, string>
             {
-                { "reason", "broken car" }
+                {"reason", "broken car"}
             };
 
             var gw = new AfricasTalkingGateway(username, apiKey, environment);
@@ -32,6 +32,7 @@ namespace ConsoleApp2
             {
                 Console.WriteLine("We ran into problems: " + e.Message);
             }
+
             Console.ReadLine();
         }
     }

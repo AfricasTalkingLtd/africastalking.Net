@@ -5,17 +5,6 @@ namespace AfricasTalkingCS
 {
     public class MobileB2CRecepient
     {
-        [JsonProperty("name")]
-        public string Name { get; set; }
-        [JsonProperty("phoneNumber")]
-        public string PhoneNumber { get; set; }
-        [JsonProperty("currencyCode")]
-        public string CurrencyCode { get; set; }
-        [JsonProperty("amount")]
-        public decimal Amount { get; set; }
-        [JsonProperty("metadata")]
-        public Dictionary<string, string> Metadata { get; private set; }
-        
         public MobileB2CRecepient(string name, string phoneNumber, string currencyCode, decimal amount)
         {
             Name = name;
@@ -25,9 +14,19 @@ namespace AfricasTalkingCS
             Metadata = new Dictionary<string, string>();
         }
 
+        [JsonProperty("name")] public string Name { get; set; }
+
+        [JsonProperty("phoneNumber")] public string PhoneNumber { get; set; }
+
+        [JsonProperty("currencyCode")] public string CurrencyCode { get; set; }
+
+        [JsonProperty("amount")] public decimal Amount { get; set; }
+
+        [JsonProperty("metadata")] public Dictionary<string, string> Metadata { get; private set; }
+
         public void AddMetadata(string key, string value)
         {
-            this.Metadata.Add(key, value);
+            Metadata.Add(key, value);
         }
 
         public string ToJson()

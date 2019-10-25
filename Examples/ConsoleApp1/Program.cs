@@ -1,30 +1,30 @@
 ﻿using System;
-using  AfricasTalkingCS;
+using AfricasTalkingCS;
 
 namespace ConsoleApp1
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             // Console.WriteLine("Hello World!");
             var username = "YourUSERNAME";
             var apiKey = "yourAPIKEY";
-            string env = "sandbox";
+            var env = "sandbox";
             var recep = "recipient";
             var msg = "Super awesome message ☻ 😁";
-               
+
 
             var gateway = new AfricasTalkingGateway(username, apiKey, env);
             try
             {
-                dynamic res = gateway.SendMessage(recep, msg);
+                var res = gateway.SendMessage(recep, msg);
                 foreach (var re in res["SMSMessageData"]["Recipients"])
                 {
-                    Console.WriteLine((string)re["number"] + ": ");
-                    Console.WriteLine((string)re["status"] + ": ");
-                    Console.WriteLine((string)re["messageId"] + ": ");
-                    Console.WriteLine((string)re["cost"] + ": ");
+                    Console.WriteLine((string) re["number"] + ": ");
+                    Console.WriteLine((string) re["status"] + ": ");
+                    Console.WriteLine((string) re["messageId"] + ": ");
+                    Console.WriteLine((string) re["cost"] + ": ");
                 }
             }
             catch (AfricasTalkingGatewayException exception)

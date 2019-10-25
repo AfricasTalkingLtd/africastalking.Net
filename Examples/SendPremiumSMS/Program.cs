@@ -1,19 +1,19 @@
 ﻿using System;
+using System.Collections;
 using AfricasTalkingCS;
+
 namespace SendPremiumSMS
 {
-    using System.Collections;
-
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
             var username = "sandbox";
             var apikey = "KEY";
             var env = "sandbox";
             var gateway = new AfricasTalkingGateway(username, apikey, env);
-            var opts = new Hashtable { ["keyword"] = "mykeyword" }; // ....
+            var opts = new Hashtable {["keyword"] = "mykeyword"}; // ....
             var from = "NNNNN";
             var to = "+2547XXXXX";
             var message = "Super Cool Message";

@@ -7,40 +7,38 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Newtonsoft.Json;
+
 namespace AfricasTalkingCS
 {
-    using System.Collections.Generic;
-
-    using Newtonsoft.Json;
-
     /// <summary>
-    /// The Wallet transfer / Stash Topup response result.
+    ///     The Wallet transfer / Stash Topup response result.
     /// </summary>
     public class StashResponse
     {
         /// <summary>
-        /// Gets or sets the Transaction ID.
+        ///     Gets or sets the Transaction ID.
         /// </summary>
         [JsonProperty("description")]
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets the Transaction ID.
+        ///     Gets or sets the Transaction ID.
         /// </summary>
         [JsonProperty("transactionId")]
         public string TransactionId { get; set; }
 
         /// <summary>
-        /// Sets/ Gets status.
+        ///     Sets/ Gets status.
         /// </summary>
         [JsonProperty("status")]
         public string Status { get; set; }
 
         /// <summary>
-        /// The to string.
+        ///     The to string.
         /// </summary>
         /// <returns>
-        /// The <see cref="string"/>.
+        ///     The <see cref="string" />.
         /// </returns>
         public override string ToString()
         {

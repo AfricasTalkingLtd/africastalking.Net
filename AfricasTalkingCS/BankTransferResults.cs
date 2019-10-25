@@ -7,29 +7,27 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using Newtonsoft.Json;
+
 namespace AfricasTalkingCS
 {
-    using System.Collections.Generic;
-
-    using Newtonsoft.Json;
-
     /// <summary>
-    /// The Bank Transfer response result.
+    ///     The Bank Transfer response result.
     /// </summary>
     public class BankTransferResults
     {
-
         /// <summary>
-        /// Gets or sets the Transfer entry data.
+        ///     Gets or sets the Transfer entry data.
         /// </summary>
         [JsonProperty("entries")]
         public IList<BankTransferEntries> Entries { get; set; }
 
         /// <summary>
-        /// The to string.
+        ///     The to string.
         /// </summary>
         /// <returns>
-        /// The <see cref="string"/>.
+        ///     The <see cref="string" />.
         /// </returns>
         public override string ToString()
         {

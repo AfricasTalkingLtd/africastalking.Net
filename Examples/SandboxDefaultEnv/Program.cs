@@ -1,10 +1,11 @@
 ﻿using System;
 using AfricasTalkingCS;
+
 namespace SandboxDefaultEnv
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             const string username = "sandbox";
             const string apikey = "afd635a4f295dd936312836c0b944d55f2a836e8ff2b63987da5e717cd5ff745";
