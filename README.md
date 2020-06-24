@@ -69,17 +69,28 @@ The package needs to be configured with your Africa's Talking username and API k
 
 ```csharp 
 [HttpPost]
-public ActionResult SomeCoolMethod(awesome, params)
+[Consumes("application/x-www-form-urlencoded")]
+public ActionResult SomeCoolMethod([FromForm] SMSResponse smsResponse)
 {
-   // Your awesome logic
-
-   //If not using MVC5
-   return new HttpStatusCodeResult(200);
-
-   //If using MVC5
-   return new HttpStatusCodeResult(HttpStatusCode.OK);  // OK = 200
-} 
+    // Your awesome logic
+    return Ok();
+}
 ```
+We also have a class SMSResponse as part of the controller that makes getters and setters for the payload we receive from the server. It should look as so
+```csharp
+    public class SMSResponse
+    {
+        public string Date { get; set; }
+        public string From { get; set; }
+        public string Id { get; set; }
+        public string LinkId { get; set; }
+        public string Text { get; set; }
+        public string NetworkCode { get; set; }
+        public string To { get; set; }
+
+    }
+```
+
 
 ### SMS 
 ```csharp 
