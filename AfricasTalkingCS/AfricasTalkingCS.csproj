@@ -4,7 +4,7 @@
     <TargetFrameworks>net45;net46;net48;netstandard2.0;netstandard2.1</TargetFrameworks>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.8.0</Version>
+    <Version>1.1.8</Version>
     <Authors>TheBeachmaster</Authors>
     <PackageId>AfricasTalking.NET</PackageId>
     <Company>Africa's Talking Ltd</Company>
@@ -17,8 +17,8 @@
     <RepositoryUrl>https://github.com/AfricasTalkingLtd/africastalking.Net</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>sms voice mobile-payments airtime card-payments bank-tranfers otp-validations</PackageTags>
-    <AssemblyVersion>1.8.0</AssemblyVersion>
-    <FileVersion>1.8.0</FileVersion>
+    <AssemblyVersion>1.1.8</AssemblyVersion>
+    <FileVersion>1.1.8</FileVersion>
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>AfricasTalking.NET.pfx</AssemblyOriginatorKeyFile>
     <PackageReleaseNotes>
