@@ -16,6 +16,7 @@ namespace AfricasTalkingCS_Tests
 
         private string TestId = "ATPid_e738bcb66505a9c0cf00868e569e9026";
 
+        [Ignore]
         [TestMethod]
         public void DoMobileCheckout()
         {
@@ -34,6 +35,7 @@ namespace AfricasTalkingCS_Tests
             Assert.IsTrue(success, "Should successfully send Mobile Checkout prompt");
         }
 
+        [Ignore]
         [TestMethod]
         public void DoBusinessToClientTransaction()
         {
@@ -62,6 +64,7 @@ namespace AfricasTalkingCS_Tests
             Assert.IsTrue(success,  "Should successfully disburse B2C transactions to valid phone numbers");
         }
 
+        [Ignore]
         [TestMethod] 
         public void DoBusinessToBusinessTransaction()
         {
@@ -80,6 +83,7 @@ namespace AfricasTalkingCS_Tests
             Assert.IsTrue(success);
         }
 
+        [Ignore]
         [TestMethod]
         public void DoBankCheckout()
         {
@@ -103,6 +107,7 @@ namespace AfricasTalkingCS_Tests
             Assert.IsTrue(success, "Should succcessfully process bank checkout");
         }
 
+        [Ignore]
         [TestMethod]
         public void DoBankTransfer()
         {
@@ -134,6 +139,7 @@ namespace AfricasTalkingCS_Tests
             Assert.IsTrue(success, "Should succesfully transfer monies between bank accounts");
         }
 
+        [Ignore]
         [TestMethod]
         public void DoCardCheckout()
         {
@@ -200,6 +206,7 @@ namespace AfricasTalkingCS_Tests
             Assert.IsTrue(success, "Should successfully topup product stash");
         }
 
+        [Ignore]
         [TestMethod]
         public void DoFindTransaction()
         {
@@ -210,6 +217,7 @@ namespace AfricasTalkingCS_Tests
             Assert.IsTrue(success, "Should successfully find a transaction given it's ID");
         }
 
+        [Ignore]
         [TestMethod]
         public void DoFetchProductTransactions()
         {
@@ -223,6 +231,7 @@ namespace AfricasTalkingCS_Tests
             Assert.IsTrue(success, "Should successfully fetch transactions with default params");
         }
 
+        [Ignore]
         [TestMethod] 
         public void DoFetchProductTransactionsByDateDate() 
         {
@@ -239,6 +248,7 @@ namespace AfricasTalkingCS_Tests
             Assert.IsTrue(success, "Should successfully fetch transactions based on given date");
         }
 
+        [Ignore]
         [TestMethod]
         public void DoFetchProductTransactionByCategory()
         {
@@ -253,6 +263,7 @@ namespace AfricasTalkingCS_Tests
             Assert.IsTrue(success, "Should successfully fetch transactions based on category");
         }
 
+        [Ignore]
         [TestMethod]
         public void DoFetchWalletTransactions()
         {
@@ -265,6 +276,7 @@ namespace AfricasTalkingCS_Tests
             Assert.IsTrue(success, "Should successfully fetch wallet transactions with default params");
         }
 
+        [Ignore]
         [TestMethod]
         public void DoFetchWalletTransactionsByDate()
         {
