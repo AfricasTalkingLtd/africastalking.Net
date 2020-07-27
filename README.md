@@ -1,5 +1,5 @@
 # Official Africa's Talking C# API wrapper  
-[![Build Status](https://arthurkennotieno.visualstudio.com/AfricasTalking.NET.C-Sharp/_apis/build/status/AfricasTalking.NET.C-Sharp-CI?branchName=master)](https://arthurkennotieno.visualstudio.com/AfricasTalking.NET.C-Sharp/_build/latest?definitionId=1?branchName=master) 
+[![Build Status](https://github.com/AfricasTalkingLtd/africastalking.Net/workflows/.NETBuild/badge.svg)]
  
 [![NuGet](https://img.shields.io/nuget/v/AfricasTalking.NET.svg)](https://www.nuget.org/packages/AfricasTalking.NET/)
 
@@ -17,7 +17,7 @@ Take a look at the [API docs here](http://docs.africastalking.com/) for more inf
 + Key in **AfricasTalking.NET** and select version _1.1.720_ or higher. 
 + Click on the ***Install*** button and accept the licences to proceed. 
 
-> For .NET Standard 2.0 projects yellow triangles may appear on your solution items,note that these are warnings due to deprecated support for some packages used by the wrapper.These will be reviewed in future releases,for now they will not affect the functionality of your project and can be safely ignored.Should there be a case where this package breaks your project kindly report the package via Nuget. 
+> For .NET Standard 2.0 projects warngings may appear on your solution items,note that these are warnings due to deprecated support for some packages used by the wrapper.These will be reviewed in future release. These can be safely ignored.
 >
 > For more info on this follow [this thread](https://github.com/aspnet/Mvc/issues/5822) and [this link](https://dotnet.myget.org/feed/aspnetwebstack-dev/package/nuget/Microsoft.AspNet.WebApi.Client) .
 
@@ -111,7 +111,7 @@ We also have a class SMSResponse as part of the controller that makes getters an
             }
 ```
 
-#### [Sending SMS](http://docs.africastalking.com/sms/sending) 
+#### [Sending Bulk SMS](http://docs.africastalking.com/sms/sending) 
 
 - `SendMessage(to,message,from,bulkSmsMode,options)` :  The following arguments are supplied to facilitate sending of messages via our APIs  
 
@@ -125,7 +125,21 @@ We also have a class SMSResponse as part of the controller that makes getters an
         -   `linkId` : This parameter is used for premium services to send OnDemand messages. We forward the linkId to your application when the user send a message to your service. (Essential for premium subscription services) 
         -   `retryDurationInHours` : This parameter is used for premium messages. It specifies the number of hours your subscription message should be retried in case it's not delivered to the subscriber. (Essential for premium subscription services)
 
-    ​
+#### [Sending Premium SMS](http://docs.africastalking.com/sms/sending) 
+
+- `SendPremiumMessage(to,message,from,bulkSmsMode,options)` :  The following arguments are supplied to facilitate sending of messages via our APIs  
+
+    - `to` : The recipient(s) expecting the message 
+    - `message` : The SMS body. 
+    - `from` :  (`Optional`) The Short-code or Alphanumeric ID that is associated with an Africa's Talking account.  
+    - `bulkSmsMode` (`Optional`) : This parameter will be used by the Mobile Service Provider to determine who gets  billed for a message sent using a Mobile-Terminated Short-code. Must be set to  *1*  for Bulk SMS. .
+    - `options` :   (`Optional`). Passed as _key-value_ pairs 
+        -   `enque` : This parameter is used for Bulk SMS clients that would like deliver as many messages to the API before waiting for an Ack from the Telcos. If enabled, the API will store the messages in its databases and send them out asynchronously after responding to the request 
+        -   `keyword` : This parameter is used for premium services. It is essential for subscription premium services.
+        -   `linkId` : This parameter is used for premium services to send OnDemand messages. We forward the linkId to your application when the user send a message to your service. (Essential for premium subscription services) 
+        -   `retryDurationInHours` : This parameter is used for premium messages. It specifies the number of hours your subscription message should be retried in case it's not delivered to the subscriber. (Essential for premium subscription services)
+
+     ​
 
 #### [Retrieving SMS](http://docs.africastalking.com/sms/fetchmessages)
 
