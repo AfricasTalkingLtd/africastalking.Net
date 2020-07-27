@@ -6,7 +6,7 @@ namespace AfricasTalkingCS_Tests
     [TestClass]
     public class UssdPushService
     {
-        private static string apikey = "e952920d25a20cc9a8144ae200363d722f3459273815201914d8d4603e59d047";
+        private static string apikey = "6c36e56b86c24c2ff66adaff340d60793dff71ac304bc551f7056ca76dd8032a";
         private static string username = "sandbox";
         private readonly AfricasTalkingGateway _atGWInstance = new AfricasTalkingGateway(username,apikey);
 

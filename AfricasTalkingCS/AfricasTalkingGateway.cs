@@ -164,7 +164,97 @@ namespace AfricasTalkingCS
                         }
                     }
 
-                    var response = this.SendPostRequest(data, this.SmsUrl);
+                    var response = this.SendPostRequest(data, this.BulkSMSUrl);
+                    dynamic json = JObject.Parse(response);
+                    return json;
+                }
+                catch (AfricasTalkingGatewayException e)
+                {
+                    throw new AfricasTalkingGatewayException(e);
+                }
+            }
+        }
+
+        /// <summary>
+        /// The send premium message method.
+        /// </summary>
+        /// <param name="to">
+        /// The Recipient(s).
+        /// </param>
+        /// <param name="message">
+        /// The message content.
+        /// </param>
+        /// <param name="from">
+        /// The Sender.
+        /// </param>
+        /// <param name="bulkSmsMode">
+        /// The bulk SMS mode: set 1 for Bulk SMS
+        /// </param>
+        /// <param name="options">
+        /// The Options for premium SMS.
+        /// </param>
+        /// <returns>
+        /// The <see cref="dynamic"/>.
+        /// </returns>
+        /// <exception cref="AfricasTalkingGatewayException">
+        /// Errors thrown by the gateway
+        /// </exception>
+        public dynamic SendPremiumMessage(
+            string to,
+            string message,
+            string from = null,
+            int bulkSmsMode = -1,
+            Hashtable options = null)
+        {
+            // TODO Convert options to type IDictionary
+            string[] numbers = to.Split(separator: new[] {','}, options: StringSplitOptions.RemoveEmptyEntries);
+            var isValidphoneNumber = IsPhoneNumber(numbers);
+
+
+
+            if (to.Length == 0 || message.Length == 0 || !isValidphoneNumber)
+            {
+                throw new AfricasTalkingGatewayException("The message is either empty or phone number is not valid");
+            }
+            else
+            {
+                try
+                {
+                    var data = new Hashtable
+                                   {
+                                       ["username"] = this._username,
+                                       ["to"] = to,
+                                       ["message"] = message
+                                   };
+                    if (from != null)
+                    {
+                        data["from"] = from;
+                        data["bulkSmsMode"] = Convert.ToString(bulkSmsMode);
+                        if (options != null)
+                        {
+                            if (options.Contains("keyword"))
+                            {
+                                data["keyword"] = options["keyword"];
+                            }
+
+                            if (options.Contains("linkId"))
+                            {
+                                data["linkId"] = options["linkId"];
+                            }
+
+                            if (options.Contains("enqueue"))
+                            {
+                                data["enqueue"] = options["enqueue"];
+                            }
+
+                            if (options.Contains("retryDurationInHours"))
+                            {
+                                data["retryDurationInHours"] = options["retryDurationInHours"];
+                            }
+                        }
+                    }
+
+                    var response = this.SendPostRequest(data, this.PremiumSMSURL);
                     dynamic json = JObject.Parse(response);
                     return json;
                 }
@@ -272,7 +362,7 @@ namespace AfricasTalkingCS
         /// </exception>
         public dynamic FetchMessages(int lastReceivedId)
         {
-            var url = this.SmsUrl + "?username=" + this._username + "&lastReceivedId" + Convert.ToString(lastReceivedId);
+            var url = this.BulkSMSUrl + "?username=" + this._username + "&lastReceivedId" + Convert.ToString(lastReceivedId);
             var response = this.SendGetRequest(url);
 
             if (this._responseCode != (int)HttpStatusCode.OK)
@@ -684,7 +774,7 @@ namespace AfricasTalkingCS
         /// <summary>
         /// SMS Endpoint.
         /// </summary>
-        private string SmsUrl => this.ApiHost + "/version1/messaging";
+        private string BulkSMSUrl => this.ApiHost + "/version1/messaging";
 
         /// <summary>
         /// Find Transaction by ID Endpoint
@@ -727,6 +817,12 @@ namespace AfricasTalkingCS
         /// The USSD push url.
         /// </summary>
         private string UssdPushUrl => this.ApiHost + "/ussd/push/request";
+
+        /// <summary>
+        /// Premium endpoint.
+        /// </summary>
+        private string PremiumSMSURL => (ReferenceEquals(this._environment, "sandbox") ? "https://api.sandbox.africastalking.com/version1/messaging" : "https://content.africastalking.com/version1/messaging");
+
 
         /// <summary>
         /// The send get request helper method.
