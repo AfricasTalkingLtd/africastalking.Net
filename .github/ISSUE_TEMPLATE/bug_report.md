@@ -30,8 +30,8 @@ If applicable, add screenshots to help explain your problem.
 
 **Additional context** 
 
-Add any other context example node environment, OS about the problem here.
+Add any other context example .NET environment, OS about the problem here.
 
-Node Version: 
+.NET Version: 
 
 OS (MacOS/Linux-like-specify e.g. Arch Linux, Ubuntu 20.04/Windows etc):

@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Suggest something we can add to this demo
+about: Suggest something we can add to this library
 title: ''
 labels: enhancement
 assignees: TheBeachMaster
