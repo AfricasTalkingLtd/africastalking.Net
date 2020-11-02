@@ -4,7 +4,7 @@
     <TargetFrameworks>net45;net46;net48;netstandard2.0;netstandard2.1</TargetFrameworks>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.2.0</Version>
+    <Version>1.2.1</Version>
     <Authors>TheBeachmaster</Authors>
     <PackageId>AfricasTalking.NET</PackageId>
     <Company>Africa's Talking Ltd</Company>
@@ -17,14 +17,13 @@
     <RepositoryUrl>https://github.com/AfricasTalkingLtd/africastalking.Net</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>sms voice mobile-payments airtime card-payments bank-tranfers otp-validations</PackageTags>
-    <AssemblyVersion>1.2.0</AssemblyVersion>
-    <FileVersion>1.2.0</FileVersion>
+    <AssemblyVersion>1.2.1</AssemblyVersion>
+    <FileVersion>1.2.1</FileVersion>
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>AfricasTalking.NET.pfx</AssemblyOriginatorKeyFile>
     <PackageReleaseNotes>
     1. Improvements 
-       1.1. Update Premium SMS URLs
-       1.2. Update Platform support
+       1.1. Update phone number library
     </PackageReleaseNotes>
     <NeutralLanguage></NeutralLanguage>
   </PropertyGroup>
@@ -34,7 +33,7 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="libphonenumber-csharp" Version="8.12.1" />
+    <PackageReference Include="libphonenumber-csharp" Version="8.12.11" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />

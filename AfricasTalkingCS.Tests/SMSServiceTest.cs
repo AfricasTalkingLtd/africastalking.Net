@@ -20,6 +20,17 @@ namespace AfricasTalkingCS_Tests
             Assert.IsTrue(success, "Should successfully send message to a valid phone number");
         }
 
+        [Ignore] // Sandbox has not received phonenumber lib update
+        [TestMethod]
+        public void DoSendMessageToOneNewValidNumber()
+        {
+            var phoneNumber = "+254111604133";
+            var message     = "Hello Mrs. Anderson";
+            var gatewayResponse = _atGWInstance.SendMessage(phoneNumber, message);
+            var success = gatewayResponse["SMSMessageData"]["Recipients"][0]["status"] == "Success";
+            Assert.IsTrue(success, "Should successfully send message to a valid phone number");
+        }
+
         [TestMethod]
         public void DoSendMessageToManyPeopleofValidNumbers()
         {
