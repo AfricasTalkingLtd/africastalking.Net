@@ -25,7 +25,7 @@ jobs:
     - name: Test
       run: dotnet test --no-restore --verbosity normal
     - name: Publish Package
-      uses: brandedoutcast/publish-nuget@v2.5.5
+      uses: rohith/publish-nuget@v2
       with:
           PROJECT_FILE_PATH: AfricasTalkingCS/AfricasTalkingCS.csproj
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
