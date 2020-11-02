@@ -175,6 +175,7 @@ namespace AfricasTalkingCS_Tests
             Assert.IsTrue(success, "Should succesfully complete a Card checkout transaction");
         }
 
+        [Ignore]
         [TestMethod]
         public void DoWalletTransfer()
         {
@@ -192,6 +193,7 @@ namespace AfricasTalkingCS_Tests
             Assert.IsTrue(success, "Should transfer amounts between wallets");
         }
         
+        [Ignore]
         [TestMethod]
         public void DoTopupStash()
         {
