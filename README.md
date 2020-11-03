@@ -14,7 +14,7 @@ Take a look at the [API docs here](http://docs.africastalking.com/) for more inf
 + On a new project, Navigate to the ***Solution Explorer*** tab within Visual Studio. 
 + Right-click on the ***References*** node and click on the *Manage Nuget Packages* from the resulting context menu. 
 + On the Nuget Package Manager window navigate to the ***Browse*** Tab. 
-+ Key in **AfricasTalking.NET** and select version _1.2.0_ or higher. 
++ Key in **AfricasTalking.NET** and select version _1.2.1_ or higher. 
 + Click on the ***Install*** button and accept the licences to proceed. 
 
 > For .NET Standard 2.0 projects warngings may appear on your solution items,note that these are warnings due to deprecated support for some packages used by the wrapper.These will be reviewed in future release. These can be safely ignored.
@@ -28,7 +28,7 @@ Take a look at the [API docs here](http://docs.africastalking.com/) for more inf
 
 + From the _command prompt/powershell window_ opened in your project directory, key in the following and press *Enter*. 
 ```powershell 
- dotnet add package AfricasTalking.NET --version 1.2.0
+ dotnet add package AfricasTalking.NET --version 1.2.1
 ```
 > Ensure you have the latest version of the package. Visit [Nuget](https://www.nuget.org/packages/AfricasTalking.NET/) for more info on the latest release of this package. 
 
@@ -36,7 +36,7 @@ Take a look at the [API docs here](http://docs.africastalking.com/) for more inf
 
 + On your Nuget package manager console,key in the following and press *Enter* 
 ```powershell 
-Install-Package AfricasTalking.NET -Version 1.2.0 
+Install-Package AfricasTalking.NET -Version 1.2.1 
 ```
 > Ensure you have the latest version of the package. Visit [Nuget](https://www.nuget.org/packages/AfricasTalking.NET/) for more info on the latest release of this package
 
