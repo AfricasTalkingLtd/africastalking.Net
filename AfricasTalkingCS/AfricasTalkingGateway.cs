@@ -139,7 +139,7 @@ namespace AfricasTalkingCS
                     if (from != null)
                     {
                         data["from"] = from;
-                        data["bulkSmsMode"] = Convert.ToString(bulkSmsMode);
+                        data["bulkSMSMode"] = Convert.ToString(bulkSmsMode);
                         if (options != null)
                         {
                             if (options.Contains("keyword"))
@@ -202,8 +202,8 @@ namespace AfricasTalkingCS
         public dynamic SendPremiumMessage(
             string to,
             string message,
-            string from = null,
-            int bulkSmsMode = -1,
+            string from ,
+            int bulkSmsMode = 0,
             Hashtable options = null)
         {
             // TODO Convert options to type IDictionary
@@ -229,7 +229,7 @@ namespace AfricasTalkingCS
                     if (from != null)
                     {
                         data["from"] = from;
-                        data["bulkSmsMode"] = Convert.ToString(bulkSmsMode);
+                        data["bulkSMSMode"] = Convert.ToString(bulkSmsMode);
                         if (options != null)
                         {
                             if (options.Contains("keyword"))

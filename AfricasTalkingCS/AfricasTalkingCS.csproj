@@ -4,7 +4,7 @@
     <TargetFrameworks>net45;net46;net48;netstandard2.0</TargetFrameworks>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.2.1</Version>
+    <Version>1.2.2</Version>
     <Authors>TheBeachmaster</Authors>
     <PackageId>AfricasTalking.NET</PackageId>
     <Company>Africa's Talking Ltd</Company>
@@ -17,13 +17,13 @@
     <RepositoryUrl>https://github.com/AfricasTalkingLtd/africastalking.Net</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>sms voice mobile-payments airtime card-payments bank-tranfers otp-validations</PackageTags>
-    <AssemblyVersion>1.2.1</AssemblyVersion>
-    <FileVersion>1.2.1</FileVersion>
+    <AssemblyVersion>1.2.2</AssemblyVersion>
+    <FileVersion>1.2.2</FileVersion>
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>AfricasTalking.NET.pfx</AssemblyOriginatorKeyFile>
     <PackageReleaseNotes>
-    1. Improvements 
-       1.1. Update phone number library
+    1. Bug fix 
+       1.1. Fix: rename bulkSmsMode to bulkSMSMode
     </PackageReleaseNotes>
     <NeutralLanguage></NeutralLanguage>
   </PropertyGroup>
