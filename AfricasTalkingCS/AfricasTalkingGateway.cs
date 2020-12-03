@@ -203,7 +203,7 @@ namespace AfricasTalkingCS
             string to,
             string message,
             string from ,
-            int bulkSmsMode = 1,
+            int bulkSmsMode = 0,
             Hashtable options = null)
         {
             // TODO Convert options to type IDictionary

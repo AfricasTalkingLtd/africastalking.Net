@@ -14,7 +14,7 @@ Take a look at the [API docs here](http://docs.africastalking.com/) for more inf
 + On a new project, Navigate to the ***Solution Explorer*** tab within Visual Studio. 
 + Right-click on the ***References*** node and click on the *Manage Nuget Packages* from the resulting context menu. 
 + On the Nuget Package Manager window navigate to the ***Browse*** Tab. 
-+ Key in **AfricasTalking.NET** and select version _1.2.1_ or higher. 
++ Key in **AfricasTalking.NET** and select version _1.2.2_ or higher. 
 + Click on the ***Install*** button and accept the licences to proceed. 
 
 > For .NET Standard 2.0 projects warngings may appear on your solution items,note that these are warnings due to deprecated support for some packages used by the wrapper.These will be reviewed in future release. These can be safely ignored.
@@ -28,7 +28,7 @@ Take a look at the [API docs here](http://docs.africastalking.com/) for more inf
 
 + From the _command prompt/powershell window_ opened in your project directory, key in the following and press *Enter*. 
 ```powershell 
- dotnet add package AfricasTalking.NET --version 1.2.1
+ dotnet add package AfricasTalking.NET --version 1.2.2
 ```
 > Ensure you have the latest version of the package. Visit [Nuget](https://www.nuget.org/packages/AfricasTalking.NET/) for more info on the latest release of this package. 
 
@@ -36,7 +36,7 @@ Take a look at the [API docs here](http://docs.africastalking.com/) for more inf
 
 + On your Nuget package manager console,key in the following and press *Enter* 
 ```powershell 
-Install-Package AfricasTalking.NET -Version 1.2.1 
+Install-Package AfricasTalking.NET -Version 1.2.2 
 ```
 > Ensure you have the latest version of the package. Visit [Nuget](https://www.nuget.org/packages/AfricasTalking.NET/) for more info on the latest release of this package
 
@@ -132,7 +132,7 @@ We also have a class SMSResponse as part of the controller that makes getters an
     - `to` : The recipient(s) expecting the message 
     - `message` : The SMS body. 
     - `from` :  (`Optional`) The Short-code or Alphanumeric ID that is associated with an Africa's Talking account.  
-    - `bulkSmsMode` (`Optional`) : This parameter will be used by the Mobile Service Provider to determine who gets  billed for a message sent using a Mobile-Terminated Short-code. Must be set to  *1*  for Bulk SMS. .
+    - `bulkSmsMode` (`Optional`) : This parameter will be used by the Mobile Service Provider to determine who gets  billed for a message sent using a Mobile-Terminated Short-code. Default is *0*.
     - `options` :   (`Optional`). Passed as _key-value_ pairs 
         -   `enque` : This parameter is used for Bulk SMS clients that would like deliver as many messages to the API before waiting for an Ack from the Telcos. If enabled, the API will store the messages in its databases and send them out asynchronously after responding to the request 
         -   `keyword` : This parameter is used for premium services. It is essential for subscription premium services.
@@ -215,12 +215,12 @@ We also have a class SMSResponse as part of the controller that makes getters an
             var message = "Super Cool Message";
             try
             {
-                var res = gateway.SendMessage(to, message, from, 1, opts); // Set Bulk to true
+                var res = gateway.SendPremiumMessage(to, message, from, 0, opts); 
                 Console.WriteLine(res);
             }
             catch (AfricasTalkingGatewayException e)
             {
-                Console.WriteLine("Whoops: " + e.Message);
+                Console.WriteLine("Error: " + e.Message);
                 throw;
             }
 ```
