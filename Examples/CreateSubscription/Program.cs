@@ -14,10 +14,9 @@ namespace CreateSubscription
             var shortCode = "NNNNN";
             var keyword = "keyword";
             var phoneNum = "+254XXXXXXXXX";
-            var token = "Token";
             try
             {
-                var response = gateway.CreateSubscription(phoneNum, shortCode, keyword, token);
+                var response = gateway.CreateSubscription(phoneNum, shortCode, keyword);
                 Console.WriteLine(response);
             }
             catch (AfricasTalkingGatewayException e)

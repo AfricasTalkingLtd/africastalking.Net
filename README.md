@@ -14,7 +14,7 @@ Take a look at the [API docs here](http://docs.africastalking.com/) for more inf
 + On a new project, Navigate to the ***Solution Explorer*** tab within Visual Studio. 
 + Right-click on the ***References*** node and click on the *Manage Nuget Packages* from the resulting context menu. 
 + On the Nuget Package Manager window navigate to the ***Browse*** Tab. 
-+ Key in **AfricasTalking.NET** and select version _1.2.2_ or higher. 
++ Key in **AfricasTalking.NET** and select version _1.2.3_ or higher. 
 + Click on the ***Install*** button and accept the licences to proceed. 
 
 > For .NET Standard 2.0 projects warngings may appear on your solution items,note that these are warnings due to deprecated support for some packages used by the wrapper.These will be reviewed in future release. These can be safely ignored.
@@ -28,7 +28,7 @@ Take a look at the [API docs here](http://docs.africastalking.com/) for more inf
 
 + From the _command prompt/powershell window_ opened in your project directory, key in the following and press *Enter*. 
 ```powershell 
- dotnet add package AfricasTalking.NET --version 1.2.2
+ dotnet add package AfricasTalking.NET --version 1.2.3
 ```
 > Ensure you have the latest version of the package. Visit [Nuget](https://www.nuget.org/packages/AfricasTalking.NET/) for more info on the latest release of this package. 
 
@@ -36,7 +36,7 @@ Take a look at the [API docs here](http://docs.africastalking.com/) for more inf
 
 + On your Nuget package manager console,key in the following and press *Enter* 
 ```powershell 
-Install-Package AfricasTalking.NET -Version 1.2.2 
+Install-Package AfricasTalking.NET -Version 1.2.3 
 ```
 > Ensure you have the latest version of the package. Visit [Nuget](https://www.nuget.org/packages/AfricasTalking.NET/) for more info on the latest release of this package
 
@@ -153,33 +153,14 @@ We also have a class SMSResponse as part of the controller that makes getters an
 
 #### [Premium Subscriptions](http://docs.africastalking.com/subscriptions/create)
 
-- `CreateSubscription(phoneNumber,shortCode,keyWord,checkoutToken)`:
+- `CreateSubscription(phoneNumber,shortCode,keyWord)`:
 
     - `shortCode` : This is a premium short code mapped to your account `REQUIRED`
     - `keyWord` : Value is a premium keyword under the above short code and mapped to your account. `REQUIRED`
     - `phoneNumber`: The phoneNumber to be subscribed `REQUIRED`
-    - `checkoutToken` :  This is a token used to validate the subscription request  `REQUIRED` 
 
      > If you have subscription products on your premium SMS short codes, you will need to configure a callback URL that we will invoke to notify you when users subscribe or unsubscribe from your products (currently supported on Safaricom).Visit [this link](http://docs.africastalking.com/subscriptions/callback) to learn more on how to setup a subscription callback  
 
-
-> Example    - Creating Checkout Token
-
-```c#
-            var username = "sandbox";
-            var apikey = "KEY";
-            var gateway = new AfricasTalkingGateway(username, apikey);
-            var phoneNum = "+254XXXXXXXXX"; // Ensure the phonenumber is properly formatted
-            try
-            {
-                var token = gateway.CreateCheckoutToken(phoneNumber);
-                Console.WriteLine("Your Token is:  " + token);
-            }
-            catch (AfricasTalkingGatewayException e)
-            {
-                Console.WriteLine("Yikes: " + e.StackTrace + ". " + e.Message);
-            }
-```
 
 > Example    - Creating Premium SMS subscription
 
@@ -190,10 +171,9 @@ We also have a class SMSResponse as part of the controller that makes getters an
             var shortCode = "NNNNN";
             var keyword = "keyword";
             var phoneNum = "+254XXXXXXXXX";
-            var token = "Token";
             try
             {
-                var response = gateway.CreateSubscription(phoneNum, shortCode, keyword, token);
+                var response = gateway.CreateSubscription(phoneNum, shortCode, keyword);
                 Console.WriteLine(response);
             }
             catch (AfricasTalkingGatewayException e)
