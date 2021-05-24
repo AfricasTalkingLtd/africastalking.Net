@@ -82,9 +82,7 @@ namespace AfricasTalkingCS_Tests
             var phoneNumber = "+254720000000";
             var shortCode = "44000";
             var keyword = "Coolguy";
-            var getToken = _atGWInstance.CreateCheckoutToken(phoneNumber);
-            string token = getToken["token"];
-            var gatewayResponse = _atGWInstance.CreateSubscription(phoneNumber, shortCode, keyword, token);
+            var gatewayResponse = _atGWInstance.CreateSubscription(phoneNumber, shortCode, keyword);
             var success = gatewayResponse["status"] == "Success";
             Assert.IsTrue(success);
         }
@@ -95,9 +93,7 @@ namespace AfricasTalkingCS_Tests
             var phoneNumber = "+254720000000";
             var shortCode = "44000";
             var keyword = "Coolestguy";
-            var getToken = _atGWInstance.CreateCheckoutToken(phoneNumber);
-            string token = getToken["token"];
-            var subscribeUser = _atGWInstance.CreateSubscription(phoneNumber, shortCode, keyword, token);
+            var subscribeUser = _atGWInstance.CreateSubscription(phoneNumber, shortCode, keyword);
             var deleteUserSub = _atGWInstance.DeleteSubscription(phoneNumber, shortCode, keyword);
             // Should be mocked
             var success = deleteUserSub["description"] == "Succeeded";

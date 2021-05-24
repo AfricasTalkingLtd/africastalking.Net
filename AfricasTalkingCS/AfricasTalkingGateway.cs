@@ -386,19 +386,16 @@ namespace AfricasTalkingCS
         /// <param name="keyWord">
         /// The key word.
         /// </param>
-        /// <param name="checkoutToken">
-        /// The checkout token.
-        /// </param>
         /// <returns>
         /// The <see cref="dynamic"/>.
         /// </returns>
         /// <exception cref="AfricasTalkingGatewayException">
         /// Any error thrown by our gateway class
         /// </exception>
-        public dynamic CreateSubscription(string phoneNumber, string shortCode, string keyWord, string checkoutToken)
+        public dynamic CreateSubscription(string phoneNumber, string shortCode, string keyWord)
         {
             string[] numbers = phoneNumber.Split(separator: new[] {','}, options: StringSplitOptions.RemoveEmptyEntries);
-            if (phoneNumber.Length == 0 || shortCode.Length == 0 || keyWord.Length == 0 || checkoutToken.Length == 0 || !IsPhoneNumber(numbers))
+            if (phoneNumber.Length == 0 || shortCode.Length == 0 || keyWord.Length == 0  || !IsPhoneNumber(numbers))
             {
                 throw new AfricasTalkingGatewayException("Some Parameters are missing or not properly formatted");
             }
@@ -408,8 +405,7 @@ namespace AfricasTalkingCS
                 ["username"] = this._username,
                 ["phoneNumber"] = phoneNumber,
                 ["shortCode"] = shortCode,
-                ["keyword"] = keyWord,
-                ["checkoutToken"] = checkoutToken
+                ["keyword"] = keyWord
             };
             var url = this.SubscriptionUrl + "/create";
             var response = this.SendPostRequest(data, url);
