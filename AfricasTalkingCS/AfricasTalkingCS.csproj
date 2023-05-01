@@ -1,61 +1,61 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.2.3</Version>
-    <Authors>TheBeachmaster</Authors>
-    <PackageId>AfricasTalking.NET</PackageId>
-    <Company>Africa's Talking Ltd</Company>
-    <Product>Africa's Talking .NET gateway</Product>
-    <Description>Africa's Talking SMS,Voice,USSD,Airtime and Payments APIs provide a scalable,robust and reliable interfacing between developers and telco providers across the continent</Description>
-    <Copyright>Copyright ©2021 Africa's Talking Ltd</Copyright>
-    <PackageLicenseUrl>https://www.africastalking.com/terms</PackageLicenseUrl>
-    <PackageIconUrl>https://avatars2.githubusercontent.com/u/12639968</PackageIconUrl>
-    <PackageProjectUrl>https://github.com/AfricasTalkingLtd/africastalking.Net</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/AfricasTalkingLtd/africastalking.Net</RepositoryUrl>
-    <RepositoryType>Git</RepositoryType>
-    <PackageTags>sms voice mobile-payments airtime card-payments bank-tranfers otp-validations</PackageTags>
-    <AssemblyVersion>1.2.3</AssemblyVersion>
-    <FileVersion>1.2.3</FileVersion>
-    <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile>AfricasTalking.NET.pfx</AssemblyOriginatorKeyFile>
-    <PackageReleaseNotes>
-    1. Minor update
-       1.1. Update: Remove requirement for checkout token for premium SMS subscription creation 
-    </PackageReleaseNotes>
-    <NeutralLanguage></NeutralLanguage>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Version>1.2.4</Version>
+		<Authors>TheBeachmaster,Njoro007</Authors>
+		<PackageId>AfricasTalking.NET</PackageId>
+		<Company>Africa's Talking Ltd</Company>
+		<Product>Africa's Talking .NET gateway</Product>
+		<Description>Africa's Talking SMS,Voice,USSD,Airtime and Payments APIs provide a scalable,robust and reliable interfacing between developers and telco providers across the continent</Description>
+		<Copyright>Copyright ©2023 Africa's Talking Ltd</Copyright>
+		<PackageLicenseUrl>https://www.africastalking.com/terms</PackageLicenseUrl>
+		<PackageIconUrl>https://avatars2.githubusercontent.com/u/12639968</PackageIconUrl>
+		<PackageProjectUrl>https://github.com/AfricasTalkingLtd/africastalking.Net</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/AfricasTalkingLtd/africastalking.Net</RepositoryUrl>
+		<RepositoryType>Git</RepositoryType>
+		<PackageTags>sms voice mobile-payments airtime card-payments bank-tranfers otp-validations</PackageTags>
+		<AssemblyVersion>1.2.4</AssemblyVersion>
+		<FileVersion>1.2.4</FileVersion>
+		<SignAssembly>false</SignAssembly>
+		<AssemblyOriginatorKeyFile>AfricasTalking.NET.pfx</AssemblyOriginatorKeyFile>
+		<PackageReleaseNotes>
+			1. Dependency Upgrade
+		</PackageReleaseNotes>
+		<NeutralLanguage></NeutralLanguage>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
-    <Optimize>true</Optimize>
-  </PropertyGroup>
-  
-  <ItemGroup>
-    <PackageReference Include="libphonenumber-csharp" Version="8.13.10" />
-    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.9" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="System.Net.Http" Version="4.3.4" />
-  </ItemGroup>
-  
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
-    <Reference Include="System.Net" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
-  </ItemGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
+		<Optimize>true</Optimize>
+	</PropertyGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
-    <Reference Include="System.Net" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="libphonenumber-csharp" Version="8.13.10" />
+		<PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.9" />
+		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="System.Net.Http" Version="4.3.4" />
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net48' ">
-    <Reference Include="System.Net" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
-  </ItemGroup>
- 
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2_0' ">
+		<Reference Include="System.Net" />
+		<Reference Include="System.Web" />
+		<Reference Include="System.Web.Extensions" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
+		<Reference Include="System.Net" />
+		<Reference Include="System.Web" />
+		<Reference Include="System.Web.Extensions" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net48' ">
+		<Reference Include="System.Net" />
+		<Reference Include="System.Web" />
+		<Reference Include="System.Web.Extensions" />
+	</ItemGroup>
+
 </Project>
